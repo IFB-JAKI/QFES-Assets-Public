@@ -1,0 +1,6 @@
+{
+	"appId": "io.ionic.starter",
+	"appName": "qfes-asset-frontend",
+	"webDir": "build",
+	"bundledWebRuntime": false
+}

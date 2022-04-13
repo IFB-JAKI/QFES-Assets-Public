@@ -1,0 +1,7 @@
+{
+  "name": "qfes-asset-frontend",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
