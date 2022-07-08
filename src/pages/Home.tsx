@@ -1,8 +1,47 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton } from '@ionic/react';
+
+import { API, Amplify, graphqlOperation } from 'aws-amplify';
+import { createAsset, updateAsset, deleteAsset } from '../graphql/mutations'
+import { listAssets } from '../graphql/queries';
+
+
 import ExploreContainer from '../components/ExploreContainer';
 import './Home.css';
+import React from 'react';
 
-const Home: React.FC = () => {
+interface HomeProps {
+  user: any;
+  signOut: any;
+}
+
+const Home = ({ signOut, user }:HomeProps) => {
+  const addAsset = async (): Promise<void> => {
+    try {
+      const result: any = await API.graphql({
+        query: createAsset,
+        variables: {input: {name: "test2", description: "testDescription2"}},
+        authMode: 'AWS_IAM'
+      });
+      console.log(result);
+    } catch (e) {
+      console.log(e);
+    }
+    return;
+  };
+
+  const listAsset = async (): Promise<void> => {
+    try {
+      const result: any = await API.graphql({
+        query: listAssets,
+        authMode: 'AWS_IAM'
+      });
+      console.log(result);
+    } catch (e) {
+      console.log(e);
+    }
+    return;
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -11,12 +50,10 @@ const Home: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Blank</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <ExploreContainer />
+        <IonButton color="primary" onClick={(event: React.MouseEvent<HTMLElement>) => {addAsset()}} >Create Asset</IonButton>
+        <IonButton color="primary" onClick={(event: React.MouseEvent<HTMLElement>) => {listAsset()}} >List Assets</IonButton>
+        <p>Hey {user.username}</p>
+        <IonButton onClick={signOut}>Sign Out</IonButton>
       </IonContent>
     </IonPage>
   );
