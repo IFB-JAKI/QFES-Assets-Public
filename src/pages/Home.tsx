@@ -1,13 +1,10 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton } from '@ionic/react';
 
-import { API, Amplify, graphqlOperation } from 'aws-amplify';
-import { createAsset, updateAsset, deleteAsset } from '../graphql/mutations'
+import { API } from 'aws-amplify';
+import { createAsset } from '../graphql/mutations'
 import { listAssets } from '../graphql/queries';
 
-
-import ExploreContainer from '../components/ExploreContainer';
-import './Home.css';
-import React from 'react';
+import React, { useState } from 'react';
 
 interface HomeProps {
   user: any;
@@ -15,6 +12,9 @@ interface HomeProps {
 }
 
 const Home = ({ signOut, user }:HomeProps) => {
+
+  const [assets, setAssets] = useState([]);
+
   const addAsset = async (): Promise<void> => {
     try {
       const result: any = await API.graphql({
@@ -36,6 +36,7 @@ const Home = ({ signOut, user }:HomeProps) => {
         authMode: 'AWS_IAM'
       });
       console.log(result);
+      setAssets(result.data.listAssets.items);
     } catch (e) {
       console.log(e);
     }
@@ -46,13 +47,24 @@ const Home = ({ signOut, user }:HomeProps) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Blank</IonTitle>
+          <IonTitle>Alec's testing grounds Please ignore</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonButton color="primary" onClick={(event: React.MouseEvent<HTMLElement>) => {addAsset()}} >Create Asset</IonButton>
         <IonButton color="primary" onClick={(event: React.MouseEvent<HTMLElement>) => {listAsset()}} >List Assets</IonButton>
-        <p>Hey {user.username}</p>
+        {
+          assets.map((asset: any) => {
+            return (
+              <div key={asset.id}>
+                <p style={{display: "inline", marginLeft: "20px"}}>{asset.id}</p>
+                <p style={{display: "inline", marginLeft: "20px"}}>{asset.name}</p>
+                <p style={{display: "inline", marginLeft: "20px"}}>{asset.description}</p>
+              </div>
+            )
+          })
+        }
+        <p>Hey {user.attributes.name}</p>
         <IonButton onClick={signOut}>Sign Out</IonButton>
       </IonContent>
     </IonPage>
