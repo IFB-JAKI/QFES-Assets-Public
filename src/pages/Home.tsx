@@ -1,10 +1,10 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton } from '@ionic/react';
-
 import { API } from 'aws-amplify';
 import { createAsset } from '../graphql/mutations'
 import { listAssets } from '../graphql/queries';
+import React, { useEffect, useState } from 'react';
 
-import React, { useState } from 'react';
+import { getPlatforms } from '@ionic/react';
 
 interface HomeProps {
   user: any;
@@ -14,6 +14,12 @@ interface HomeProps {
 const Home = ({ signOut, user }:HomeProps) => {
 
   const [assets, setAssets] = useState([]);
+
+  const [mobile, setMobile] = useState<string[]>([]);
+
+  useEffect(() => {
+    setMobile(getPlatforms());
+  }, [])
 
   const addAsset = async (): Promise<void> => {
     try {
@@ -47,7 +53,7 @@ const Home = ({ signOut, user }:HomeProps) => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Alec's testing grounds Please ignore</IonTitle>
+          <IonTitle>Info and control screen for testing</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
@@ -65,6 +71,14 @@ const Home = ({ signOut, user }:HomeProps) => {
           })
         }
         <p>Hey {user.attributes.name}</p>
+        <p>Platforms:</p>
+        {
+          mobile.map((platform: string) => {
+            return (
+              <p>{platform}</p>
+            )
+          })
+        }
         <IonButton onClick={signOut}>Sign Out</IonButton>
       </IonContent>
     </IonPage>

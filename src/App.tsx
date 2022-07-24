@@ -3,9 +3,11 @@ import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Authenticator } from '@aws-amplify/ui-react';
 import { API, Amplify, graphqlOperation } from 'aws-amplify';
+import { isPlatform } from '@ionic/react';
 import awsconfig from './aws-exports';
 
 import Home from './pages/Home';
+import QrScan from './pages/mobile/QrScan';
 
 import '@aws-amplify/ui-react/styles.css';
 
@@ -39,7 +41,13 @@ const App = () => (
         <IonReactRouter>
           <IonRouterOutlet>
             <Route exact path="/">
-              <Home signOut={signOut} user={user} />
+              {
+                isPlatform('capacitor') ? (
+                  <QrScan />
+                ) : (
+                  <Home signOut={signOut} user={user} />
+                )
+              }
             </Route>
             <Redirect exact from="/home" to="/" />
           </IonRouterOutlet>
