@@ -3,8 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
+    "@awesome-cordova-plugins/barcode-scanner": "^5.44.0",
+    "@awesome-cordova-plugins/core": "^5.44.0",
     "@aws-amplify/ui-react": "^3.2.0",
-    "@capacitor-community/barcode-scanner": "^2.1.1",
     "@capacitor/android": "3.6.0",
     "@capacitor/app": "1.1.1",
     "@capacitor/haptics": "1.1.4",
@@ -24,6 +25,7 @@
     "@types/react-router-dom": "^5.1.7",
     "aws-amplify": "^4.3.28",
     "ionicons": "^5.4.0",
+    "phonegap-plugin-barcodescanner": "^8.1.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router": "^5.3.3",

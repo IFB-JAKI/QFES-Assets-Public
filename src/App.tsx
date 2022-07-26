@@ -8,6 +8,7 @@ import awsconfig from './aws-exports';
 
 import Home from './pages/Home';
 import QrScan from './pages/mobile/QrScan';
+import Asset from './pages/Asset';
 
 import '@aws-amplify/ui-react/styles.css';
 
@@ -50,6 +51,7 @@ const App = () => (
               }
             </Route>
             <Redirect exact from="/home" to="/" />
+            <Route exact path="/asset/:id" component={Asset} />
           </IonRouterOutlet>
         </IonReactRouter>
       </IonApp>

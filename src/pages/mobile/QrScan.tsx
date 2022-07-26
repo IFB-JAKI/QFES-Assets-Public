@@ -1,7 +1,7 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton } from '@ionic/react';
 import React, { useState, useEffect } from 'react';
-import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
-import { useHistory } from 'react-router-dom';
+import { useIonRouter } from '@ionic/react';
+import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner';
 
 /*
   * BarcodeScanner is a plugin for Capacitor used here to scan QR Codes
@@ -9,22 +9,19 @@ import { useHistory } from 'react-router-dom';
 */
 const QrScan = () => {
 
-  const [data, setData] = useState<string>();
+  const router = useIonRouter();
 
   const startScan = async () => {
-    BarcodeScanner.hideBackground(); 
-  
-    const result = await BarcodeScanner.startScan();
-  
-    if (result.hasContent) {
-      
-      setData(result.content);
+    
+    const result = await BarcodeScanner.scan();
+    if (result.text) {
+      router.push('/asset/' + result.text);
     }
   };
 
   return (
     <IonPage>
-      <IonButton onClick={startScan}>Scan Asset</IonButton>
+      <IonButton onClick={startScan}>Scan</IonButton>
     </IonPage>
   );
 };
