@@ -9,6 +9,12 @@ import awsconfig from './aws-exports';
 import Home from './pages/Home';
 import QrScan from './pages/mobile/QrScan';
 import Asset from './pages/Asset';
+import NewAsset from './pages/NewAsset';
+import Reports from './pages/Reports';
+import Statistics from './pages/Statistics';
+import Search from './pages/Search';
+import EditAsset from './pages/EditAsset';
+import AssetPage from './pages/AssetPage';
 
 import '@aws-amplify/ui-react/styles.css';
 
@@ -52,6 +58,12 @@ const App = () => (
             </Route>
             <Redirect exact from="/home" to="/" />
             <Route exact path="/asset/:id" component={Asset} />
+            <Route exact path="/NewAsset" component={NewAsset} />
+            <Route exact path="/Reports" component={Reports} />
+            <Route exact path="/Statistics" component={Statistics} />
+            <Route exact path="/Search" component={Search} />
+            <Route exact path="/AssetPage/EditAsset" component={EditAsset} />
+            <Route exact path="/AssetPage" component={AssetPage} />
           </IonRouterOutlet>
         </IonReactRouter>
       </IonApp>

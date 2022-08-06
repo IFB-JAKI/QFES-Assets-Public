@@ -1,9 +1,8 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonBackButton } from '@ionic/react';
 import { API } from 'aws-amplify';
 import { createAsset } from '../graphql/mutations'
 import { listAssets } from '../graphql/queries';
 import React, { useEffect, useState } from 'react';
-
 import { getPlatforms } from '@ionic/react';
 
 interface HomeProps {
@@ -57,8 +56,15 @@ const Home = ({ signOut, user }:HomeProps) => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonButton color="primary" onClick={(event: React.MouseEvent<HTMLElement>) => {addAsset()}} >Create Asset</IonButton>
-        <IonButton color="primary" onClick={(event: React.MouseEvent<HTMLElement>) => {listAsset()}} >List Assets</IonButton>
+      <IonButton color="primary" routerLink="/Search">Search</IonButton>
+        <IonButton color="primary" routerLink="/NewAsset">New Asset</IonButton>
+        <IonButton color="primary" routerLink="/Reports">Reports</IonButton>
+        <IonButton color="primary" routerLink="/Statistics">Statistics</IonButton>
+        <IonButton color="primary" routerLink="/AssetPage">View Asset</IonButton>
+        <div id="actions">
+        <IonButton color="primary" onClick={(event: React.MouseEvent<HTMLElement>) => { addAsset(); } }>Create Asset</IonButton>
+        <IonButton color="primary" onClick={(event: React.MouseEvent<HTMLElement>) => { listAsset(); } }>List Assets</IonButton>
+        </div>
         {
           assets.map((asset: any) => {
             return (
