@@ -1,14 +1,16 @@
 import React from 'react'
-import { IonButton, IonPage, IonContent  } from '@ionic/react'
+import { IonPage, IonContent, IonBackButton, useIonRouter  } from '@ionic/react'
+import BackButton from '../components/BackButton'
 
 const NewAsset = () => {
+
+  
+  
   return (
     <IonPage>
       <h1>New Asset</h1>
       <IonContent>
-      <IonButton color="medium" href="/home">BACK</IonButton>
-      
-
+        <BackButton text="back" />
       </IonContent>
       
     </IonPage>
