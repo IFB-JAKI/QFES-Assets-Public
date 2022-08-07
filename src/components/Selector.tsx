@@ -1,5 +1,6 @@
 import { API } from 'aws-amplify';
 import React, { useEffect, useState } from 'react'
+import { IonButton, isPlatform } from '@ionic/react';
 
 interface SelectorProps {
   nullable?: boolean;
@@ -27,6 +28,7 @@ const Selector = ({ nullable = true, update, queryType, label }: SelectorProps) 
     };
   }, [])
 
+  // @TODO Mobile and component this
   return (
     <div>
       <label>{label}</label>
@@ -36,9 +38,9 @@ const Selector = ({ nullable = true, update, queryType, label }: SelectorProps) 
           options.map((type: any) => {
             return (
               <option value={type.id}>{type.name}</option>
-              )
-            })
-          }
+            )
+          })
+        }
       </select>
     </div>
   )

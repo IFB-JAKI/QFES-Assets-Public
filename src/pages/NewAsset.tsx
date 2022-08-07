@@ -23,8 +23,6 @@ const NewAsset = () => {
     console.log(name, description);
   }
 
-  // @TODO Replace with components once everything works.
-
   return (
     <IonPage>
       <IonContent>
@@ -48,7 +46,6 @@ const NewAsset = () => {
 
         <BackButton text="back" />
       </IonContent>
-
     </IonPage>
   )
 }
