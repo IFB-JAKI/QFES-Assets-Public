@@ -1,6 +1,138 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const createAssetLocation = /* GraphQL */ `
+  mutation CreateAssetLocation(
+    $input: CreateAssetLocationInput!
+    $condition: ModelAssetLocationConditionInput
+  ) {
+    createAssetLocation(input: $input, condition: $condition) {
+      id
+      locationName
+      locationID {
+        nextToken
+        startedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateAssetLocation = /* GraphQL */ `
+  mutation UpdateAssetLocation(
+    $input: UpdateAssetLocationInput!
+    $condition: ModelAssetLocationConditionInput
+  ) {
+    updateAssetLocation(input: $input, condition: $condition) {
+      id
+      locationName
+      locationID {
+        nextToken
+        startedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteAssetLocation = /* GraphQL */ `
+  mutation DeleteAssetLocation(
+    $input: DeleteAssetLocationInput!
+    $condition: ModelAssetLocationConditionInput
+  ) {
+    deleteAssetLocation(input: $input, condition: $condition) {
+      id
+      locationName
+      locationID {
+        nextToken
+        startedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const createAssetStatus = /* GraphQL */ `
+  mutation CreateAssetStatus(
+    $input: CreateAssetStatusInput!
+    $condition: ModelAssetStatusConditionInput
+  ) {
+    createAssetStatus(input: $input, condition: $condition) {
+      id
+      statusName
+      assetStatusID {
+        nextToken
+        startedAt
+      }
+      groupStatusID {
+        nextToken
+        startedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const updateAssetStatus = /* GraphQL */ `
+  mutation UpdateAssetStatus(
+    $input: UpdateAssetStatusInput!
+    $condition: ModelAssetStatusConditionInput
+  ) {
+    updateAssetStatus(input: $input, condition: $condition) {
+      id
+      statusName
+      assetStatusID {
+        nextToken
+        startedAt
+      }
+      groupStatusID {
+        nextToken
+        startedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const deleteAssetStatus = /* GraphQL */ `
+  mutation DeleteAssetStatus(
+    $input: DeleteAssetStatusInput!
+    $condition: ModelAssetStatusConditionInput
+  ) {
+    deleteAssetStatus(input: $input, condition: $condition) {
+      id
+      statusName
+      assetStatusID {
+        nextToken
+        startedAt
+      }
+      groupStatusID {
+        nextToken
+        startedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
 export const createAsset = /* GraphQL */ `
   mutation CreateAsset(
     $input: CreateAssetInput!
@@ -8,17 +140,25 @@ export const createAsset = /* GraphQL */ `
   ) {
     createAsset(input: $input, condition: $condition) {
       id
-      name
+      assetName
       description
       status
       currentEvent
-      typetemplateID
+      typeID
       AssetEvents {
         nextToken
+        startedAt
       }
-      kittemplateID
+      groupID
+      statusID
+      imageLink
+      assetlocaID
+      assetTypeData
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -29,17 +169,25 @@ export const updateAsset = /* GraphQL */ `
   ) {
     updateAsset(input: $input, condition: $condition) {
       id
-      name
+      assetName
       description
       status
       currentEvent
-      typetemplateID
+      typeID
       AssetEvents {
         nextToken
+        startedAt
       }
-      kittemplateID
+      groupID
+      statusID
+      imageLink
+      assetlocaID
+      assetTypeData
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -50,167 +198,229 @@ export const deleteAsset = /* GraphQL */ `
   ) {
     deleteAsset(input: $input, condition: $condition) {
       id
-      name
+      assetName
       description
       status
       currentEvent
-      typetemplateID
+      typeID
       AssetEvents {
         nextToken
+        startedAt
       }
-      kittemplateID
+      groupID
+      statusID
+      imageLink
+      assetlocaID
+      assetTypeData
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
-export const createTypeTemplate = /* GraphQL */ `
-  mutation CreateTypeTemplate(
-    $input: CreateTypeTemplateInput!
-    $condition: ModelTypeTemplateConditionInput
+export const createAssetType = /* GraphQL */ `
+  mutation CreateAssetType(
+    $input: CreateAssetTypeInput!
+    $condition: ModelAssetTypeConditionInput
   ) {
-    createTypeTemplate(input: $input, condition: $condition) {
+    createAssetType(input: $input, condition: $condition) {
       id
-      name
-      template
-      Assets {
+      typeName
+      dataTemplate
+      typeID {
         nextToken
+        startedAt
       }
+      logTemplate
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
-export const updateTypeTemplate = /* GraphQL */ `
-  mutation UpdateTypeTemplate(
-    $input: UpdateTypeTemplateInput!
-    $condition: ModelTypeTemplateConditionInput
+export const updateAssetType = /* GraphQL */ `
+  mutation UpdateAssetType(
+    $input: UpdateAssetTypeInput!
+    $condition: ModelAssetTypeConditionInput
   ) {
-    updateTypeTemplate(input: $input, condition: $condition) {
+    updateAssetType(input: $input, condition: $condition) {
       id
-      name
-      template
-      Assets {
+      typeName
+      dataTemplate
+      typeID {
         nextToken
+        startedAt
       }
+      logTemplate
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
-export const deleteTypeTemplate = /* GraphQL */ `
-  mutation DeleteTypeTemplate(
-    $input: DeleteTypeTemplateInput!
-    $condition: ModelTypeTemplateConditionInput
+export const deleteAssetType = /* GraphQL */ `
+  mutation DeleteAssetType(
+    $input: DeleteAssetTypeInput!
+    $condition: ModelAssetTypeConditionInput
   ) {
-    deleteTypeTemplate(input: $input, condition: $condition) {
+    deleteAssetType(input: $input, condition: $condition) {
       id
-      name
-      template
-      Assets {
+      typeName
+      dataTemplate
+      typeID {
         nextToken
+        startedAt
       }
+      logTemplate
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
-export const createAssetEvent = /* GraphQL */ `
-  mutation CreateAssetEvent(
-    $input: CreateAssetEventInput!
-    $condition: ModelAssetEventConditionInput
+export const createAssetLog = /* GraphQL */ `
+  mutation CreateAssetLog(
+    $input: CreateAssetLogInput!
+    $condition: ModelAssetLogConditionInput
   ) {
-    createAssetEvent(input: $input, condition: $condition) {
+    createAssetLog(input: $input, condition: $condition) {
       id
-      borrowed
-      returned
-      typeinfo
+      borrowDate
+      returnDate
+      assetLogData
       assetID
+      borrowerUsername
+      borrowerSignature
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
-export const updateAssetEvent = /* GraphQL */ `
-  mutation UpdateAssetEvent(
-    $input: UpdateAssetEventInput!
-    $condition: ModelAssetEventConditionInput
+export const updateAssetLog = /* GraphQL */ `
+  mutation UpdateAssetLog(
+    $input: UpdateAssetLogInput!
+    $condition: ModelAssetLogConditionInput
   ) {
-    updateAssetEvent(input: $input, condition: $condition) {
+    updateAssetLog(input: $input, condition: $condition) {
       id
-      borrowed
-      returned
-      typeinfo
+      borrowDate
+      returnDate
+      assetLogData
       assetID
+      borrowerUsername
+      borrowerSignature
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
-export const deleteAssetEvent = /* GraphQL */ `
-  mutation DeleteAssetEvent(
-    $input: DeleteAssetEventInput!
-    $condition: ModelAssetEventConditionInput
+export const deleteAssetLog = /* GraphQL */ `
+  mutation DeleteAssetLog(
+    $input: DeleteAssetLogInput!
+    $condition: ModelAssetLogConditionInput
   ) {
-    deleteAssetEvent(input: $input, condition: $condition) {
+    deleteAssetLog(input: $input, condition: $condition) {
       id
-      borrowed
-      returned
-      typeinfo
+      borrowDate
+      returnDate
+      assetLogData
       assetID
+      borrowerUsername
+      borrowerSignature
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
-export const createKitTemplate = /* GraphQL */ `
-  mutation CreateKitTemplate(
-    $input: CreateKitTemplateInput!
-    $condition: ModelKitTemplateConditionInput
+export const createAssetGroup = /* GraphQL */ `
+  mutation CreateAssetGroup(
+    $input: CreateAssetGroupInput!
+    $condition: ModelAssetGroupConditionInput
   ) {
-    createKitTemplate(input: $input, condition: $condition) {
+    createAssetGroup(input: $input, condition: $condition) {
       id
       name
       template
-      Assets {
+      groupID {
         nextToken
+        startedAt
       }
+      numAssets
+      assetstatusID
+      description
+      imageLink
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
-export const updateKitTemplate = /* GraphQL */ `
-  mutation UpdateKitTemplate(
-    $input: UpdateKitTemplateInput!
-    $condition: ModelKitTemplateConditionInput
+export const updateAssetGroup = /* GraphQL */ `
+  mutation UpdateAssetGroup(
+    $input: UpdateAssetGroupInput!
+    $condition: ModelAssetGroupConditionInput
   ) {
-    updateKitTemplate(input: $input, condition: $condition) {
+    updateAssetGroup(input: $input, condition: $condition) {
       id
       name
       template
-      Assets {
+      groupID {
         nextToken
+        startedAt
       }
+      numAssets
+      assetstatusID
+      description
+      imageLink
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
-export const deleteKitTemplate = /* GraphQL */ `
-  mutation DeleteKitTemplate(
-    $input: DeleteKitTemplateInput!
-    $condition: ModelKitTemplateConditionInput
+export const deleteAssetGroup = /* GraphQL */ `
+  mutation DeleteAssetGroup(
+    $input: DeleteAssetGroupInput!
+    $condition: ModelAssetGroupConditionInput
   ) {
-    deleteKitTemplate(input: $input, condition: $condition) {
+    deleteAssetGroup(input: $input, condition: $condition) {
       id
       name
       template
-      Assets {
+      groupID {
         nextToken
+        startedAt
       }
+      numAssets
+      assetstatusID
+      description
+      imageLink
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;

@@ -1,21 +1,143 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateAssetLocation = /* GraphQL */ `
+  subscription OnCreateAssetLocation {
+    onCreateAssetLocation {
+      id
+      locationName
+      locationID {
+        nextToken
+        startedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateAssetLocation = /* GraphQL */ `
+  subscription OnUpdateAssetLocation {
+    onUpdateAssetLocation {
+      id
+      locationName
+      locationID {
+        nextToken
+        startedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteAssetLocation = /* GraphQL */ `
+  subscription OnDeleteAssetLocation {
+    onDeleteAssetLocation {
+      id
+      locationName
+      locationID {
+        nextToken
+        startedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onCreateAssetStatus = /* GraphQL */ `
+  subscription OnCreateAssetStatus {
+    onCreateAssetStatus {
+      id
+      statusName
+      assetStatusID {
+        nextToken
+        startedAt
+      }
+      groupStatusID {
+        nextToken
+        startedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onUpdateAssetStatus = /* GraphQL */ `
+  subscription OnUpdateAssetStatus {
+    onUpdateAssetStatus {
+      id
+      statusName
+      assetStatusID {
+        nextToken
+        startedAt
+      }
+      groupStatusID {
+        nextToken
+        startedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
+export const onDeleteAssetStatus = /* GraphQL */ `
+  subscription OnDeleteAssetStatus {
+    onDeleteAssetStatus {
+      id
+      statusName
+      assetStatusID {
+        nextToken
+        startedAt
+      }
+      groupStatusID {
+        nextToken
+        startedAt
+      }
+      createdAt
+      updatedAt
+      _version
+      _deleted
+      _lastChangedAt
+    }
+  }
+`;
 export const onCreateAsset = /* GraphQL */ `
   subscription OnCreateAsset {
     onCreateAsset {
       id
-      name
+      assetName
       description
       status
       currentEvent
-      typetemplateID
+      typeID
       AssetEvents {
         nextToken
+        startedAt
       }
-      kittemplateID
+      groupID
+      statusID
+      imageLink
+      assetlocaID
+      assetTypeData
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -23,17 +145,25 @@ export const onUpdateAsset = /* GraphQL */ `
   subscription OnUpdateAsset {
     onUpdateAsset {
       id
-      name
+      assetName
       description
       status
       currentEvent
-      typetemplateID
+      typeID
       AssetEvents {
         nextToken
+        startedAt
       }
-      kittemplateID
+      groupID
+      statusID
+      imageLink
+      assetlocaID
+      assetTypeData
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
@@ -41,140 +171,202 @@ export const onDeleteAsset = /* GraphQL */ `
   subscription OnDeleteAsset {
     onDeleteAsset {
       id
-      name
+      assetName
       description
       status
       currentEvent
-      typetemplateID
+      typeID
       AssetEvents {
         nextToken
+        startedAt
       }
-      kittemplateID
+      groupID
+      statusID
+      imageLink
+      assetlocaID
+      assetTypeData
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
-export const onCreateTypeTemplate = /* GraphQL */ `
-  subscription OnCreateTypeTemplate {
-    onCreateTypeTemplate {
+export const onCreateAssetType = /* GraphQL */ `
+  subscription OnCreateAssetType {
+    onCreateAssetType {
       id
-      name
-      template
-      Assets {
+      typeName
+      dataTemplate
+      typeID {
         nextToken
+        startedAt
       }
+      logTemplate
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
-export const onUpdateTypeTemplate = /* GraphQL */ `
-  subscription OnUpdateTypeTemplate {
-    onUpdateTypeTemplate {
+export const onUpdateAssetType = /* GraphQL */ `
+  subscription OnUpdateAssetType {
+    onUpdateAssetType {
       id
-      name
-      template
-      Assets {
+      typeName
+      dataTemplate
+      typeID {
         nextToken
+        startedAt
       }
+      logTemplate
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
-export const onDeleteTypeTemplate = /* GraphQL */ `
-  subscription OnDeleteTypeTemplate {
-    onDeleteTypeTemplate {
+export const onDeleteAssetType = /* GraphQL */ `
+  subscription OnDeleteAssetType {
+    onDeleteAssetType {
       id
-      name
-      template
-      Assets {
+      typeName
+      dataTemplate
+      typeID {
         nextToken
+        startedAt
       }
+      logTemplate
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
-export const onCreateAssetEvent = /* GraphQL */ `
-  subscription OnCreateAssetEvent {
-    onCreateAssetEvent {
+export const onCreateAssetLog = /* GraphQL */ `
+  subscription OnCreateAssetLog {
+    onCreateAssetLog {
       id
-      borrowed
-      returned
-      typeinfo
+      borrowDate
+      returnDate
+      assetLogData
       assetID
+      borrowerUsername
+      borrowerSignature
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
-export const onUpdateAssetEvent = /* GraphQL */ `
-  subscription OnUpdateAssetEvent {
-    onUpdateAssetEvent {
+export const onUpdateAssetLog = /* GraphQL */ `
+  subscription OnUpdateAssetLog {
+    onUpdateAssetLog {
       id
-      borrowed
-      returned
-      typeinfo
+      borrowDate
+      returnDate
+      assetLogData
       assetID
+      borrowerUsername
+      borrowerSignature
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
-export const onDeleteAssetEvent = /* GraphQL */ `
-  subscription OnDeleteAssetEvent {
-    onDeleteAssetEvent {
+export const onDeleteAssetLog = /* GraphQL */ `
+  subscription OnDeleteAssetLog {
+    onDeleteAssetLog {
       id
-      borrowed
-      returned
-      typeinfo
+      borrowDate
+      returnDate
+      assetLogData
       assetID
+      borrowerUsername
+      borrowerSignature
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
-export const onCreateKitTemplate = /* GraphQL */ `
-  subscription OnCreateKitTemplate {
-    onCreateKitTemplate {
+export const onCreateAssetGroup = /* GraphQL */ `
+  subscription OnCreateAssetGroup {
+    onCreateAssetGroup {
       id
       name
       template
-      Assets {
+      groupID {
         nextToken
+        startedAt
       }
+      numAssets
+      assetstatusID
+      description
+      imageLink
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
-export const onUpdateKitTemplate = /* GraphQL */ `
-  subscription OnUpdateKitTemplate {
-    onUpdateKitTemplate {
+export const onUpdateAssetGroup = /* GraphQL */ `
+  subscription OnUpdateAssetGroup {
+    onUpdateAssetGroup {
       id
       name
       template
-      Assets {
+      groupID {
         nextToken
+        startedAt
       }
+      numAssets
+      assetstatusID
+      description
+      imageLink
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
-export const onDeleteKitTemplate = /* GraphQL */ `
-  subscription OnDeleteKitTemplate {
-    onDeleteKitTemplate {
+export const onDeleteAssetGroup = /* GraphQL */ `
+  subscription OnDeleteAssetGroup {
+    onDeleteAssetGroup {
       id
       name
       template
-      Assets {
+      groupID {
         nextToken
+        startedAt
       }
+      numAssets
+      assetstatusID
+      description
+      imageLink
       createdAt
       updatedAt
+      _version
+      _deleted
+      _lastChangedAt
     }
   }
 `;
