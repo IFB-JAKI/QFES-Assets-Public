@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { IonPage, IonContent, IonButton, IonSelect, IonSelectOption } from '@ionic/react'
+import { IonPage, IonContent, IonButton, IonSelect, IonSelectOption, useIonRouter } from '@ionic/react'
 import BackButton from '../components/BackButton'
 import { listAssetGroups, listAssetLocations, listAssetStatuses, listAssetTypes } from '../graphql/queries';
 import { API } from 'aws-amplify';
@@ -13,6 +13,8 @@ const NewAsset = () => {
   const [group, setGroup] = useState('');
   const [status, setStatus] = useState('');
   const [location, setLocation] = useState('');
+
+  const router = useIonRouter();
 
   // @TODO Images after image upload / storage setup
 
@@ -34,6 +36,7 @@ const NewAsset = () => {
           <input onChange={(e) => setDescription(e.target.value)} placeholder="Asset Description" ></input>
           <br></br>
           <Selector label="Type" queryType={listAssetTypes} update={setType} nullable={true} />
+          <IonButton routerLink='/newType'>New Type</IonButton>
           <br></br>
           <Selector label="Group" queryType={listAssetGroups} update={setGroup} nullable={true} />
           <br></br>

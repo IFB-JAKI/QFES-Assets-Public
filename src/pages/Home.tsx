@@ -21,6 +21,7 @@ const Home = ({ signOut, user }:HomeProps) => {
       <IonContent fullscreen>
         <IonButton color="primary" routerLink="/Search">Search</IonButton>
         <IonButton color="primary" routerDirection="none" routerLink="/NewAsset">New Asset</IonButton>
+        <IonButton color="primary" routerLink="/NewType">New Type</IonButton>
         <IonButton color="primary" routerLink="/Reports">Reports</IonButton>
         <IonButton color="primary" routerLink="/Statistics">Statistics</IonButton>
         <IonButton color="primary" routerLink="/AssetPage">View Asset</IonButton>

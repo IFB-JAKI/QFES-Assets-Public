@@ -36,6 +36,7 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import NewType from './pages/NewType';
 
 Amplify.configure(awsconfig);
 
@@ -59,6 +60,7 @@ const App = () => (
             <Redirect exact from="/home" to="/" />
             <Route exact path="/asset/:id" component={Asset} />
             <Route exact path="/NewAsset" component={NewAsset} />
+            <Route exact path="/NewType" component={NewType} />
             <Route exact path="/Reports" component={Reports} />
             <Route exact path="/Statistics" component={Statistics} />
             <Route exact path="/Search" component={Search} />

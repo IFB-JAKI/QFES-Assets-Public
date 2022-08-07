@@ -2,11 +2,11 @@ import { IonButton, useIonRouter } from '@ionic/react';
 import React from 'react'
 
 interface BackProps {
-  text: string;
+  text?: string;
   color?: string;
 }
 
-const BackButton = ({ text, color = "medium" }:BackProps) => {
+const BackButton = ({ text = "Back", color = "medium" }:BackProps) => {
 
   const router = useIonRouter();
 
