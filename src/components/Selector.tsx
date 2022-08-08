@@ -1,7 +1,6 @@
 import { API } from 'aws-amplify';
 import React, { useEffect, useState } from 'react'
 import { IonButton, isPlatform } from '@ionic/react';
-
 interface SelectorProps {
   nullable?: boolean;
   update: (value: any) => void;
@@ -20,12 +19,15 @@ const Selector = ({ nullable = true, update, queryType, label }: SelectorProps) 
           query: queryType,
           authMode: 'AWS_IAM'
         });
-        setOptions(result.data.listAssetTypes.items);
+        setOptions(result.data[Object.keys(result.data)[0]].items);
       } catch (e) {
         console.log(e);
       }
       return;
     };
+
+    getOptions();
+
   }, [])
 
   // @TODO Mobile and component this
@@ -37,7 +39,7 @@ const Selector = ({ nullable = true, update, queryType, label }: SelectorProps) 
         {
           options.map((type: any) => {
             return (
-              <option value={type.id}>{type.name}</option>
+              <option value={type.id} key={type.id}>{type.typeName}</option>
             )
           })
         }
