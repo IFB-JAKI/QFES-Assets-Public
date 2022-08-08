@@ -1,10 +1,10 @@
 import { IonButton, IonContent, IonIcon, IonPage } from '@ionic/react'
-import { input } from 'aws-amplify';
+import { API, input } from 'aws-amplify';
 import React from 'react'
 import BackButton from '../components/BackButton'
+import { createAssetType } from '../graphql/mutations';
 
 interface FieldInputs {
-  index?: number;
   name: string;
   type: string;
 }
@@ -16,6 +16,30 @@ const NewType = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    const fieldsJSON = JSON.stringify(fields);
+
+    let typeDetails = {
+      typeName: name,
+      dataTemplate: fieldsJSON
+    }
+
+    const createType = async (): Promise<void> => {
+      try {
+        const result: any = await API.graphql({
+          query: createAssetType,
+          variables: { input: typeDetails },
+          authMode: 'AWS_IAM'
+        });
+        console.log(result);
+
+      } catch (e) {
+        console.log(e);
+      }
+      return;
+    };
+
+    createType();
   }
 
   const handleNameChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +55,7 @@ const NewType = () => {
   }
 
   const addField = () => {
-    let newField: FieldInputs = { name: '', type: '' };
+    let newField: FieldInputs = { name: '', type: 'default' };
     setFields([...fields, newField]);
   }
 
@@ -42,14 +66,16 @@ const NewType = () => {
   }
 
 
+  // @TODO validation
+
   return (
     <IonPage>
       <IonContent>
-        <form onSubmit={handleSubmit} className="m-6">
+        <form onSubmit={(e) => handleSubmit(e)} className="m-6">
           <label className="mr-3">Type Name:</label>
           <input onChange={(e) => setName(e.target.value)} placeholder="Name" className="my-3"></input>
           <br></br>
-          <label className="mr-3">Fields:</label>
+          <label className="mr-3">Asset Fields:</label>
           <br></br>
           {fields.map((field, index) => {
             return (
@@ -62,6 +88,7 @@ const NewType = () => {
                   className="mr-3"
                 />
                 <select name="type" value={field.type} onChange={(e) => {handleTypeChange(index, e)}}>
+                  <option disabled value="default">Select a Type</option>
                   <option value="text">Text</option>
                   <option value="number">Number</option>
                   <option value="boolean">Boolean</option>
@@ -72,7 +99,10 @@ const NewType = () => {
             )
           })}
           <IonButton onClick={(e) => addField()}>Add Field</IonButton>
-          <IonButton>Submit</IonButton>
+          <br></br>
+          <label className="mr-3 mt-6">Asset Log Fields:</label>
+          <br></br>
+          <IonButton type='submit'>Submit</IonButton>
         </form>
         <BackButton />
       </IonContent>
