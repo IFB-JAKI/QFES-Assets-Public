@@ -1,5 +1,5 @@
-import { IonButton, IonContent, IonIcon, IonPage } from '@ionic/react'
-import { API, input } from 'aws-amplify';
+import { IonButton, IonContent, IonPage } from '@ionic/react'
+import { API } from 'aws-amplify';
 import React from 'react'
 import BackButton from '../components/BackButton'
 import { createAssetType } from '../graphql/mutations';

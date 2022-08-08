@@ -1,6 +1,5 @@
 import { API } from 'aws-amplify';
-import React, { useEffect, useState } from 'react'
-import { IonButton, isPlatform } from '@ionic/react';
+import { useEffect, useState } from 'react'
 interface SelectorProps {
   nullable?: boolean;
   update: (value: any) => void;
@@ -28,7 +27,7 @@ const Selector = ({ nullable = true, update, queryType, label }: SelectorProps) 
 
     getOptions();
 
-  }, [])
+  })
 
   // @TODO Mobile and component this
   return (
