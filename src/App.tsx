@@ -38,6 +38,9 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import NewType from './pages/NewType';
 
+/* Top level css imports */
+import './theme/index.css';
+
 Amplify.configure(awsconfig);
 
 setupIonicReact();
