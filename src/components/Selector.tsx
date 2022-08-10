@@ -27,7 +27,7 @@ const Selector = ({ nullable = true, handleChange, queryType, label }: SelectorP
 
   useEffect(() => {
     getData();
-  }), [];
+  }, []);
 
   // @TODO Mobile and component this
   return (
