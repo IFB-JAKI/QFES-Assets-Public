@@ -1,10 +1,4 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonBackButton } from '@ionic/react';
-import { API } from 'aws-amplify';
-import { createAsset } from '../graphql/mutations'
-import { listAssets } from '../graphql/queries';
-import React, { useEffect, useState } from 'react';
-
-
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton } from '@ionic/react';
 interface HomeProps {
   user: any;
   signOut: any;

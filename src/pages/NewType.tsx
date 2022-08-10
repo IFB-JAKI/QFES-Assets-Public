@@ -3,6 +3,7 @@ import { API } from 'aws-amplify';
 import React from 'react'
 import BackButton from '../components/BackButton'
 import { createAssetType } from '../graphql/mutations';
+import { useIonRouter } from '@ionic/react';
 
 interface FieldInputs {
   name: string;
@@ -13,6 +14,8 @@ const NewType = () => {
 
   const [name, setName] = React.useState('');
   const [fields, setFields] = React.useState(Array<FieldInputs>());
+
+  const router = useIonRouter();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -31,8 +34,9 @@ const NewType = () => {
           variables: { input: typeDetails },
           authMode: 'AWS_IAM'
         });
+        // @TODO Success or error toast here
         console.log(result);
-
+        router.goBack();
       } catch (e) {
         console.log(e);
       }
