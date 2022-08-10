@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { IonPage, IonContent, IonButton, useIonRouter } from '@ionic/react'
+import { IonPage, IonContent, IonButton, useIonRouter, IonCheckbox } from '@ionic/react'
 import BackButton from '../components/BackButton'
 import { getAssetType, listAssetGroups, listAssetLocations, listAssetStatuses, listAssetTypes } from '../graphql/queries';
 import { API } from 'aws-amplify';
@@ -10,7 +10,8 @@ const NewAsset = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
-  const [type, setType] = useState({ name: '', id: '', dataTemplate: {} });
+  const [type, setType] = useState({ name: '', id: '', dataTemplate: '' });
+  const [typeFields, setTypeFields] = useState(Array<any>());
 
   const [group, setGroup] = useState('');
   const [status, setStatus] = useState('');
@@ -20,36 +21,21 @@ const NewAsset = () => {
 
   // @TODO Images after image upload / storage setup
 
-  // @TODO type data state
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(name, description);
   }
 
-  // const handleTypeChange = (data: any) => {
-  //   const getData = async (): Promise<void> => {
-  //     if (type.id !== '') {
-  //       try {
-  //         const result: any = await API.graphql({
-  //           query: getAssetType,
-  //           authMode: 'AWS_IAM',
-  //           variables: { id: type }
-  //         });
-  //         console.log(result);
-  //       } catch (e) {
-  //         console.log(e);
-  //       }
-  //     } else {
-  //       console.error("Selected type has no ID");
-  //     }
-  //     return;
-  //   };
-  //   getData();
-  // }
-
   useEffect(() => {
-    console.log(type);
+    if (type && type.dataTemplate !== '') {
+      try {
+        setTypeFields(JSON.parse(type.dataTemplate));
+      } catch (e) {
+        console.log('Error parsing JSON');
+      }
+    } else {
+      setTypeFields([]);
+    }
   }, [type]);
 
   return (
@@ -62,6 +48,26 @@ const NewAsset = () => {
           <input onChange={(e) => setDescription(e.target.value)} placeholder="Asset Description" ></input>
           <br></br>
           <Selector label="Type" queryType={listAssetTypes} handleChange={setType} nullable={true} />
+          {
+            typeFields.map((field, index) => {
+              let fieldJsx;
+              if (field.type === 'text') {
+                fieldJsx = <input type="text"></input>
+              } else if (field.type === 'number') {
+                fieldJsx = <input type="number" ></input>
+              } else if (field.type === 'date') {
+                fieldJsx = <input type="date" ></input>
+              } else if (field.type === 'boolean') {
+                fieldJsx = <IonCheckbox></IonCheckbox>
+              }
+              return (
+                <div key={index}>
+                  <label>{field.name}: </label>
+                  {fieldJsx}
+                </div>
+              )
+            }, [])
+          }
           <IonButton routerLink='/newType'>New Type</IonButton>
           <br></br>
           {/* <Selector label="Group" queryType={listAssetGroups} update={setGroup} nullable={true} /> */}
