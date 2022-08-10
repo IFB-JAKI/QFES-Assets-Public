@@ -4,27 +4,25 @@ import React from 'react'
 import BackButton from '../components/BackButton'
 import { createAssetType } from '../graphql/mutations';
 import { useIonRouter } from '@ionic/react';
-
-interface FieldInputs {
-  name: string;
-  type: string;
-}
+import { FieldInputs } from '../types/FieldInputs';
+import TypeFieldCreator from '../components/TypeFieldCreator';
 
 const NewType = () => {
 
   const [name, setName] = React.useState('');
-  const [fields, setFields] = React.useState(Array<FieldInputs>());
+  const [assetFields, setAssetFields] = React.useState(Array<FieldInputs>());
+  const [assetLogFields, setAssetLogFields] = React.useState(Array<FieldInputs>());
 
   const router = useIonRouter();
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const fieldsJSON = JSON.stringify(fields);
+    const assetFieldsJSON = JSON.stringify(assetFields);
 
     let typeDetails = {
       typeName: name,
-      dataTemplate: fieldsJSON
+      dataTemplate: assetFieldsJSON
     }
 
     const createType = async (): Promise<void> => {
@@ -46,30 +44,6 @@ const NewType = () => {
     createType();
   }
 
-  const handleNameChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
-    let newFields = [...fields];
-    newFields[index].name = event.target.value;
-    setFields(newFields);
-  }
-
-  const handleTypeChange = (index: number, event: React.ChangeEvent<HTMLSelectElement> | React.ChangeEvent<HTMLInputElement>) => {
-    let newFields = [...fields];
-    newFields[index].type = event.target.value;
-    setFields(newFields);
-  }
-
-  const addField = () => {
-    let newField: FieldInputs = { name: '', type: 'default' };
-    setFields([...fields, newField]);
-  }
-
-  const removeField = (index: number) => {
-    let newFields = [...fields];
-    newFields.splice(index, 1);
-    setFields(newFields);
-  }
-
-
   // @TODO validation
 
   return (
@@ -81,30 +55,11 @@ const NewType = () => {
           <br></br>
           <label className="mr-3">Asset Fields:</label>
           <br></br>
-          {fields.map((field, index) => {
-            return (
-              <div key={index} className="my-3">
-                <input 
-                  name="name"
-                  placeholder="Name"
-                  value={field.name}
-                  onChange={(e) => {handleNameChange(index, e)}}
-                  className="mr-3"
-                />
-                <select name="type" value={field.type} onChange={(e) => {handleTypeChange(index, e)}}>
-                  <option disabled value="default">Select a Type</option>
-                  <option value="text">Text</option>
-                  <option value="number">Number</option>
-                  <option value="boolean">Boolean</option>
-                  <option value="date">Date</option>
-                </select>
-                <IonButton onClick={() => { removeField(index) }}>Delete</IonButton>
-              </div>
-            )
-          })}
-          <IonButton onClick={(e) => addField()}>Add Field</IonButton>
+          <TypeFieldCreator fields={assetFields} setFields={setAssetFields}/>
           <br></br>
           <label className="mr-3 mt-6">Asset Log Fields:</label>
+          <br></br>
+          <TypeFieldCreator fields={assetLogFields} setFields={setAssetLogFields}/>
           <br></br>
           <IonButton type='submit'>Submit</IonButton>
         </form>

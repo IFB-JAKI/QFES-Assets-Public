@@ -48,6 +48,8 @@ const NewAsset = () => {
           <input onChange={(e) => setDescription(e.target.value)} placeholder="Asset Description" ></input>
           <br></br>
           <Selector label="Type" queryType={listAssetTypes} handleChange={setType} nullable={true} />
+          <br></br>
+          <p>Asset Data: </p>
           {
             typeFields.map((field, index) => {
               let fieldJsx;
