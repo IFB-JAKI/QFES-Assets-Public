@@ -10,8 +10,7 @@ const NewAsset = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
-  const [type, setType] = useState('');
-  const [typeList, setTypeList] = useState<any[]>([]);
+  const [type, setType] = useState({ name: '', id: '', dataTemplate: {} });
 
   const [group, setGroup] = useState('');
   const [status, setStatus] = useState('');
@@ -28,9 +27,30 @@ const NewAsset = () => {
     console.log(name, description);
   }
 
-  const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setType(event.target.value);
-  }
+  // const handleTypeChange = (data: any) => {
+  //   const getData = async (): Promise<void> => {
+  //     if (type.id !== '') {
+  //       try {
+  //         const result: any = await API.graphql({
+  //           query: getAssetType,
+  //           authMode: 'AWS_IAM',
+  //           variables: { id: type }
+  //         });
+  //         console.log(result);
+  //       } catch (e) {
+  //         console.log(e);
+  //       }
+  //     } else {
+  //       console.error("Selected type has no ID");
+  //     }
+  //     return;
+  //   };
+  //   getData();
+  // }
+
+  useEffect(() => {
+    console.log(type);
+  }, [type]);
 
   return (
     <IonPage>
@@ -41,7 +61,7 @@ const NewAsset = () => {
           <br></br>
           <input onChange={(e) => setDescription(e.target.value)} placeholder="Asset Description" ></input>
           <br></br>
-          <Selector label="Type" queryType={listAssetTypes} handleChange={handleTypeChange} nullable={true} />
+          <Selector label="Type" queryType={listAssetTypes} handleChange={setType} nullable={true} />
           <IonButton routerLink='/newType'>New Type</IonButton>
           <br></br>
           {/* <Selector label="Group" queryType={listAssetGroups} update={setGroup} nullable={true} /> */}
