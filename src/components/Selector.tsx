@@ -6,10 +6,11 @@ interface SelectorProps {
   handleChange: (data: any) => void;
   queryType: any;
   label: string;
+  nameKey: string;
 }
 
 /* Selects from option created from the query. State for all options is stored here, while state for the selected option is passed up. */
-const Selector = ({ nullable = true, handleChange, queryType, label }: SelectorProps) => {
+const Selector = ({ nullable = true, handleChange, queryType, label, nameKey }: SelectorProps) => {
   
   const [data, setData] = useState<any[]>([]);
 
@@ -37,9 +38,9 @@ const Selector = ({ nullable = true, handleChange, queryType, label }: SelectorP
       <select onChange={(e) => handleChange(data.find(item => item.id === e.target.value))}>
         {nullable && <option value="">None</option>}
         {
-          data.map((type: any) => {
+          data.map((option: any) => {
             return (
-              <option value={type.id} key={type.id}>{type.typeName}</option>
+              <option value={option.id} key={option.id}>{option[nameKey]}</option>
             )
           })
         }

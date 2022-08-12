@@ -72,7 +72,7 @@ const NewAsset = () => {
           <br></br>
           <input onChange={(e) => setDescription(e.target.value)} placeholder="Asset Description" ></input>
           <br></br>
-          <Selector label="Type" queryType={listAssetTypes} handleChange={setType} nullable={true} />
+          <Selector label="Type" queryType={listAssetTypes} handleChange={setType} nameKey="typeName" />
           <br></br>
           <p>Asset Data: </p>
           {
@@ -97,11 +97,11 @@ const NewAsset = () => {
           }
           <IonButton routerLink='/newType'>New Type</IonButton>
           <br></br>
-          <Selector label="Group" queryType={listAssetGroups} handleChange={setGroup} nullable={true} />
+          <Selector label="Group" queryType={listAssetGroups} handleChange={setGroup} nameKey="name" />
           <br></br>
-          <Selector label="Status" queryType={listAssetStatuses} handleChange={setStatus} nullable={true} />
+          <Selector label="Status" queryType={listAssetStatuses} handleChange={setStatus} nameKey="statusName" />
           <br></br>
-          <Selector label="Location" queryType={listAssetLocations} handleChange={setLocation} nullable={true} />
+          <Selector label="Location" queryType={listAssetLocations} handleChange={setLocation} nameKey="locationName" />
           <br></br>
           <IonButton type='submit'>Submit</IonButton>
         </form>
