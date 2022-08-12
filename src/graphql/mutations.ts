@@ -1,3 +1,4 @@
+/* tslint:disable */
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
@@ -10,6 +11,20 @@ export const createAssetLocation = /* GraphQL */ `
       id
       locationName
       locationID {
+        items {
+          id
+          assetName
+          description
+          currentEventID
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       createdAt
@@ -26,6 +41,20 @@ export const updateAssetLocation = /* GraphQL */ `
       id
       locationName
       locationID {
+        items {
+          id
+          assetName
+          description
+          currentEventID
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       createdAt
@@ -42,6 +71,20 @@ export const deleteAssetLocation = /* GraphQL */ `
       id
       locationName
       locationID {
+        items {
+          id
+          assetName
+          description
+          currentEventID
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       createdAt
@@ -58,9 +101,34 @@ export const createAssetStatus = /* GraphQL */ `
       id
       statusName
       assetStatusID {
+        items {
+          id
+          assetName
+          description
+          currentEventID
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       groupStatusID {
+        items {
+          id
+          name
+          template
+          numAssets
+          assetstatusID
+          description
+          imageLink
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       createdAt
@@ -77,9 +145,34 @@ export const updateAssetStatus = /* GraphQL */ `
       id
       statusName
       assetStatusID {
+        items {
+          id
+          assetName
+          description
+          currentEventID
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       groupStatusID {
+        items {
+          id
+          name
+          template
+          numAssets
+          assetstatusID
+          description
+          imageLink
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       createdAt
@@ -96,9 +189,34 @@ export const deleteAssetStatus = /* GraphQL */ `
       id
       statusName
       assetStatusID {
+        items {
+          id
+          assetName
+          description
+          currentEventID
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       groupStatusID {
+        items {
+          id
+          name
+          template
+          numAssets
+          assetstatusID
+          description
+          imageLink
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       createdAt
@@ -115,9 +233,20 @@ export const createAsset = /* GraphQL */ `
       id
       assetName
       description
-      currentEvent
+      currentEventID
       typeID
       AssetEvents {
+        items {
+          id
+          borrowDate
+          returnDate
+          assetLogData
+          assetID
+          borrowerUsername
+          borrowerSignature
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       groupID
@@ -139,9 +268,20 @@ export const updateAsset = /* GraphQL */ `
       id
       assetName
       description
-      currentEvent
+      currentEventID
       typeID
       AssetEvents {
+        items {
+          id
+          borrowDate
+          returnDate
+          assetLogData
+          assetID
+          borrowerUsername
+          borrowerSignature
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       groupID
@@ -163,9 +303,20 @@ export const deleteAsset = /* GraphQL */ `
       id
       assetName
       description
-      currentEvent
+      currentEventID
       typeID
       AssetEvents {
+        items {
+          id
+          borrowDate
+          returnDate
+          assetLogData
+          assetID
+          borrowerUsername
+          borrowerSignature
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       groupID
@@ -188,6 +339,20 @@ export const createAssetType = /* GraphQL */ `
       typeName
       dataTemplate
       typeID {
+        items {
+          id
+          assetName
+          description
+          currentEventID
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       logTemplate
@@ -206,6 +371,20 @@ export const updateAssetType = /* GraphQL */ `
       typeName
       dataTemplate
       typeID {
+        items {
+          id
+          assetName
+          description
+          currentEventID
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       logTemplate
@@ -224,6 +403,20 @@ export const deleteAssetType = /* GraphQL */ `
       typeName
       dataTemplate
       typeID {
+        items {
+          id
+          assetName
+          description
+          currentEventID
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       logTemplate
@@ -296,6 +489,20 @@ export const createAssetGroup = /* GraphQL */ `
       name
       template
       groupID {
+        items {
+          id
+          assetName
+          description
+          currentEventID
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       numAssets
@@ -317,6 +524,20 @@ export const updateAssetGroup = /* GraphQL */ `
       name
       template
       groupID {
+        items {
+          id
+          assetName
+          description
+          currentEventID
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       numAssets
@@ -338,6 +559,20 @@ export const deleteAssetGroup = /* GraphQL */ `
       name
       template
       groupID {
+        items {
+          id
+          assetName
+          description
+          currentEventID
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       numAssets
