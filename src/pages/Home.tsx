@@ -19,6 +19,7 @@ const Home = ({ signOut, user }:HomeProps) => {
         <IonButton color="primary" routerLink="/Reports">Reports</IonButton>
         <IonButton color="primary" routerLink="/Statistics">Statistics</IonButton>
         <IonButton color="primary" routerLink="/AssetPage">View Asset</IonButton>
+        <IonButton color="primary" routerLink="/NewStatus">New Status</IonButton>
         <IonButton onClick={signOut}>Sign Out</IonButton>
       </IonContent>
     </IonPage>

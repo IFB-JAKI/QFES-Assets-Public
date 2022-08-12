@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { IonPage, IonContent, IonButton, useIonRouter, IonCheckbox } from '@ionic/react'
 import BackButton from '../components/BackButton'
 import { getAssetType, listAssetGroups, listAssetLocations, listAssetStatuses, listAssetTypes } from '../graphql/queries';
+import { createAsset } from '../graphql/mutations';
 import { API } from 'aws-amplify';
 import Selector from '../components/Selector';
 
@@ -23,7 +24,31 @@ const NewAsset = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(name, description);
+    
+    let assetDetails = {
+      name: name,
+      description: description,
+      type: type.id,
+      group: group,
+      status: status,
+      location: location
+    }
+
+    const createAssetCall = async (): Promise<void> => {
+      try {
+        const result: any = await API.graphql({
+          query: createAsset,
+          variables: { input: assetDetails },
+          authMode: 'AWS_IAM'
+        });
+        // @TODO Success or error toast here
+        console.log(result);
+      } catch (e) {
+        console.log(e);
+      }
+      return;
+    };
+    createAssetCall();
   }
 
   useEffect(() => {
@@ -72,13 +97,13 @@ const NewAsset = () => {
           }
           <IonButton routerLink='/newType'>New Type</IonButton>
           <br></br>
-          {/* <Selector label="Group" queryType={listAssetGroups} update={setGroup} nullable={true} /> */}
+          <Selector label="Group" queryType={listAssetGroups} handleChange={setGroup} nullable={true} />
           <br></br>
-          {/* <Selector label="Status" queryType={listAssetStatuses} update={setStatus} nullable={true} /> */}
+          <Selector label="Status" queryType={listAssetStatuses} handleChange={setStatus} nullable={true} />
           <br></br>
-          {/* <Selector label="Location" queryType={listAssetLocations} update={setLocation} nullable={true} /> */}
+          <Selector label="Location" queryType={listAssetLocations} handleChange={setLocation} nullable={true} />
           <br></br>
-          <IonButton>Submit</IonButton>
+          <IonButton type='submit'>Submit</IonButton>
         </form>
 
         <BackButton text="back" />

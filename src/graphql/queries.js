@@ -141,7 +141,6 @@ export const getAsset = /* GraphQL */ `
       id
       assetName
       description
-      status
       currentEvent
       typeID
       AssetEvents {
@@ -172,7 +171,6 @@ export const listAssets = /* GraphQL */ `
         id
         assetName
         description
-        status
         currentEvent
         typeID
         groupID
@@ -208,7 +206,6 @@ export const syncAssets = /* GraphQL */ `
         id
         assetName
         description
-        status
         currentEvent
         typeID
         groupID

@@ -40,6 +40,7 @@ import NewType from './pages/NewType';
 
 /* Top level css imports */
 import './theme/index.css';
+import NewStatus from './pages/NewStatus';
 
 Amplify.configure(awsconfig);
 
@@ -69,6 +70,7 @@ const App = () => (
             <Route exact path="/Search" component={Search} />
             <Route exact path="/AssetPage/EditAsset" component={EditAsset} />
             <Route exact path="/AssetPage" component={AssetPage} />
+            <Route exact path="/NewStatus" component={NewStatus} />
           </IonRouterOutlet>
         </IonReactRouter>
       </IonApp>

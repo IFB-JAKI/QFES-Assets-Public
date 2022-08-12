@@ -121,7 +121,6 @@ export const onCreateAsset = /* GraphQL */ `
       id
       assetName
       description
-      status
       currentEvent
       typeID
       AssetEvents {
@@ -147,7 +146,6 @@ export const onUpdateAsset = /* GraphQL */ `
       id
       assetName
       description
-      status
       currentEvent
       typeID
       AssetEvents {
@@ -173,7 +171,6 @@ export const onDeleteAsset = /* GraphQL */ `
       id
       assetName
       description
-      status
       currentEvent
       typeID
       AssetEvents {
