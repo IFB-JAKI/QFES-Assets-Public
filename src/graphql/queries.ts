@@ -12,7 +12,7 @@ export const getAssetLocation = /* GraphQL */ `
           id
           assetName
           description
-          currentEventID
+          currentEvent
           typeID
           groupID
           statusID
@@ -59,7 +59,7 @@ export const getAssetStatus = /* GraphQL */ `
           id
           assetName
           description
-          currentEventID
+          currentEvent
           typeID
           groupID
           statusID
@@ -119,7 +119,7 @@ export const getAsset = /* GraphQL */ `
       id
       assetName
       description
-      currentEventID
+      currentEvent
       typeID
       AssetEvents {
         items {
@@ -156,7 +156,7 @@ export const listAssets = /* GraphQL */ `
         id
         assetName
         description
-        currentEventID
+        currentEvent
         typeID
         AssetEvents {
           nextToken
@@ -184,7 +184,7 @@ export const getAssetType = /* GraphQL */ `
           id
           assetName
           description
-          currentEventID
+          currentEvent
           typeID
           groupID
           statusID
@@ -272,7 +272,7 @@ export const getAssetGroup = /* GraphQL */ `
           id
           assetName
           description
-          currentEventID
+          currentEvent
           typeID
           groupID
           statusID

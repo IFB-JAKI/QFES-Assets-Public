@@ -15,7 +15,7 @@ export const createAssetLocation = /* GraphQL */ `
           id
           assetName
           description
-          currentEventID
+          currentEvent
           typeID
           groupID
           statusID
@@ -45,7 +45,7 @@ export const updateAssetLocation = /* GraphQL */ `
           id
           assetName
           description
-          currentEventID
+          currentEvent
           typeID
           groupID
           statusID
@@ -75,7 +75,7 @@ export const deleteAssetLocation = /* GraphQL */ `
           id
           assetName
           description
-          currentEventID
+          currentEvent
           typeID
           groupID
           statusID
@@ -105,7 +105,7 @@ export const createAssetStatus = /* GraphQL */ `
           id
           assetName
           description
-          currentEventID
+          currentEvent
           typeID
           groupID
           statusID
@@ -149,7 +149,7 @@ export const updateAssetStatus = /* GraphQL */ `
           id
           assetName
           description
-          currentEventID
+          currentEvent
           typeID
           groupID
           statusID
@@ -193,7 +193,7 @@ export const deleteAssetStatus = /* GraphQL */ `
           id
           assetName
           description
-          currentEventID
+          currentEvent
           typeID
           groupID
           statusID
@@ -233,7 +233,7 @@ export const createAsset = /* GraphQL */ `
       id
       assetName
       description
-      currentEventID
+      currentEvent
       typeID
       AssetEvents {
         items {
@@ -268,7 +268,7 @@ export const updateAsset = /* GraphQL */ `
       id
       assetName
       description
-      currentEventID
+      currentEvent
       typeID
       AssetEvents {
         items {
@@ -303,7 +303,7 @@ export const deleteAsset = /* GraphQL */ `
       id
       assetName
       description
-      currentEventID
+      currentEvent
       typeID
       AssetEvents {
         items {
@@ -343,7 +343,7 @@ export const createAssetType = /* GraphQL */ `
           id
           assetName
           description
-          currentEventID
+          currentEvent
           typeID
           groupID
           statusID
@@ -375,7 +375,7 @@ export const updateAssetType = /* GraphQL */ `
           id
           assetName
           description
-          currentEventID
+          currentEvent
           typeID
           groupID
           statusID
@@ -407,7 +407,7 @@ export const deleteAssetType = /* GraphQL */ `
           id
           assetName
           description
-          currentEventID
+          currentEvent
           typeID
           groupID
           statusID
@@ -493,7 +493,7 @@ export const createAssetGroup = /* GraphQL */ `
           id
           assetName
           description
-          currentEventID
+          currentEvent
           typeID
           groupID
           statusID
@@ -528,7 +528,7 @@ export const updateAssetGroup = /* GraphQL */ `
           id
           assetName
           description
-          currentEventID
+          currentEvent
           typeID
           groupID
           statusID
@@ -563,7 +563,7 @@ export const deleteAssetGroup = /* GraphQL */ `
           id
           assetName
           description
-          currentEventID
+          currentEvent
           typeID
           groupID
           statusID

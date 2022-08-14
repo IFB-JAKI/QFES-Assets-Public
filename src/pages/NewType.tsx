@@ -21,7 +21,7 @@ const NewType = () => {
     const assetFieldsJSON = JSON.stringify(assetFields);
 
     let typeDetails = {
-      name: name,
+      typeName: name,
       dataTemplate: assetFieldsJSON
     }
 

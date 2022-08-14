@@ -15,8 +15,8 @@ const NewAsset = () => {
   const [typeFields, setTypeFields] = useState(Array<any>());
 
   const [group, setGroup] = useState('');
-  const [status, setStatus] = useState('');
-  const [location, setLocation] = useState('');
+  const [status, setStatus] = useState({ name: '', id: '' });
+  const [location, setLocation] = useState({ name: '', id: '' });
 
   const router = useIonRouter();
 
@@ -26,12 +26,12 @@ const NewAsset = () => {
     event.preventDefault();
     
     let assetDetails = {
-      name: name,
+      assetName: name,
       description: description,
-      type: type.id,
-      group: group,
-      status: status,
-      location: location
+      typeID: type.id,
+      groupID: group,
+      statusID: status.id,
+      assetlocaID: location.id
     }
 
     const createAssetCall = async (): Promise<void> => {
