@@ -172,22 +172,8 @@ export const listAssets = /* GraphQL */ `
         id
         assetName
         description
-        status
-        currentEvent
-        typeID
-        groupID
-        statusID
-        imageLink
-        assetlocaID
-        assetTypeData
-        createdAt
-        updatedAt
-        _version
-        _deleted
-        _lastChangedAt
       }
       nextToken
-      startedAt
     }
   }
 `;
