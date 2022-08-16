@@ -124,10 +124,10 @@ export const getAsset = /* GraphQL */ `
       AssetEvents {
         items {
           id
+          assetID
           borrowDate
           returnDate
           assetLogData
-          assetID
           borrowerUsername
           borrowerSignature
           createdAt
@@ -228,10 +228,10 @@ export const getAssetLog = /* GraphQL */ `
   query GetAssetLog($id: ID!) {
     getAssetLog(id: $id) {
       id
+      assetID
       borrowDate
       returnDate
       assetLogData
-      assetID
       borrowerUsername
       borrowerSignature
       createdAt
@@ -248,10 +248,10 @@ export const listAssetLogs = /* GraphQL */ `
     listAssetLogs(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
+        assetID
         borrowDate
         returnDate
         assetLogData
-        assetID
         borrowerUsername
         borrowerSignature
         createdAt

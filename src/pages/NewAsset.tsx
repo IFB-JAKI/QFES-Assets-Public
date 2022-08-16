@@ -11,12 +11,12 @@ const NewAsset = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
-  const [type, setType] = useState({ name: '', id: '', dataTemplate: '' });
+  const [type, setType] = useState({ name: '', id: null, dataTemplate: '' });
   const [typeFields, setTypeFields] = useState(Array<any>());
 
-  const [group, setGroup] = useState('');
-  const [status, setStatus] = useState({ name: '', id: '' });
-  const [location, setLocation] = useState({ name: '', id: '' });
+  const [group, setGroup] = useState(null);
+  const [status, setStatus] = useState({ name: null, id: null });
+  const [location, setLocation] = useState({ name: null, id: null });
 
   const router = useIonRouter();
 

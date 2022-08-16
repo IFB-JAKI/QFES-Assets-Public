@@ -217,10 +217,10 @@ export const onCreateAsset = /* GraphQL */ `
       AssetEvents {
         items {
           id
+          assetID
           borrowDate
           returnDate
           assetLogData
-          assetID
           borrowerUsername
           borrowerSignature
           createdAt
@@ -249,10 +249,10 @@ export const onUpdateAsset = /* GraphQL */ `
       AssetEvents {
         items {
           id
+          assetID
           borrowDate
           returnDate
           assetLogData
-          assetID
           borrowerUsername
           borrowerSignature
           createdAt
@@ -281,10 +281,10 @@ export const onDeleteAsset = /* GraphQL */ `
       AssetEvents {
         items {
           id
+          assetID
           borrowDate
           returnDate
           assetLogData
-          assetID
           borrowerUsername
           borrowerSignature
           createdAt
@@ -393,10 +393,10 @@ export const onCreateAssetLog = /* GraphQL */ `
   subscription OnCreateAssetLog {
     onCreateAssetLog {
       id
+      assetID
       borrowDate
       returnDate
       assetLogData
-      assetID
       borrowerUsername
       borrowerSignature
       createdAt
@@ -408,10 +408,10 @@ export const onUpdateAssetLog = /* GraphQL */ `
   subscription OnUpdateAssetLog {
     onUpdateAssetLog {
       id
+      assetID
       borrowDate
       returnDate
       assetLogData
-      assetID
       borrowerUsername
       borrowerSignature
       createdAt
@@ -423,10 +423,10 @@ export const onDeleteAssetLog = /* GraphQL */ `
   subscription OnDeleteAssetLog {
     onDeleteAssetLog {
       id
+      assetID
       borrowDate
       returnDate
       assetLogData
-      assetID
       borrowerUsername
       borrowerSignature
       createdAt
