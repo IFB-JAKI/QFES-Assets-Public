@@ -52,8 +52,22 @@ const Search = () => {
           assets.map((asset: any) => {
             return (
               <div key={asset.id}>
+                <IonCard>
+                  <IonItem detail routerLink="/AssetPage">
+            
+                    <IonThumbnail slot="start">
+                      <img src="https://www.australiancomputertraders.com.au/assets/full/HP850G5i52-r.jpg?20220226055643" />
+                    </IonThumbnail>
+                    <IonCardHeader>
+                      <IonCardSubtitle color="danger">On Loan</IonCardSubtitle>
+                      <IonCardTitle>{asset.id}</IonCardTitle>
+                      <IonIcon name="arrow-dropright" size="large" color="white" slot="end"></IonIcon>
+                    </IonCardHeader>
+            
+                  </IonItem>
+                </IonCard>
                 <p style={{display: "inline", marginLeft: "20px"}}>{asset.id}</p>
-                <p style={{display: "inline", marginLeft: "20px"}}>{asset.name}</p>
+                <p style={{display: "inline", marginLeft: "20px"}}>{asset.assetName}</p>
                 <p style={{display: "inline", marginLeft: "20px"}}>{asset.description}</p>
               </div>
             )
