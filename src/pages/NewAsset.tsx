@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { IonPage, IonContent, IonButton, useIonRouter } from '@ionic/react'
+import { IonPage, IonContent, IonButton, useIonRouter, IonCheckbox } from '@ionic/react'
 import BackButton from '../components/BackButton'
 import { getAssetType, listAssetGroups, listAssetLocations, listAssetStatuses, listAssetTypes } from '../graphql/queries';
+import { createAsset } from '../graphql/mutations';
 import { API } from 'aws-amplify';
 import Selector from '../components/Selector';
 
@@ -10,27 +11,57 @@ const NewAsset = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
-  const [type, setType] = useState('');
-  const [typeList, setTypeList] = useState<any[]>([]);
+  const [type, setType] = useState({ name: '', id: null, dataTemplate: '' });
+  const [typeFields, setTypeFields] = useState(Array<any>());
 
-  const [group, setGroup] = useState('');
-  const [status, setStatus] = useState('');
-  const [location, setLocation] = useState('');
+  const [group, setGroup] = useState(null);
+  const [status, setStatus] = useState({ name: null, id: null });
+  const [location, setLocation] = useState({ name: null, id: null });
 
   const router = useIonRouter();
 
   // @TODO Images after image upload / storage setup
 
-  // @TODO type data state
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(name, description);
+    
+    let assetDetails = {
+      assetName: name,
+      description: description,
+      typeID: type.id,
+      groupID: group,
+      statusID: status.id,
+      assetlocaID: location.id
+    }
+
+    const createAssetCall = async (): Promise<void> => {
+      try {
+        const result: any = await API.graphql({
+          query: createAsset,
+          variables: { input: assetDetails },
+          authMode: 'AWS_IAM'
+        });
+        // @TODO Success or error toast here
+        console.log(result);
+      } catch (e) {
+        console.log(e);
+      }
+      return;
+    };
+    createAssetCall();
   }
 
-  const handleTypeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setType(event.target.value);
-  }
+  useEffect(() => {
+    if (type && type.dataTemplate !== '') {
+      try {
+        setTypeFields(JSON.parse(type.dataTemplate));
+      } catch (e) {
+        console.log('Error parsing JSON');
+      }
+    } else {
+      setTypeFields([]);
+    }
+  }, [type]);
 
   return (
     <IonPage>
@@ -41,16 +72,38 @@ const NewAsset = () => {
           <br></br>
           <input onChange={(e) => setDescription(e.target.value)} placeholder="Asset Description" ></input>
           <br></br>
-          <Selector label="Type" queryType={listAssetTypes} handleChange={handleTypeChange} nullable={true} />
+          <Selector label="Type" queryType={listAssetTypes} handleChange={setType} nameKey="typeName" />
+          <br></br>
+          <p>Asset Data: </p>
+          {
+            typeFields.map((field, index) => {
+              let fieldJsx;
+              if (field.type === 'text') {
+                fieldJsx = <input type="text"></input>
+              } else if (field.type === 'number') {
+                fieldJsx = <input type="number" ></input>
+              } else if (field.type === 'date') {
+                fieldJsx = <input type="date" ></input>
+              } else if (field.type === 'boolean') {
+                fieldJsx = <IonCheckbox></IonCheckbox>
+              }
+              return (
+                <div key={index}>
+                  <label>{field.name}: </label>
+                  {fieldJsx}
+                </div>
+              )
+            }, [])
+          }
           <IonButton routerLink='/newType'>New Type</IonButton>
           <br></br>
-          {/* <Selector label="Group" queryType={listAssetGroups} update={setGroup} nullable={true} /> */}
+          <Selector label="Group" queryType={listAssetGroups} handleChange={setGroup} nameKey="name" />
           <br></br>
-          {/* <Selector label="Status" queryType={listAssetStatuses} update={setStatus} nullable={true} /> */}
+          <Selector label="Status" queryType={listAssetStatuses} handleChange={setStatus} nameKey="statusName" />
           <br></br>
-          {/* <Selector label="Location" queryType={listAssetLocations} update={setLocation} nullable={true} /> */}
+          <Selector label="Location" queryType={listAssetLocations} handleChange={setLocation} nameKey="locationName" />
           <br></br>
-          <IonButton>Submit</IonButton>
+          <IonButton type='submit'>Submit</IonButton>
         </form>
 
         <BackButton text="back" />

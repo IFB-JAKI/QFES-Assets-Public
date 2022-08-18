@@ -42,7 +42,6 @@ export declare class Asset {
   readonly id: string;
   readonly assetName: string;
   readonly description?: string | null;
-  readonly status?: string | null;
   readonly currentEvent?: string | null;
   readonly typeID: string;
   readonly AssetEvents?: (AssetLog | null)[] | null;

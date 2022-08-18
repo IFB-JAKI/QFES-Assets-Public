@@ -1,3 +1,4 @@
+/* tslint:disable */
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
@@ -7,6 +8,20 @@ export const onCreateAssetLocation = /* GraphQL */ `
       id
       locationName
       locationID {
+        items {
+          id
+          assetName
+          description
+          currentEvent
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       createdAt
@@ -20,6 +35,20 @@ export const onUpdateAssetLocation = /* GraphQL */ `
       id
       locationName
       locationID {
+        items {
+          id
+          assetName
+          description
+          currentEvent
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       createdAt
@@ -33,6 +62,20 @@ export const onDeleteAssetLocation = /* GraphQL */ `
       id
       locationName
       locationID {
+        items {
+          id
+          assetName
+          description
+          currentEvent
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       createdAt
@@ -46,9 +89,34 @@ export const onCreateAssetStatus = /* GraphQL */ `
       id
       statusName
       assetStatusID {
+        items {
+          id
+          assetName
+          description
+          currentEvent
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       groupStatusID {
+        items {
+          id
+          name
+          template
+          numAssets
+          assetstatusID
+          description
+          imageLink
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       createdAt
@@ -62,9 +130,34 @@ export const onUpdateAssetStatus = /* GraphQL */ `
       id
       statusName
       assetStatusID {
+        items {
+          id
+          assetName
+          description
+          currentEvent
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       groupStatusID {
+        items {
+          id
+          name
+          template
+          numAssets
+          assetstatusID
+          description
+          imageLink
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       createdAt
@@ -78,9 +171,34 @@ export const onDeleteAssetStatus = /* GraphQL */ `
       id
       statusName
       assetStatusID {
+        items {
+          id
+          assetName
+          description
+          currentEvent
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       groupStatusID {
+        items {
+          id
+          name
+          template
+          numAssets
+          assetstatusID
+          description
+          imageLink
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       createdAt
@@ -97,6 +215,17 @@ export const onCreateAsset = /* GraphQL */ `
       currentEvent
       typeID
       AssetEvents {
+        items {
+          id
+          assetID
+          borrowDate
+          returnDate
+          assetLogData
+          borrowerUsername
+          borrowerSignature
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       groupID
@@ -118,6 +247,17 @@ export const onUpdateAsset = /* GraphQL */ `
       currentEvent
       typeID
       AssetEvents {
+        items {
+          id
+          assetID
+          borrowDate
+          returnDate
+          assetLogData
+          borrowerUsername
+          borrowerSignature
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       groupID
@@ -139,6 +279,17 @@ export const onDeleteAsset = /* GraphQL */ `
       currentEvent
       typeID
       AssetEvents {
+        items {
+          id
+          assetID
+          borrowDate
+          returnDate
+          assetLogData
+          borrowerUsername
+          borrowerSignature
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       groupID
@@ -158,6 +309,20 @@ export const onCreateAssetType = /* GraphQL */ `
       typeName
       dataTemplate
       typeID {
+        items {
+          id
+          assetName
+          description
+          currentEvent
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       logTemplate
@@ -173,6 +338,20 @@ export const onUpdateAssetType = /* GraphQL */ `
       typeName
       dataTemplate
       typeID {
+        items {
+          id
+          assetName
+          description
+          currentEvent
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       logTemplate
@@ -188,6 +367,20 @@ export const onDeleteAssetType = /* GraphQL */ `
       typeName
       dataTemplate
       typeID {
+        items {
+          id
+          assetName
+          description
+          currentEvent
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       logTemplate
@@ -200,10 +393,10 @@ export const onCreateAssetLog = /* GraphQL */ `
   subscription OnCreateAssetLog {
     onCreateAssetLog {
       id
+      assetID
       borrowDate
       returnDate
       assetLogData
-      assetID
       borrowerUsername
       borrowerSignature
       createdAt
@@ -215,10 +408,10 @@ export const onUpdateAssetLog = /* GraphQL */ `
   subscription OnUpdateAssetLog {
     onUpdateAssetLog {
       id
+      assetID
       borrowDate
       returnDate
       assetLogData
-      assetID
       borrowerUsername
       borrowerSignature
       createdAt
@@ -230,10 +423,10 @@ export const onDeleteAssetLog = /* GraphQL */ `
   subscription OnDeleteAssetLog {
     onDeleteAssetLog {
       id
+      assetID
       borrowDate
       returnDate
       assetLogData
-      assetID
       borrowerUsername
       borrowerSignature
       createdAt
@@ -248,6 +441,20 @@ export const onCreateAssetGroup = /* GraphQL */ `
       name
       template
       groupID {
+        items {
+          id
+          assetName
+          description
+          currentEvent
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       numAssets
@@ -266,6 +473,20 @@ export const onUpdateAssetGroup = /* GraphQL */ `
       name
       template
       groupID {
+        items {
+          id
+          assetName
+          description
+          currentEvent
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       numAssets
@@ -284,6 +505,20 @@ export const onDeleteAssetGroup = /* GraphQL */ `
       name
       template
       groupID {
+        items {
+          id
+          assetName
+          description
+          currentEvent
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
         nextToken
       }
       numAssets
