@@ -3,6 +3,7 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton } from 
 import { RouteComponentProps } from 'react-router'
 import { API } from 'aws-amplify';
 import { getAsset } from '../graphql/queries';
+import BackButton from '../components/BackButton';
 
 interface AssetProps 
   extends RouteComponentProps<{
@@ -40,14 +41,19 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
         {
           (asset) ? (
             <>
-              <p>{asset.id}</p>
-              <p>{asset.name}</p>
-              <p>{asset.description}</p>
+              <BackButton text="back" />
+              <h1>Asset Page for {asset.id}</h1>
+      
+      
+              <IonButton color="primary" routerLink={"/asset/EditAsset/" + asset.id}>Edit Item</IonButton>
+      
+
             </>
           ) :
           (
             <div>
-
+              <BackButton text="back" />
+              <h1>ERROR 404! There is no asset with that ID! Go back</h1>
             </div>
           )
         }

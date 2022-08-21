@@ -69,8 +69,8 @@ const App = () => (
             <Route exact path="/Reports" component={Reports} />
             <Route exact path="/Statistics" component={Statistics} />
             <Route exact path="/Search" component={Search} />
-            <Route exact path="/AssetPage/EditAsset" component={EditAsset} />
-            <Route exact path="/AssetPage" component={AssetPage} />
+            <Route exact path="/asset/EditAsset/:id" component={EditAsset} />
+            <Route exact path="/AssetPage/:id" component={AssetPage} />
             <Route exact path="/NewStatus" component={NewStatus} />
             <Route exact path="/NewLocation" component={NewLocation} />
           </IonRouterOutlet>
