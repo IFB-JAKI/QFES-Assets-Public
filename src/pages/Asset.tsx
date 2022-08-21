@@ -42,7 +42,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
           (asset) ? (
             <>
               <BackButton text="back" />
-              <h1>Asset Page for {asset.id}</h1>
+              <h1>Asset Page for {asset.assetName}</h1>
       
       
               <IonButton color="primary" routerLink={"/asset/EditAsset/" + asset.id}>Edit Item</IonButton>

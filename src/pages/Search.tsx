@@ -65,7 +65,7 @@ const Search = () => {
                     </IonThumbnail>
                     <IonCardHeader>
                       <IonCardSubtitle color="danger">On Loan</IonCardSubtitle>
-                      <IonCardTitle>{asset.id}</IonCardTitle>
+                      <IonCardTitle>{asset.assetName}</IonCardTitle>
                       
                     </IonCardHeader>
                     
