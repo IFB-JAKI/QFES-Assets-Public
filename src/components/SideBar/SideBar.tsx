@@ -1,6 +1,7 @@
 import { IonItem, IonList, IonNavLink, IonRouterLink } from '@ionic/react'
 import React from 'react'
 import qfesIcon from '../../assets/img/qfesIcon.png'
+import SideBarOption from './SideBarOption'
 
 interface SideBarProps {
   active: string
@@ -16,25 +17,13 @@ const SideBar = ({ active }: SideBarProps) => {
               <h1 className='ml-3 text-white text-2xl font-normal'>QFES Assets</h1>
             </div>
             <div className="w-full h-[1px] rounded-full bg-primary-200"></div>
-            <div className='w-full'>
-              <IonRouterLink routerLink="/Home" className='text-primary-300 text-xl hover:text-primary-400'>Home</IonRouterLink>
-            </div>
-            <div className='w-full'>
-              <IonRouterLink routerLink="/Search" className='text-primary-300 text-xl hover:text-primary-400'>Assets</IonRouterLink>
-            </div>
-            <div className='w-full'>
-              <IonRouterLink routerLink="/Statistics" className='text-primary-300 text-xl hover:text-primary-400'>Statistics</IonRouterLink>
-            </div>
-            <div className='w-full'>
-              <IonRouterLink routerLink="/Reports" className='text-primary-300 text-xl hover:text-primary-400'>Reports</IonRouterLink>
-            </div>
+            <SideBarOption route="/Home">Home</SideBarOption>
+            <SideBarOption route="/Assets">Assets</SideBarOption>
+            <SideBarOption route="/Statistics">Statistics</SideBarOption>
+            <SideBarOption route="/Reports">Reports</SideBarOption>
             <div className='w-full grow'></div>
-            <div className='w-full'>
-              <IonRouterLink routerLink="/Settings" className='text-primary-300 text-xl hover:text-primary-400'>Settings</IonRouterLink>
-            </div>
-            <div className='w-full'>
-              <p>Sign Out</p>
-            </div>
+            <SideBarOption route="/Settings">Settings</SideBarOption>
+            <SideBarOption>Sign Out</SideBarOption>
         </div>
       </div>
     </div>
