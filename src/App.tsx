@@ -50,10 +50,11 @@ const App = () => (
   <Authenticator>
     {({ signOut, user }) => (
       <IonApp>
+        <IonReactRouter>
         <IonSplitPane contentId="main">
           <SideBar active={""} />
           <div id="main">
-            <IonReactRouter>
+            
               <IonRouterOutlet>
                 <Route exact path="/">
                   {
@@ -74,9 +75,10 @@ const App = () => (
                 <Route exact path="/NewStatus" component={NewStatus} />
                 <Route exact path="/NewLocation" component={NewLocation} />
               </IonRouterOutlet>
-            </IonReactRouter>
+            
           </div>
         </IonSplitPane>
+        </IonReactRouter>
       </IonApp>
     )}
   </Authenticator>

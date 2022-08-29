@@ -18,7 +18,7 @@ const SideBar = ({ active }: SideBarProps) => {
             </div>
             <div className="w-full h-[1px] rounded-full bg-primary-200"></div>
             <SideBarOption route="/Home">Home</SideBarOption>
-            <SideBarOption route="/Assets">Assets</SideBarOption>
+            <SideBarOption route="/Search">Assets</SideBarOption>
             <SideBarOption route="/Statistics">Statistics</SideBarOption>
             <SideBarOption route="/Reports">Reports</SideBarOption>
             <div className='w-full grow'></div>
