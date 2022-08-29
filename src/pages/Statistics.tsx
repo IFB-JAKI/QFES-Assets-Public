@@ -6,7 +6,6 @@ const Statistics = () => {
     <IonPage>
       <h1>Statistics</h1>
       <IonContent>
-      <IonButton color="medium" href="/home">BACK</IonButton>
       
 
       </IonContent>

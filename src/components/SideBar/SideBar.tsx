@@ -4,10 +4,10 @@ import qfesIcon from '../../assets/img/qfesIcon.png'
 import SideBarOption from './SideBarOption'
 
 interface SideBarProps {
-  active: string
+  signOut: any
 }
 
-const SideBar = ({ active }: SideBarProps) => {
+const SideBar = ({ signOut }: SideBarProps) => {
   return (
     <div className="w-64 bg-primary-100 text-primary-300">
       <div className="bg-primary- h-screen w-full">
@@ -22,8 +22,7 @@ const SideBar = ({ active }: SideBarProps) => {
             <SideBarOption route="/Statistics">Statistics</SideBarOption>
             <SideBarOption route="/Reports">Reports</SideBarOption>
             <div className='w-full grow'></div>
-            <SideBarOption route="/Settings">Settings</SideBarOption>
-            <SideBarOption>Sign Out</SideBarOption>
+            <SideBarOption onClick={signOut}>Sign Out</SideBarOption>
         </div>
       </div>
     </div>

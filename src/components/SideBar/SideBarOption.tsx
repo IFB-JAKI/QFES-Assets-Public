@@ -4,15 +4,18 @@ import { useIonRouter } from '@ionic/react';
 interface SideBarOptionProps {
   children: React.ReactNode;
   route?: string;
+  onClick?: Function;
 }
 
-const SideBarOption = ({ children, route }: SideBarOptionProps) => {
+const SideBarOption = ({ children, route, onClick }: SideBarOptionProps) => {
   const router = useIonRouter();
 
   const navigate = (event: React.MouseEvent<HTMLElement>) => {
-    console.log(route);
-    if (route) {
+    if (route && route != undefined) {
       router.push(route);
+    }
+    if (onClick && onClick != undefined) {
+      onClick();
     }
   }
 

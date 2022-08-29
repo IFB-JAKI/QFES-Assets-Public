@@ -52,7 +52,7 @@ const App = () => (
       <IonApp>
         <IonReactRouter>
         <IonSplitPane contentId="main">
-          <SideBar active={""} />
+          <SideBar signOut={signOut} />
           <div id="main">
             
               <IonRouterOutlet>

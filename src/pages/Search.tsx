@@ -36,7 +36,6 @@ const Search = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <BackButton text="back" />
         {
           assets.map((asset: any) => {
             return (
