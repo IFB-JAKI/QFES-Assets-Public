@@ -45,7 +45,7 @@ const EditAsset: React.FC<AssetProps> = ({ match }) => {
               <h1>Edit Information for {asset.assetName}</h1>
       
       
-              <IonButton color="primary" href="/AssetPage/EditAsset">Save</IonButton>
+              <IonButton color="primary" href="/Asset/EditAsset">Save</IonButton>
       
 
             </>

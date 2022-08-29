@@ -14,7 +14,6 @@ import Reports from './pages/Reports';
 import Statistics from './pages/Statistics';
 import Search from './pages/Search';
 import EditAsset from './pages/EditAsset';
-import AssetPage from './pages/AssetPage';
 
 import '@aws-amplify/ui-react/styles.css';
 
@@ -69,8 +68,6 @@ const App = () => (
             <Route exact path="/Reports" component={Reports} />
             <Route exact path="/Statistics" component={Statistics} />
             <Route exact path="/Search" component={Search} />
-            <Route exact path="/asset/EditAsset/:id" component={EditAsset} />
-            <Route exact path="/AssetPage/:id" component={AssetPage} />
             <Route exact path="/NewStatus" component={NewStatus} />
             <Route exact path="/NewLocation" component={NewLocation} />
           </IonRouterOutlet>
