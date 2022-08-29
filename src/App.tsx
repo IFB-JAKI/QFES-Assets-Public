@@ -51,12 +51,11 @@ const App = () => (
     {({ signOut, user }) => (
       <IonApp>
         <IonReactRouter>
-        <IonSplitPane contentId="main">
-          <SideBar signOut={signOut} />
-          <div id="main">
-            
+          <IonSplitPane contentId="main">
+            <SideBar signOut={signOut} />
+            <div id="main">
               <IonRouterOutlet>
-                <Route exact path="/">
+                <Route exact path="/Home">
                   {
                     isPlatform('capacitor') ? (
                       <QrScan />
@@ -65,7 +64,7 @@ const App = () => (
                     )
                   }
                 </Route>
-                <Redirect exact from="/home" to="/" />
+                <Redirect exact from="/" to="/Home" />
                 <Route exact path="/asset/:id" component={Asset} />
                 <Route exact path="/NewAsset" component={NewAsset} />
                 <Route exact path="/NewType" component={NewType} />
@@ -75,9 +74,8 @@ const App = () => (
                 <Route exact path="/NewStatus" component={NewStatus} />
                 <Route exact path="/NewLocation" component={NewLocation} />
               </IonRouterOutlet>
-            
-          </div>
-        </IonSplitPane>
+            </div>
+          </IonSplitPane>
         </IonReactRouter>
       </IonApp>
     )}

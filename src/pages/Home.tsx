@@ -5,20 +5,17 @@ interface HomeProps {
   signOut: any;
 }
 
-const Home = ({ signOut, user }:HomeProps) => {
+const Home = ({ signOut, user }: HomeProps) => {
   return (
-    <IonContent>
-      <IonPage id="main">
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle>Info and control screen for testing</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent fullscreen>
-          
-        </IonContent>
-      </IonPage>
-    </IonContent>
+    <IonPage id="main">
+      <IonHeader collapse='fade'>
+        <IonToolbar>
+          <IonTitle>Info and control screen for testing</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent fullscreen>
+      </IonContent>
+    </IonPage>
   );
 };
 
