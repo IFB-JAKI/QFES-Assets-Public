@@ -8,8 +8,6 @@ interface HomeProps {
 const Home = ({ signOut, user }:HomeProps) => {
   return (
     <IonContent>
-    <IonSplitPane contentId="main">
-      <SideBar active={"home"}/>
       <IonPage id="main">
         <IonHeader>
           <IonToolbar>
@@ -28,7 +26,6 @@ const Home = ({ signOut, user }:HomeProps) => {
           <IonButton onClick={signOut}>Sign Out</IonButton>
         </IonContent>
       </IonPage>
-      </IonSplitPane>
     </IonContent>
   );
 };

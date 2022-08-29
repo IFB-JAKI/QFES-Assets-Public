@@ -1,5 +1,5 @@
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Authenticator } from '@aws-amplify/ui-react';
 import { API, Amplify, graphqlOperation } from 'aws-amplify';
@@ -13,7 +13,6 @@ import NewAsset from './pages/NewAsset';
 import Reports from './pages/Reports';
 import Statistics from './pages/Statistics';
 import Search from './pages/Search';
-import EditAsset from './pages/EditAsset';
 
 import '@aws-amplify/ui-react/styles.css';
 
@@ -41,6 +40,7 @@ import NewType from './pages/NewType';
 import './theme/index.css';
 import NewStatus from './pages/NewStatus';
 import NewLocation from './pages/NewLocation';
+import SideBar from './components/SideBar/SideBar';
 
 Amplify.configure(awsconfig);
 
@@ -48,30 +48,35 @@ setupIonicReact();
 
 const App = () => (
   <Authenticator>
-    {({ signOut, user}) => (
+    {({ signOut, user }) => (
       <IonApp>
-        <IonReactRouter>
-          <IonRouterOutlet>
-            <Route exact path="/">
-              {
-                isPlatform('capacitor') ? (
-                  <QrScan />
-                ) : (
-                  <Home signOut={signOut} user={user} />
-                )
-              }
-            </Route>
-            <Redirect exact from="/home" to="/" />
-            <Route exact path="/asset/:id" component={Asset} />
-            <Route exact path="/NewAsset" component={NewAsset} />
-            <Route exact path="/NewType" component={NewType} />
-            <Route exact path="/Reports" component={Reports} />
-            <Route exact path="/Statistics" component={Statistics} />
-            <Route exact path="/Search" component={Search} />
-            <Route exact path="/NewStatus" component={NewStatus} />
-            <Route exact path="/NewLocation" component={NewLocation} />
-          </IonRouterOutlet>
-        </IonReactRouter>
+        <IonSplitPane contentId="main">
+          <SideBar active={""} />
+          <div id="main">
+            <IonReactRouter>
+              <IonRouterOutlet>
+                <Route exact path="/">
+                  {
+                    isPlatform('capacitor') ? (
+                      <QrScan />
+                    ) : (
+                      <Home signOut={signOut} user={user} />
+                    )
+                  }
+                </Route>
+                <Redirect exact from="/home" to="/" />
+                <Route exact path="/asset/:id" component={Asset} />
+                <Route exact path="/NewAsset" component={NewAsset} />
+                <Route exact path="/NewType" component={NewType} />
+                <Route exact path="/Reports" component={Reports} />
+                <Route exact path="/Statistics" component={Statistics} />
+                <Route exact path="/Search" component={Search} />
+                <Route exact path="/NewStatus" component={NewStatus} />
+                <Route exact path="/NewLocation" component={NewLocation} />
+              </IonRouterOutlet>
+            </IonReactRouter>
+          </div>
+        </IonSplitPane>
       </IonApp>
     )}
   </Authenticator>
