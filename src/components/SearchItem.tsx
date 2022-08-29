@@ -1,4 +1,4 @@
-import { IonCard, IonItem, IonThumbnail, IonCardHeader, IonCardSubtitle, IonCardTitle, IonButton } from '@ionic/react'
+import { IonCard, IonItem, IonThumbnail, IonCardHeader, IonCardSubtitle, IonCardTitle, IonButton, useIonRouter } from '@ionic/react'
 import React from 'react'
 
 interface itemProps {
@@ -6,10 +6,13 @@ interface itemProps {
 }
 
 const SearchItem = ({ asset }: itemProps) => {
+  
+  const router = useIonRouter();
+
   return (
     <div key={asset.id}>
-      <IonCard>
-        <IonItem detail routerLink={"/asset/" + asset.id}>
+      <IonCard onClick={() => router.push('/asset/' + asset.id)} class="cursor-pointer">
+        <IonItem detail >
           <IonThumbnail slot="start">
             <img src="https://www.australiancomputertraders.com.au/assets/full/HP850G5i52-r.jpg?20220226055643" /> placeholder
           </IonThumbnail>

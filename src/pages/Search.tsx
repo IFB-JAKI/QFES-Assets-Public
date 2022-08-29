@@ -37,19 +37,6 @@ const Search = () => {
       </IonHeader>
       <IonContent>
         <BackButton text="back" />
-        <IonCard>
-          <IonItem detail routerLink="/AssetPage">
-            <IonThumbnail slot="start">
-              <img src="https://www.australiancomputertraders.com.au/assets/full/HP850G5i52-r.jpg?20220226055643" />
-            </IonThumbnail>
-            <IonCardHeader>
-              <IonCardSubtitle color="danger">On Loan</IonCardSubtitle>
-              <IonCardTitle>HP Laptop</IonCardTitle>
-              <IonIcon name="arrow-dropright" size="large" color="white" slot="end"></IonIcon>
-            </IonCardHeader>
-          </IonItem>
-        </IonCard>
-        <IonButton color="primary" onClick={(event: React.MouseEvent<HTMLElement>) => { listAsset() }} >List Assets</IonButton>
         {
           assets.map((asset: any) => {
             return (
