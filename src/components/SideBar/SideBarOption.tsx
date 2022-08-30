@@ -13,6 +13,7 @@ const SideBarOption = ({ children, route, onClick }: SideBarOptionProps) => {
   const navigate = (event: React.MouseEvent<HTMLElement>) => {
     if (route && route != undefined) {
       router.push(route);
+      document.querySelector('ion-menu')?.close();
     }
     if (onClick && onClick != undefined) {
       onClick();

@@ -15,18 +15,18 @@ const Header = ({ title, user }: headerProps) => {
 
   return (
     <IonHeader collapse='fade' className="ion-no-border">
-  <IonToolbar className='h-16'>
-    <IonButtons slot="start" className='lg:hidden'>
-      <IonMenuButton autoHide={false} onClick={() => menuToggle} />
-    </IonButtons>
-    <IonButtons slot="secondary">
-      <IonButton>
-        <IonIcon slot="end" icon={personCircle} />
-        {user.attributes.name}
-      </IonButton>
-    </IonButtons>
-    <IonTitle>{title}</IonTitle>
-  </IonToolbar>
+      <IonToolbar className='h-16'>
+        <IonButtons slot="start" className='lg:hidden'>
+          <IonMenuButton autoHide={false} onClick={() => menuToggle} />
+        </IonButtons>
+        <IonButtons slot="secondary">
+          <IonButton>
+            <IonIcon slot="end" icon={personCircle} />
+            {user.attributes.name}
+          </IonButton>
+        </IonButtons>
+        <IonTitle>{title}</IonTitle>
+      </IonToolbar>
     </IonHeader>
   )
 }
