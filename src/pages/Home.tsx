@@ -1,18 +1,14 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonCard, IonItem, IonThumbnail, IonCardHeader, IonCardSubtitle, IonCardTitle, IonSplitPane } from '@ionic/react';
+import Header from '../components/Header';
 import SideBar from '../components/SideBar/SideBar';
 interface HomeProps {
   user: any;
-  signOut: any;
 }
 
-const Home = ({ signOut, user }: HomeProps) => {
+const Home = ({ user }: HomeProps) => {
   return (
     <IonPage id="main">
-      <IonHeader collapse='fade'>
-        <IonToolbar>
-          <IonTitle>Info and control screen for testing</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+      <Header title="Home" user={user}/>
       <IonContent fullscreen>
       </IonContent>
     </IonPage>

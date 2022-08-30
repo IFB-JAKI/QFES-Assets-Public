@@ -1,5 +1,5 @@
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react';
+import { IonApp, IonMenu, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Authenticator } from '@aws-amplify/ui-react';
 import { API, Amplify, graphqlOperation } from 'aws-amplify';
@@ -52,15 +52,16 @@ const App = () => (
       <IonApp>
         <IonReactRouter>
           <IonSplitPane contentId="main">
-            <SideBar signOut={signOut} />
-            <div id="main">
-              <IonRouterOutlet>
+            <IonMenu menuId='primary' contentId='main'>
+              <SideBar signOut={signOut} />
+            </IonMenu>
+              <IonRouterOutlet id="main">
                 <Route exact path="/Home">
                   {
                     isPlatform('capacitor') ? (
                       <QrScan />
                     ) : (
-                      <Home signOut={signOut} user={user} />
+                      <Home user={user} />
                     )
                   }
                 </Route>
@@ -70,11 +71,10 @@ const App = () => (
                 <Route exact path="/NewType" component={NewType} />
                 <Route exact path="/Reports" component={Reports} />
                 <Route exact path="/Statistics" component={Statistics} />
-                <Route exact path="/Search" component={Search} />
+                <Route exact path="/Search" render={() => <Search user={user} />} />
                 <Route exact path="/NewStatus" component={NewStatus} />
                 <Route exact path="/NewLocation" component={NewLocation} />
               </IonRouterOutlet>
-            </div>
           </IonSplitPane>
         </IonReactRouter>
       </IonApp>

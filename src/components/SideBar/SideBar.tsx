@@ -9,14 +9,14 @@ interface SideBarProps {
 
 const SideBar = ({ signOut }: SideBarProps) => {
   return (
-    <div className="w-64 bg-primary-100 text-primary-300">
+    <div className="w-full bg-primary-100 text-primary-300">
       <div className="bg-primary- h-screen w-full">
-        <div className="flex flex-col items-center h-full pb-4 px-4 pt-2">
-            <div className="flex h-16 items-center w-full mb-3">
+        <div className="flex flex-col items-center h-full pb-4 px-4">
+            <div className="flex h-16 items-center w-full">
               <img src={qfesIcon} alt="QFES Icon Grey" className='h-[51px] w-[45px] ml-2'></img>
               <h1 className='ml-3 text-white text-2xl font-normal'>QFES Assets</h1>
             </div>
-            <div className="w-full h-[1px] rounded-full bg-primary-200 mb-2"></div>
+            <div className="w-full h-[1px] rounded-full bg-primary-200 mb-1"></div>
             <SideBarOption route="/Home">Home</SideBarOption>
             <SideBarOption route="/Search">Assets</SideBarOption>
             <SideBarOption route="/Statistics">Statistics</SideBarOption>

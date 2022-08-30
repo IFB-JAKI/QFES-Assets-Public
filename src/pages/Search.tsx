@@ -6,8 +6,13 @@ import { listAssets } from '../graphql/queries';
 import { API } from 'aws-amplify';
 import { Link } from 'react-router-dom';
 import SearchItem from '../components/SearchItem';
+import Header from '../components/Header';
 
-const Search = () => {
+interface searchProps {
+  user: any;
+}
+
+const Search = ({ user }: searchProps) => {
   const [assets, setAssets] = useState([]);
 
   const listAsset = async (): Promise<void> => {
@@ -30,11 +35,7 @@ const Search = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>SEARCH</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+      <Header title={"SEARCH"} user={user}/>
       <IonContent>
         {
           assets.map((asset: any) => {
