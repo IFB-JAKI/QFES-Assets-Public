@@ -1,7 +1,7 @@
 import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonMenu, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { Authenticator } from '@aws-amplify/ui-react';
+import { Authenticator, useTheme, View, Image, Heading } from '@aws-amplify/ui-react';
 import { API, Amplify, graphqlOperation } from 'aws-amplify';
 import { isPlatform } from '@ionic/react';
 import awsconfig from './aws-exports';
@@ -42,12 +42,44 @@ import NewStatus from './pages/NewStatus';
 import NewLocation from './pages/NewLocation';
 import SideBar from './components/SideBar/SideBar';
 
+import qfesLarge from './assets/img/qfes-large-no-background.png';
+
 Amplify.configure(awsconfig);
 
 setupIonicReact();
 
+const components = {
+  Header() {
+    const { tokens } = useTheme();
+    return (
+      <View textAlign="center" padding={tokens.space.large}>
+        <div className='max-w-[200px] mx-auto'>
+          <Image
+            alt="QFES Logo"
+            src={qfesLarge}
+            maxWidth="100%"
+            height='auto'
+            />
+          </div>
+      </View>
+    );
+  },
+  SignIn: {
+    Header() {
+      const { tokens } = useTheme();
+      return (
+        <Heading padding={`${tokens.space.xl} 0 0 0`} margin={`0 ${tokens.space.medium} 0 ${tokens.space.medium}`} level={3} textAlign="center">
+          Asset Management Portal
+        </Heading>
+      );
+    },
+  },
+}
+
+
 const App = () => (
-  <Authenticator>
+
+  <Authenticator hideSignUp={true} components={components}>
     {({ signOut, user }) => (
       <IonApp>
         <IonReactRouter>
@@ -80,6 +112,7 @@ const App = () => (
       </IonApp>
     )}
   </Authenticator>
+
 );
 
 export default App;

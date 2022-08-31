@@ -5,3 +5,17 @@
 ion-split-pane {
   --side-width: 16rem;
 }
+
+[data-amplify-authenticator] [data-amplify-router] {
+  border: none;
+  background: none;
+  box-shadow: none;
+}
+
+.amplify-button--primary {
+  background-color: #142F54;
+}
+
+.amplify-button--primary:hover {
+  background-color: #23416b;
+}
