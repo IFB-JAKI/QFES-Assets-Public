@@ -21,7 +21,7 @@ const SideBarOption = ({ children, route, onClick }: SideBarOptionProps) => {
   }
 
   return (
-    <div onClick={(e) => {navigate(e)}} className='w-full bg-primary-100 hover:bg-primary-200 hover:text-white hover:cursor-pointer text-xl p-3 rounded-md transition ease-in-out'>
+    <div onClick={(e) => {navigate(e)}} className='w-full bg-primary-100 hover:bg-primary-200 hover:text-white hover:cursor-pointer text-xl p-3 rounded-md transition ease-in-out flex items-center'>
       {children}
     </div>
   )
