@@ -8,10 +8,11 @@ interface SelectorProps {
   queryType: any;
   label: string;
   nameKey: string;
+  placeHolder?: string;
 }
 
 /* Selects from option created from the query. State for all options is stored here, while state for the selected option is passed up. */
-const Selector = ({ nullable = true, handleChange, queryType, label, nameKey }: SelectorProps) => {
+const Selector = ({ nullable = true, handleChange, queryType, label, nameKey, placeHolder = 'none' }: SelectorProps) => {
 
   const [data, setData] = useState<any[]>([]);
 
@@ -36,7 +37,7 @@ const Selector = ({ nullable = true, handleChange, queryType, label, nameKey }: 
     return (
       <div>
         <IonSelect>
-          {nullable && <IonSelectOption value={null}>None</IonSelectOption>}
+          {nullable && <IonSelectOption value={undefined}>{placeHolder}</IonSelectOption>}
           {
             data.map((option: any) => {
               return (
@@ -51,8 +52,8 @@ const Selector = ({ nullable = true, handleChange, queryType, label, nameKey }: 
     return (
       <div>
         <label>{label}</label>
-        <select onChange={(e) => handleChange(data.find(item => item.id === e.target.value))}>
-          {nullable && <option value="">None</option>}
+        <select className='bg-primary-500 rounded p-1' onChange={(e) => handleChange(data.find(item => item.id === e.target.value))}>
+          {nullable && <option value="">{placeHolder}</option>}
           {
             data.map((option: any) => {
               return (

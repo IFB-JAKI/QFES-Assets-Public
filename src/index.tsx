@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from "react-dom";
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
@@ -7,6 +7,17 @@ import reportWebVitals from './reportWebVitals';
 import { Amplify } from 'aws-amplify';
 import awsExports from './aws-exports';
 Amplify.configure(awsExports);
+
+const backup = console.error;
+
+// One library requires react 18, another requires pre 18 renderer, filter the warning out.
+console.error = function (message) {
+  if (message.includes('ReactDOM.render is no longer supported in React 18')) {
+    return;
+  } else {
+    backup(message);
+  }
+}
 
 ReactDOM.render(
   <React.StrictMode>
