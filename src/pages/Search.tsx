@@ -38,7 +38,6 @@ const Search = ({ user }: searchProps) => {
         query: listAssets,
         authMode: 'AWS_IAM'
       });
-      console.log(result.data.listAssets.items);
       let formatted = result.data.listAssets.items.map((asset: any) => {
 
         const validateID = (id: string, name: string, input: any[]) => {
