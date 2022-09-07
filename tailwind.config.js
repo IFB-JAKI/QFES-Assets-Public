@@ -3,6 +3,10 @@ module.exports = {
   content: ["./src/**/*.{html,js,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        'montserrat': ['Montserrat', 'sans-serif'],
+        'bebas': ['Bebas Neue', 'cursive'],
+      },
       screens: {
         "lg": "992px"
       },
