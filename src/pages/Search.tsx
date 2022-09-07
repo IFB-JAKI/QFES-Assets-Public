@@ -22,13 +22,13 @@ const Search = ({ user }: searchProps) => {
   const [searchStatus, setSearchStatus] = useState({ id: undefined });
   const [searchLocation, setSearchLocation] = useState({ id: undefined });
 
-  const [columnDefs, setColumnDefs] = useState([
+  const columnDefs = [
     { headerName: "Name", field: "name", sortable: true, filter: true, flex: 1 },
     { headerName: "Type", field: "type", sortable: true, filter: true, flex: 1 },
     { headerName: "Status", field: "status", sortable: true, filter: true, flex: 1 },
     { headerName: "Location", field: "location", sortable: true, filter: true, flex: 1 },
     { headerName: "Updated", field: "updated", sortable: true, filter: true, flex: 1 }
-  ]);
+  ];
 
   const router = useIonRouter();
 
@@ -38,6 +38,7 @@ const Search = ({ user }: searchProps) => {
         query: listAssets,
         authMode: 'AWS_IAM'
       });
+      console.log(result.data.listAssets.items);
       let formatted = result.data.listAssets.items.map((asset: any) => {
 
         const validateID = (id: string, name: string, input: any[]) => {
@@ -45,7 +46,8 @@ const Search = ({ user }: searchProps) => {
           try {
             data = input.find(({ id: itemID }) => itemID === id)[name]
           } catch {
-            console.log(`Invalid ${name} found`)
+            console.warn(`Invalid ${name} found for ${id} in:`)
+            console.warn(input)
           }
           return data;
         }
@@ -63,7 +65,6 @@ const Search = ({ user }: searchProps) => {
         }
       });
       setAssets(formatted);
-      console.log(formatted);
     } catch (e) {
       console.log(e);
     }
@@ -94,14 +95,14 @@ const Search = ({ user }: searchProps) => {
       getData(listAssetTypes, allTypes),
       getData(listAssetLocations, allLocations),
     ]).then(
-      () => { listAsset(allStatus, allTypes, allLocations) }
+      () => { listAsset(allStatus, allLocations, allTypes) }
     );
   }, []);
 
   useEffect(() => {
     if (assets && assets.length > 0) {
       let filtered = assets.filter((asset: any) => {
-        if (search !== '' && (!asset.name.toLowerCase().includes(search.toLowerCase()) || !asset.id.includes(search))) {
+        if (search !== '' && !(asset.name.toLowerCase().includes(search.toLowerCase()) || (('QRCode' in asset) ? asset.QRCode.includes(search) : false))) {
           return false;
         } else {
           if (searchType !== undefined && searchType.id !== undefined && asset.typeID !== searchType.id) {
@@ -119,10 +120,6 @@ const Search = ({ user }: searchProps) => {
           }
         }
       });
-      console.log("Type", searchType)
-      console.log("Status", searchStatus)
-      console.log("Location", searchLocation)
-      console.log(filtered);
       setFilteredAssets(filtered);
     }
   }, [search, searchStatus, searchType, searchLocation, assets]);
