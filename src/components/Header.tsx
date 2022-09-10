@@ -25,7 +25,7 @@ const Header = ({ title, user }: headerProps) => {
             {user.attributes.name}
           </IonButton>
         </IonButtons>
-        <IonTitle>{title}</IonTitle>
+        <IonTitle className='text-3xl font-montserrat font-bold text-primary-200'>{title}</IonTitle>
       </IonToolbar>
     </IonHeader>
   )

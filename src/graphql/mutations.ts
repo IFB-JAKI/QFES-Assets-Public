@@ -14,6 +14,7 @@ export const createAssetLocation = /* GraphQL */ `
         items {
           id
           assetName
+          QRCode
           description
           currentEvent
           typeID
@@ -44,6 +45,7 @@ export const updateAssetLocation = /* GraphQL */ `
         items {
           id
           assetName
+          QRCode
           description
           currentEvent
           typeID
@@ -74,6 +76,7 @@ export const deleteAssetLocation = /* GraphQL */ `
         items {
           id
           assetName
+          QRCode
           description
           currentEvent
           typeID
@@ -104,6 +107,7 @@ export const createAssetStatus = /* GraphQL */ `
         items {
           id
           assetName
+          QRCode
           description
           currentEvent
           typeID
@@ -148,6 +152,7 @@ export const updateAssetStatus = /* GraphQL */ `
         items {
           id
           assetName
+          QRCode
           description
           currentEvent
           typeID
@@ -192,6 +197,7 @@ export const deleteAssetStatus = /* GraphQL */ `
         items {
           id
           assetName
+          QRCode
           description
           currentEvent
           typeID
@@ -232,6 +238,7 @@ export const createAsset = /* GraphQL */ `
     createAsset(input: $input, condition: $condition) {
       id
       assetName
+      QRCode
       description
       currentEvent
       typeID
@@ -267,6 +274,7 @@ export const updateAsset = /* GraphQL */ `
     updateAsset(input: $input, condition: $condition) {
       id
       assetName
+      QRCode
       description
       currentEvent
       typeID
@@ -302,6 +310,7 @@ export const deleteAsset = /* GraphQL */ `
     deleteAsset(input: $input, condition: $condition) {
       id
       assetName
+      QRCode
       description
       currentEvent
       typeID
@@ -342,6 +351,7 @@ export const createAssetType = /* GraphQL */ `
         items {
           id
           assetName
+          QRCode
           description
           currentEvent
           typeID
@@ -374,6 +384,7 @@ export const updateAssetType = /* GraphQL */ `
         items {
           id
           assetName
+          QRCode
           description
           currentEvent
           typeID
@@ -406,6 +417,7 @@ export const deleteAssetType = /* GraphQL */ `
         items {
           id
           assetName
+          QRCode
           description
           currentEvent
           typeID
@@ -492,6 +504,7 @@ export const createAssetGroup = /* GraphQL */ `
         items {
           id
           assetName
+          QRCode
           description
           currentEvent
           typeID
@@ -527,6 +540,7 @@ export const updateAssetGroup = /* GraphQL */ `
         items {
           id
           assetName
+          QRCode
           description
           currentEvent
           typeID
@@ -562,6 +576,7 @@ export const deleteAssetGroup = /* GraphQL */ `
         items {
           id
           assetName
+          QRCode
           description
           currentEvent
           typeID

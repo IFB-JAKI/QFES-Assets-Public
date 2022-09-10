@@ -11,6 +11,7 @@ export const getAssetLocation = /* GraphQL */ `
         items {
           id
           assetName
+          QRCode
           description
           currentEvent
           typeID
@@ -58,6 +59,7 @@ export const getAssetStatus = /* GraphQL */ `
         items {
           id
           assetName
+          QRCode
           description
           currentEvent
           typeID
@@ -118,6 +120,7 @@ export const getAsset = /* GraphQL */ `
     getAsset(id: $id) {
       id
       assetName
+      QRCode
       description
       currentEvent
       typeID
@@ -155,6 +158,7 @@ export const listAssets = /* GraphQL */ `
       items {
         id
         assetName
+        QRCode
         description
         currentEvent
         typeID
@@ -183,6 +187,7 @@ export const getAssetType = /* GraphQL */ `
         items {
           id
           assetName
+          QRCode
           description
           currentEvent
           typeID
@@ -271,6 +276,7 @@ export const getAssetGroup = /* GraphQL */ `
         items {
           id
           assetName
+          QRCode
           description
           currentEvent
           typeID
