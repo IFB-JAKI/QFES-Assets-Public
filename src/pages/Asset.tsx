@@ -80,18 +80,6 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
 
   }, [match.params.id]);
 
-  //When user clicks on Edit Name button, field becomes enabled
-  const handleNameSubmit = () => {
-    const input = document.getElementById("nameInput")! as HTMLInputElement;
-    input.disabled = false;
-  }
-
-  //When user clicks on Edit Description button, field becomes enabled
-  const handleDescSubmit = () => {
-    const input = document.getElementById("descInput")! as HTMLInputElement;
-    input.disabled = false;
-  }
-
   return (
     <IonPage>
       <IonContent>
@@ -102,18 +90,18 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
               <form onSubmit={handleSubmit}>
                 <br></br>
                 <h1>Asset Name:</h1>
-                <input onChange={(e) => setName(e.target.value)} placeholder={asset.assetName} disabled={true} id={"nameInput"}></input>
-                <IonButton color="primary" onClick={(event: React.MouseEvent<HTMLElement>) => { handleNameSubmit() }}>Edit Asset Name</IonButton>
+                <input onChange={(e) => setName(e.target.value)} placeholder={asset.assetName} defaultValue={asset.assetName}></input>
+                {/* <IonButton color="primary" onClick={(event: React.MouseEvent<HTMLElement>) => { handleNameSubmit() }}>Edit Asset Name</IonButton> */}
                 {/* <img src="src\pages\images\editItem.png" alt="Edit Asset" width="50" height="50"></img> */}
                 <br></br>
                 <br></br>
                 <h1>Asset Description:</h1>
-                <input onChange={(e) => setDescription(e.target.value)} placeholder={description} disabled={true} id={"descInput"}></input>
-                <IonButton color="primary" onClick={(event: React.MouseEvent<HTMLElement>) => { handleDescSubmit() }}>Edit Asset Description</IonButton>
+                <input onChange={(e) => setDescription(e.target.value)} placeholder={description} defaultValue={description}></input>
+                {/* <IonButton color="primary" onClick={(event: React.MouseEvent<HTMLElement>) => { handleDescSubmit() }}>Edit Asset Description</IonButton> */}
                 <br></br>
                 <br></br>
                 <h1>Asset Type:</h1>
-                <Selector label="Type" queryType={listAssetTypes} handleChange={setType} nameKey="typeName" />
+                <Selector label="Type: " queryType={listAssetTypes} handleChange={setType} nameKey="typeName" />
                 <br></br>
                 {
                   typeFields.map((field, index) => {
@@ -147,6 +135,9 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                 <br></br>
                 <h1>Asset Location:</h1>
                 <Selector label="Location" queryType={listAssetLocations} handleChange={setLocation} nameKey="locationName" />
+                <br></br>
+                <h1>Select an Image:</h1>
+                <input type="file" accept='image/jpeg, image/png'></input>
                 <br></br>
                 <IonButton type='submit'>Submit</IonButton>
               </form>
