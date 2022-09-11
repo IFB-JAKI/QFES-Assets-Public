@@ -1,6 +1,7 @@
 import { API } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
 import { IonSelect, IonSelectOption, isPlatform } from '@ionic/react';
+import { isUndefined } from 'util';
 
 interface SelectorProps {
   nullable?: boolean;
@@ -9,10 +10,11 @@ interface SelectorProps {
   label: string;
   nameKey: string;
   placeHolder?: string;
-}
+  defaultValue?: string;
 
+}
 /* Selects from option created from the query. State for all options is stored here, while state for the selected option is passed up. */
-const Selector = ({ nullable = true, handleChange, queryType, label, nameKey, placeHolder = 'none' }: SelectorProps) => {
+const Selector = ({ nullable = true, handleChange, queryType, label, nameKey, placeHolder = 'none', defaultValue }: SelectorProps) => {
 
   const [data, setData] = useState<any[]>([]);
 
@@ -52,7 +54,9 @@ const Selector = ({ nullable = true, handleChange, queryType, label, nameKey, pl
     return (
       <div>
         <label>{label}</label>
+        <br></br>
         <select className='bg-primary-500 rounded p-1' onChange={(e) => handleChange(data.find(item => item.id === e.target.value))}>
+          {true && <option value="" selected disabled hidden>{defaultValue}</option>}
           {nullable && <option value="">{placeHolder}</option>}
           {
             data.map((option: any) => {
@@ -62,7 +66,7 @@ const Selector = ({ nullable = true, handleChange, queryType, label, nameKey, pl
             })
           }
         </select>
-      </div>
+      </div >
     )
   }
 }

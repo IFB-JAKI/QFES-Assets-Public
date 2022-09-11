@@ -7,6 +7,8 @@ import { listAssetGroups, listAssetLocations, listAssetStatuses, listAssetTypes 
 import { updateAssetStatus, updateAsset } from '../graphql/mutations';
 import BackButton from '../components/BackButton';
 import Selector from '../components/Selector';
+import { AssetType } from '../models';
+import { resultingClientExists } from 'workbox-core/_private';
 
 interface AssetProps
   extends RouteComponentProps<{
@@ -68,8 +70,24 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
           variables: { id: match.params.id },
           authMode: 'AWS_IAM'
         });
+        const statusResult: any = await API.graphql({
+          query: getAssetStatus,
+          variables: { id: result.data.getAsset.statusID },
+          authMode: 'AWS_IAM'
+        });
+        const typeResult: any = await API.graphql({
+          query: getAssetType,
+          variables: { id: result.data.getAsset.typeID },
+          authMode: 'AWS_IAM'
+        });
+
         console.log(result);
+        console.log(statusResult);
+        console.log(typeResult);
         setAsset(result.data.getAsset);
+        setStatus(statusResult.data.getAssetStatus);
+        setType(typeResult.data.getAssetType);
+
       } catch (e) {
         console.log(e);
       }
@@ -87,6 +105,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
           (asset) ? (
             <>
               <h1>Asset Page for {asset.assetName}</h1>
+              <h1>Status of {status.id}</h1>
               <form onSubmit={handleSubmit}>
                 <br></br>
                 <h1>Asset Name:</h1>
@@ -100,8 +119,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                 {/* <IonButton color="primary" onClick={(event: React.MouseEvent<HTMLElement>) => { handleDescSubmit() }}>Edit Asset Description</IonButton> */}
                 <br></br>
                 <br></br>
-                <h1>Asset Type:</h1>
-                <Selector label="Type: " queryType={listAssetTypes} handleChange={setType} nameKey="typeName" />
+                <Selector label="Asset Type: " queryType={listAssetTypes} handleChange={setType} nameKey="typeName" />
                 <br></br>
                 {
                   typeFields.map((field, index) => {
@@ -127,14 +145,11 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                 <br></br>
                 <p>Asset Data: </p>
                 <br></br>
-                <h1>Asset Group:</h1>
-                <Selector label="Group" queryType={listAssetGroups} handleChange={setGroup} nameKey="name" />
+                <Selector label="Asset Group" queryType={listAssetGroups} handleChange={setGroup} nameKey="name" />
                 <br></br>
-                <h1>Asset Status:</h1>
-                <Selector label="Status" queryType={listAssetStatuses} handleChange={setStatus} nameKey="statusName" />
+                <Selector label="Asset Status:" queryType={listAssetStatuses} handleChange={setStatus} nameKey="statusName" />
                 <br></br>
-                <h1>Asset Location:</h1>
-                <Selector label="Location" queryType={listAssetLocations} handleChange={setLocation} nameKey="locationName" />
+                <Selector label="Asset Location:" queryType={listAssetLocations} handleChange={setLocation} nameKey="locationName" />
                 <br></br>
                 <h1>Select an Image:</h1>
                 <input type="file" accept='image/jpeg, image/png'></input>
