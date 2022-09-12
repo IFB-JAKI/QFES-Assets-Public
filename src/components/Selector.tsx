@@ -56,7 +56,7 @@ const Selector = ({ nullable = true, handleChange, queryType, label, nameKey, pl
         <label>{label}</label>
         <br></br>
         <select className='bg-primary-500 rounded p-1' onChange={(e) => handleChange(data.find(item => item.id === e.target.value))}>
-          {true && <option value="" selected disabled hidden>{defaultValue}</option>}
+          <option value="" selected disabled hidden>{defaultValue}</option>
           {nullable && <option value="">{placeHolder}</option>}
           {
             data.map((option: any) => {
