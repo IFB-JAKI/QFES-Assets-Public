@@ -18,10 +18,6 @@ const NewAsset = () => {
   const [status, setStatus] = useState({ name: null, id: null });
   const [location, setLocation] = useState({ name: null, id: null });
 
-  const router = useIonRouter();
-
-  // @TODO Images after image upload / storage setup
-
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     
@@ -69,11 +65,8 @@ const NewAsset = () => {
         <h1>New Asset</h1>
         <form onSubmit={handleSubmit}>
           <input onChange={(e) => setName(e.target.value)} placeholder="Asset Name" ></input>
-          <br></br>
           <input onChange={(e) => setDescription(e.target.value)} placeholder="Asset Description" ></input>
-          <br></br>
           <Selector label="Type" queryType={listAssetTypes} handleChange={setType} nameKey="typeName" />
-          <br></br>
           <p>Asset Data: </p>
           {
             typeFields.map((field, index) => {
@@ -96,13 +89,9 @@ const NewAsset = () => {
             }, [])
           }
           <IonButton routerLink='/newType'>New Type</IonButton>
-          <br></br>
           <Selector label="Group" queryType={listAssetGroups} handleChange={setGroup} nameKey="name" />
-          <br></br>
           <Selector label="Status" queryType={listAssetStatuses} handleChange={setStatus} nameKey="statusName" />
-          <br></br>
           <Selector label="Location" queryType={listAssetLocations} handleChange={setLocation} nameKey="locationName" />
-          <br></br>
           <IonButton type='submit'>Submit</IonButton>
         </form>
 

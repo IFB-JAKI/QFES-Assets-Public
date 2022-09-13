@@ -1,7 +1,6 @@
 import { API } from 'aws-amplify';
 import React, { useEffect, useState } from 'react';
 import { IonSelect, IonSelectOption, isPlatform } from '@ionic/react';
-import { isUndefined } from 'util';
 
 interface SelectorProps {
   nullable?: boolean;
@@ -54,9 +53,7 @@ const Selector = ({ nullable = true, handleChange, queryType, label, nameKey, pl
     return (
       <div>
         <label>{label}</label>
-        <br></br>
-        <select className='bg-primary-500 rounded p-1' onChange={(e) => handleChange(data.find(item => item.id === e.target.value))}>
-          <option value="" selected disabled hidden>{defaultValue}</option>
+        <select className='bg-primary-500 rounded p-1' onChange={(e) => handleChange(data.find(item => item.id === e.target.value))} value={defaultValue}>
           {nullable && <option value="">{placeHolder}</option>}
           {
             data.map((option: any) => {
