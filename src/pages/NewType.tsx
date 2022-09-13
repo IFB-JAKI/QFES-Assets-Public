@@ -19,10 +19,12 @@ const NewType = () => {
     event.preventDefault();
 
     const assetFieldsJSON = JSON.stringify(assetFields);
+    const assetLogFieldsJSON = JSON.stringify(assetLogFields);
 
     let typeDetails = {
       typeName: name,
-      dataTemplate: assetFieldsJSON
+      dataTemplate: assetFieldsJSON,
+      logTemplate: assetLogFieldsJSON
     }
 
     const createType = async (): Promise<void> => {
@@ -43,8 +45,6 @@ const NewType = () => {
 
     createType();
   }
-
-  // @TODO validation
 
   return (
     <IonPage>
