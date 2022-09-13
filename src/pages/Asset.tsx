@@ -246,49 +246,57 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
     }
 
     const fetchStatus = async (statusID: string): Promise<void> => {
-      try {
-        const statusResult: any = await API.graphql({
-          query: getAssetStatus,
-          variables: { id: statusID },
-          authMode: 'AWS_IAM'
-        });
-        setStatus({ name: statusResult.data.getAssetStatus.statusName, id: statusResult.data.getAssetStatus.id });
-      } catch (e) {
-        console.log(e);
+      if (statusID) {
+        try {
+          const statusResult: any = await API.graphql({
+            query: getAssetStatus,
+            variables: { id: statusID },
+            authMode: 'AWS_IAM'
+          });
+          setStatus({ name: statusResult.data.getAssetStatus.statusName, id: statusResult.data.getAssetStatus.id });
+        } catch (e) {
+          console.log(e);
+        }
+        return;
       }
-      return;
     }
 
     const fetchType = async (typeId: string): Promise<void> => {
-      try {
-        const typeResult: any = await API.graphql({
-          query: getAssetType,
-          variables: { id: typeId },
-          authMode: 'AWS_IAM'
-        });
-        setType(typeResult.data.getAssetType);
-      } catch (e) {
-        console.log(e);
+      if (typeId) {
+        try {
+          const typeResult: any = await API.graphql({
+            query: getAssetType,
+            variables: { id: typeId },
+            authMode: 'AWS_IAM'
+          });
+          setType(typeResult.data.getAssetType);
+        } catch (e) {
+          console.log(e);
+        }
+        return;
       }
-      return;
     }
 
     const fetchLocation = async (locationID: string): Promise<void> => {
-      try {
-        const locationResult: any = await API.graphql({
-          query: getAssetLocation,
-          variables: { id: locationID },
-          authMode: 'AWS_IAM'
-        });
-        setLocation(locationResult.data.getAssetLocation);
+      if (locationID) {
+        try {
+          const locationResult: any = await API.graphql({
+            query: getAssetLocation,
+            variables: { id: locationID },
+            authMode: 'AWS_IAM'
+          });
+          setLocation(locationResult.data.getAssetLocation);
 
-      } catch (e) {
-        console.log(e);
+        } catch (e) {
+          console.log(e);
+        }
       }
       return;
     }
 
-    fetchAsset();
+    if (match.params.id) {
+      fetchAsset();
+    }
 
   }, [match.params.id]);
 
@@ -392,26 +400,26 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                     </IonItem>
                     {
                       (logFields && logFields.length > 0) && (
-                      logFields.map((field, index) => {
-                        let fieldJsx;
-                        if (field.type === 'text') {
-                          fieldJsx = <input type="text"></input>
-                        } else if (field.type === 'number') {
-                          fieldJsx = <input type="number" ></input>
-                        } else if (field.type === 'date') {
-                          fieldJsx = <input type="date" ></input>
-                        } else if (field.type === 'boolean') {
-                          fieldJsx = <IonCheckbox></IonCheckbox>
-                        }
-                        return (
-                          <div key={index}>
-                            <label>{field.name}: </label>
-                            {fieldJsx}
-                          </div>
-                        )
-                      }, [])
+                        logFields.map((field, index) => {
+                          let fieldJsx;
+                          if (field.type === 'text') {
+                            fieldJsx = <input type="text"></input>
+                          } else if (field.type === 'number') {
+                            fieldJsx = <input type="number" ></input>
+                          } else if (field.type === 'date') {
+                            fieldJsx = <input type="date" ></input>
+                          } else if (field.type === 'boolean') {
+                            fieldJsx = <IonCheckbox></IonCheckbox>
+                          }
+                          return (
+                            <div key={index}>
+                              <label>{field.name}: </label>
+                              {fieldJsx}
+                            </div>
+                          )
+                        }, [])
                       )
-                  }
+                    }
                     <IonButton onClick={confirm}>Loan</IonButton>
                   </IonContent>
                 </IonModal>
