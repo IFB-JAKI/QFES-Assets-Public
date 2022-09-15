@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router'
 import { API } from 'aws-amplify';
 import { getAsset, getAssetGroup, getAssetStatus, getAssetLocation, getAssetType } from '../graphql/queries';
 import { listAssetGroups, listAssetLocations, listAssetStatuses, listAssetTypes } from '../graphql/queries';
-import { updateAssetStatus, updateAsset } from '../graphql/mutations';
+import { updateAssetStatus, updateAsset, createAssetLog } from '../graphql/mutations';
 import BackButton from '../components/BackButton';
 import Selector from '../components/Selector';
 import { AssetType } from '../models';
@@ -35,6 +35,10 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   const [typeFields, setTypeFields] = useState(Array<any>());
   const [logFields, setLogFields] = useState(Array<any>());
 
+  // dynamic input states
+  const [typeInputs, setTypeInputs] = useState({});
+  const [logInputs, setLogInputs] = useState(Array<any>());
+
   // array of all possible statuses
   const [allStatuses, setAllStatuses] = useState(Array<Status>());
 
@@ -42,6 +46,10 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState('');
   const [saved, setSaved] = useState(true); // @TODO set false and show user that changes are not saved.
+
+  // modal logic
+  const modal = useRef<HTMLIonModalElement>(null);
+  const BorrowerInput = useRef<HTMLIonInputElement>(null);
 
 
   const updateAssetCall = async (assetDetails: any, callback?: Function): Promise<void> => {
@@ -66,9 +74,13 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
     if (status?.id) {
       updateAssetCall({ id: match.params.id, statusID: status.id }, (asset: any) => {
         try {
-          setStatus({ name: allStatuses[asset.statusID].statusName, id: asset.statusID });
-        } catch {
-          console.log('Error updating status');
+          let tempStatus = allStatuses.find((status) => status.id === asset.statusID);
+          if (tempStatus && tempStatus?.statusName) {
+            console.log(tempStatus);
+            setStatus({ name: tempStatus.statusName, id: asset.statusID });
+          }
+        } catch (e) {
+          console.log(e);
         }
       });
     } else {
@@ -77,11 +89,58 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   };
 
   const handleLoanSubmit = () => {
+    // create loan event
+    // get loan event id, assign to asset
+    
+    const createLoanEvent = async () => {
+      let assetLogData = Array<any>();
+      for (let id in logInputs) {
+        assetLogData.push({ name: logFields[id].name, value: logInputs[id] });
+      }
+      let now = new Date().valueOf();
+      let assetLogDataString = JSON.stringify(assetLogData);
+      let BorrowerUserName = (BorrowerInput.current?.value) ? BorrowerInput.current?.value : 'Unknown';
+      try {
+        const result: any = await API.graphql({
+          query: createAssetLog,
+          variables: { input: { 
+            assetID: match.params.id,
+            assetLogData: assetLogDataString,
+            borrowerUsername: BorrowerUserName,
+            borrowDate: now,
+          } },
+          authMode: 'AWS_IAM'
+        });
+        await updateAssetCall({ id: match.params.id, currentEvent: result.data.createAssetLog.id });
+      } catch (e) {
+        console.log(e);
+      }
+      return;
+    }
+    createLoanEvent();
     updateStatusCall('On Loan');
   }
 
   const handleReturnSubmit = () => {
     updateStatusCall('Available');
+    let now = new Date().valueOf();
+    // create return event
+    const createReturnEvent = async () => {
+      try {
+        const result: any = await API.graphql({
+          query: createAssetLog,
+          variables: { input: { 
+            assetID: match.params.id,
+            returnDate: now,
+          } },
+          authMode: 'AWS_IAM'
+        });
+        console.log(result);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    createReturnEvent();
   }
 
   const handleMainSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -286,18 +345,15 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
             authMode: 'AWS_IAM'
           });
           setLocation(locationResult.data.getAssetLocation);
-
         } catch (e) {
           console.log(e);
         }
       }
       return;
     }
-
     if (match.params.id) {
       fetchAsset();
     }
-
   }, [match.params.id]);
 
   // get type fields and event fields from selected type
@@ -320,18 +376,24 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
     }
   }, [type]);
 
-  // modal logic
-  const modal = useRef<HTMLIonModalElement>(null);
-  const input = useRef<HTMLIonInputElement>(null);
+
 
   function confirm() {
-    modal.current?.dismiss(input.current?.value, 'confirm');
+    modal.current?.dismiss(BorrowerInput.current?.value, 'confirm');
   }
 
   function onWillDismiss(ev: CustomEvent<OverlayEventDetail>) {
     if (ev.detail.role === 'confirm') {
       // action in modal confirmed
-      // need to setup state for inputs then handle submit.
+      handleLoanSubmit();
+    }
+  }
+
+  const handleLogChange = (e: any) => {
+    let value = e.target.value;
+    if (e.target.attributes?.id) {
+      let id = e.target.attributes.id.value;
+      setLogInputs({ ...logInputs, [id]: value });
     }
   }
 
@@ -380,8 +442,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                 {(status.name === 'Available') ? (
                   <IonButton id="open-modal">Loan</IonButton>
                 ) : (
-                  // @TODO add return
-                  ''
+                  <IonButton onClick={handleReturnSubmit}>Return</IonButton>
                 )}
 
                 <IonModal ref={modal} trigger="open-modal" onWillDismiss={(ev) => onWillDismiss(ev)}>
@@ -396,20 +457,20 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                   <IonContent className="ion-padding">
                     <IonItem>
                       <IonLabel position="stacked">Borrower</IonLabel>
-                      <IonInput ref={input} type="text" placeholder="Borrower Name" />
+                      <IonInput ref={BorrowerInput} type="text" placeholder="Borrower Name" />
                     </IonItem>
                     {
                       (logFields && logFields.length > 0) && (
                         logFields.map((field, index) => {
                           let fieldJsx;
                           if (field.type === 'text') {
-                            fieldJsx = <input type="text"></input>
+                            fieldJsx = <input type="text" id={String(index)} onChange={(e) => handleLogChange(e)}></input>
                           } else if (field.type === 'number') {
-                            fieldJsx = <input type="number" ></input>
+                            fieldJsx = <input type="number" id={String(index)} onChange={(e) => handleLogChange(e)}></input>
                           } else if (field.type === 'date') {
-                            fieldJsx = <input type="date" ></input>
+                            fieldJsx = <input type="date" id={String(index)} onChange={(e) => handleLogChange(e)}></input>
                           } else if (field.type === 'boolean') {
-                            fieldJsx = <IonCheckbox></IonCheckbox>
+                            fieldJsx = <IonCheckbox  id={String(index)} onChange={(e) => handleLogChange(e)}></IonCheckbox>
                           }
                           return (
                             <div key={index}>
