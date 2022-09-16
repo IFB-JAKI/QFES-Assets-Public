@@ -26,6 +26,10 @@ const NewAsset = () => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    let typeInputs = typeFields.map((field) => {
+      return { name: field.name, value: field.value }
+    });
     
     let assetDetails = {
       assetName: name,
@@ -33,7 +37,8 @@ const NewAsset = () => {
       typeID: type.id,
       groupID: group,
       statusID: status.id,
-      assetlocaID: location.id
+      assetlocaID: location.id,
+      assetTypeData: JSON.stringify(typeInputs)
     }
 
     const createAssetCall = async (): Promise<void> => {
@@ -44,7 +49,6 @@ const NewAsset = () => {
           authMode: 'AWS_IAM'
         });
         // @TODO Success or error toast here
-        console.log(result);
       } catch (e) {
         console.log(e);
       }
@@ -68,7 +72,6 @@ const NewAsset = () => {
     } else {
       setTypeFields([]);
     }
-    console.log(typeFields);
   }, [type]);
 
   const handleTypeChange = (index: number, e: any) => {

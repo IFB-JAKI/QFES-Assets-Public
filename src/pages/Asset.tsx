@@ -10,6 +10,7 @@ import Selector from '../components/Selector';
 import { AssetType } from '../models';
 import { resultingClientExists } from 'workbox-core/_private';
 import { OverlayEventDetail } from '@ionic/core/components';
+import { parse } from 'path';
 
 interface AssetProps
   extends RouteComponentProps<{
@@ -21,6 +22,12 @@ interface Status {
   statusName: string;
 }
 
+interface FieldsInterface {
+  name: string,
+  type: string,
+  value?: string
+}
+
 const Asset: React.FC<AssetProps> = ({ match }) => {
 
   // user input
@@ -30,14 +37,11 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   const [status, setStatus] = useState({ name: '', id: undefined });
   const [location, setLocation] = useState({ name: '', id: undefined });
   const [group, setGroup] = useState(null);
+  const [assetTypeData, setAssetTypeData] = useState(Array<FieldsInterface>());
 
   // dynamic field states
   const [typeFields, setTypeFields] = useState(Array<any>());
   const [logFields, setLogFields] = useState(Array<any>());
-
-  // dynamic input states
-  const [typeInputs, setTypeInputs] = useState({});
-  const [logInputs, setLogInputs] = useState(Array<any>());
 
   // array of all possible statuses
   const [allStatuses, setAllStatuses] = useState(Array<Status>());
@@ -50,7 +54,6 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   // modal logic
   const modal = useRef<HTMLIonModalElement>(null);
   const BorrowerInput = useRef<HTMLIonInputElement>(null);
-
 
   const updateAssetCall = async (assetDetails: any, callback?: Function): Promise<void> => {
     try {
@@ -76,7 +79,6 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
         try {
           let tempStatus = allStatuses.find((status) => status.id === asset.statusID);
           if (tempStatus && tempStatus?.statusName) {
-            console.log(tempStatus);
             setStatus({ name: tempStatus.statusName, id: asset.statusID });
           }
         } catch (e) {
@@ -94,9 +96,6 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
     
     const createLoanEvent = async () => {
       let assetLogData = Array<any>();
-      for (let id in logInputs) {
-        assetLogData.push({ name: logFields[id].name, value: logInputs[id] });
-      }
       let now = new Date().valueOf();
       let assetLogDataString = JSON.stringify(assetLogData);
       let BorrowerUserName = (BorrowerInput.current?.value) ? BorrowerInput.current?.value : 'Unknown';
@@ -146,13 +145,18 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   const handleMainSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    let typeInputs = typeFields.map((field) => {
+      return { name: field.name, value: field.value }
+    });
+
     let assetDetails = {
       id: match.params.id,
       assetName: name,
       description: description,
       typeID: type.id,
       groupID: group,
-      assetlocaID: location.id
+      assetlocaID: location.id,
+      assetTypeData: JSON.stringify(typeInputs)
     };
 
     updateAssetCall(assetDetails);
@@ -263,7 +267,44 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   }, [])
 
   useEffect(() => {
+    setTypeFields([]);
+    if (type && type.dataTemplate && assetTypeData) {
+      {
+        try {
+          let parsedTemplate = JSON.parse(type.dataTemplate);
+          
+          let merged = []
+          for(let i=0; i<parsedTemplate.length; i++) {
+            merged.push({
+            ...parsedTemplate[i], 
+            ...(assetTypeData.find((itmInner: FieldsInterface) => itmInner.name === parsedTemplate[i].name))}
+            );
+          }
+          console.log(merged);
+          setTypeFields(merged);
+        } catch (e) {
+          console.log(e);
+          setError("Could not parse data template for type " + type.name);
+        }
+      }
+    }
+    if (type && type.logTemplate) {
+      {
+        try {
+          let parsedTemplate = JSON.parse(type.logTemplate);
+          // give value a default, required for controlled form element
+          parsedTemplate.map((field: FieldsInterface) => {
+            field.value = '';
+          })
+          setLogFields(parsedTemplate);
+        } catch (e) {
+          setError("Could not parse log template for type " + type.name);
+        }
+      }
+    }
+  }, [assetTypeData, type]);
 
+  useEffect(() => {
     // fetch asset and construct form with existing data
     const fetchAsset = async (): Promise<void> => {
       try {
@@ -273,6 +314,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
           authMode: 'AWS_IAM'
         });
         let asset = result.data.getAsset;
+        console.log(asset)
         if (!asset) {
           throw new Error('Asset ID not found');
         }
@@ -283,19 +325,9 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
           fetchType(asset.typeID),
           fetchStatus(asset.statusID),
           fetchLocation(asset.assetlocaID),
-        ]).then(
-          () => {
-            if (type && type.dataTemplate !== '') {
-              {
-                try {
-                  setTypeFields(JSON.parse(type.dataTemplate));
-                } catch (e) {
-                  setError("Could not parse data template for type " + type.name);
-                }
-              }
-            }
-          }).then(
-            () => setLoaded(true)
+          setAssetTypeData(JSON.parse(asset.assetTypeData))
+        ]).then(() => 
+            setLoaded(true)
           );
       } catch (e: any) {
         setLoaded(true);
@@ -356,28 +388,6 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
     }
   }, [match.params.id]);
 
-  // get type fields and event fields from selected type
-  useEffect(() => {
-    if (type && type.dataTemplate !== '') {
-      try {
-        setTypeFields(JSON.parse(type.dataTemplate));
-      } catch (e) {
-        setError("Could not parse data template for type " + type.name);
-      }
-    } else {
-      setTypeFields([]);
-    }
-    if (type && type.logTemplate !== '') {
-      try {
-        setLogFields(JSON.parse(type.logTemplate));
-      } catch (e) {
-        setError("Could not parse log template for type " + type.name);
-      }
-    }
-  }, [type]);
-
-
-
   function confirm() {
     modal.current?.dismiss(BorrowerInput.current?.value, 'confirm');
   }
@@ -389,12 +399,16 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
     }
   }
 
-  const handleLogChange = (e: any) => {
-    let value = e.target.value;
-    if (e.target.attributes?.id) {
-      let id = e.target.attributes.id.value;
-      setLogInputs({ ...logInputs, [id]: value });
-    }
+  const handleTypeChange = (index: number, e: any) => {
+    let data = [...typeFields];
+    data[index].value = e.target.value;
+    setTypeFields(data);
+  }
+
+  const handleLogChange = (index: number, e: any) => {
+    let data = [...logFields];
+    data[index].value = e.target.value;
+    setLogFields(data);
   }
 
   return (
@@ -415,13 +429,13 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                     typeFields.map((field, index) => {
                       let fieldJsx;
                       if (field.type === 'text') {
-                        fieldJsx = <input type="text"></input>
+                        fieldJsx = <input type="text" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
                       } else if (field.type === 'number') {
-                        fieldJsx = <input type="number" ></input>
+                        fieldJsx = <input type="number" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
                       } else if (field.type === 'date') {
-                        fieldJsx = <input type="date" ></input>
+                        fieldJsx = <input type="date" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
                       } else if (field.type === 'boolean') {
-                        fieldJsx = <IonCheckbox></IonCheckbox>
+                        fieldJsx = <IonCheckbox value={field.value} onChange={e => handleTypeChange(index, e)}></IonCheckbox>
                       }
                       return (
                         <div key={index}>
@@ -464,13 +478,13 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                         logFields.map((field, index) => {
                           let fieldJsx;
                           if (field.type === 'text') {
-                            fieldJsx = <input type="text" id={String(index)} onChange={(e) => handleLogChange(e)}></input>
+                            fieldJsx = <input type="text" value={field.value} onChange={e => handleLogChange(index, e)}></input>
                           } else if (field.type === 'number') {
-                            fieldJsx = <input type="number" id={String(index)} onChange={(e) => handleLogChange(e)}></input>
+                            fieldJsx = <input type="number" value={field.value} onChange={e => handleLogChange(index, e)}></input>
                           } else if (field.type === 'date') {
-                            fieldJsx = <input type="date" id={String(index)} onChange={(e) => handleLogChange(e)}></input>
+                            fieldJsx = <input type="date" value={field.value} onChange={e => handleLogChange(index, e)}></input>
                           } else if (field.type === 'boolean') {
-                            fieldJsx = <IonCheckbox  id={String(index)} onChange={(e) => handleLogChange(e)}></IonCheckbox>
+                            fieldJsx = <IonCheckbox  value={field.value} onChange={e => handleLogChange(index, e)}></IonCheckbox>
                           }
                           return (
                             <div key={index}>
