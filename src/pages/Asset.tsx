@@ -158,7 +158,6 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
       assetlocaID: location.id,
       assetTypeData: JSON.stringify(typeInputs)
     };
-
     updateAssetCall(assetDetails);
   }
 
@@ -268,19 +267,26 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
 
   useEffect(() => {
     setTypeFields([]);
-    if (type && type.dataTemplate && assetTypeData) {
+    if (type && type.dataTemplate) {
       {
         try {
           let parsedTemplate = JSON.parse(type.dataTemplate);
-          
           let merged = []
-          for(let i=0; i<parsedTemplate.length; i++) {
-            merged.push({
-            ...parsedTemplate[i], 
-            ...((assetTypeData.find((itmInner: FieldsInterface) => itmInner.name === parsedTemplate[i].name)) || {value: ''} )
-          });
+          if (assetTypeData) {
+            for(let i=0; i<parsedTemplate.length; i++) {
+              let found = assetTypeData.find((item: any) => item.name === parsedTemplate[i].name);
+              if (found && found?.value) {
+                merged.push({
+                  ...parsedTemplate[i],
+                  ...found
+                });
+              } else {
+                merged.push({...parsedTemplate[i], value: ''});
+              }
+            }
+          } else {
+            merged = parsedTemplate;
           }
-          console.log(merged);
           setTypeFields(merged);
         } catch (e) {
           console.log(e);
