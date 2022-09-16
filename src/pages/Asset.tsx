@@ -277,8 +277,8 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
           for(let i=0; i<parsedTemplate.length; i++) {
             merged.push({
             ...parsedTemplate[i], 
-            ...(assetTypeData.find((itmInner: FieldsInterface) => itmInner.name === parsedTemplate[i].name))}
-            );
+            ...((assetTypeData.find((itmInner: FieldsInterface) => itmInner.name === parsedTemplate[i].name)) || {value: ''} )
+          });
           }
           console.log(merged);
           setTypeFields(merged);
