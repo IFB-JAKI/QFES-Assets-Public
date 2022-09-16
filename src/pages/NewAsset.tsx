@@ -8,11 +8,17 @@ import Selector from '../components/Selector';
 
 const NewAsset = () => {
 
+  interface typeFieldsInterface {
+    name: string,
+    type: string,
+    value?: string
+  }
+
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
   const [type, setType] = useState({ name: '', id: null, dataTemplate: '' });
-  const [typeFields, setTypeFields] = useState(Array<any>());
+  const [typeFields, setTypeFields] = useState(Array<typeFieldsInterface>());
 
   const [group, setGroup] = useState(null);
   const [status, setStatus] = useState({ name: null, id: null });
@@ -50,35 +56,47 @@ const NewAsset = () => {
   useEffect(() => {
     if (type && type.dataTemplate !== '') {
       try {
-        setTypeFields(JSON.parse(type.dataTemplate));
+        let parsedTemplate = JSON.parse(type.dataTemplate);
+        // give value a default, required for controlled form element
+        parsedTemplate.map((field: typeFieldsInterface) => {
+          field.value = '';
+        })
+        setTypeFields(parsedTemplate);
       } catch (e) {
         console.log('Error parsing JSON');
       }
     } else {
       setTypeFields([]);
     }
+    console.log(typeFields);
   }, [type]);
+
+  const handleTypeChange = (index: number, e: any) => {
+    let data = [...typeFields];
+    data[index].value = e.target.value;
+    setTypeFields(data);
+  }
 
   return (
     <IonPage>
       <IonContent>
         <h1>New Asset</h1>
         <form onSubmit={handleSubmit}>
-          <input onChange={(e) => setName(e.target.value)} placeholder="Asset Name" ></input>
-          <input onChange={(e) => setDescription(e.target.value)} placeholder="Asset Description" ></input>
+          <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Asset Name" ></input>
+          <input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Asset Description"></input>
           <Selector label="Type" queryType={listAssetTypes} handleChange={setType} nameKey="typeName" />
           <p>Asset Data: </p>
           {
-            typeFields.map((field, index) => {
+            (typeFields && typeFields.length > 0) && typeFields.map((field, index) => {
               let fieldJsx;
               if (field.type === 'text') {
-                fieldJsx = <input type="text"></input>
+                fieldJsx = <input type="text" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
               } else if (field.type === 'number') {
-                fieldJsx = <input type="number" ></input>
+                fieldJsx = <input type="number" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
               } else if (field.type === 'date') {
-                fieldJsx = <input type="date" ></input>
+                fieldJsx = <input type="date" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
               } else if (field.type === 'boolean') {
-                fieldJsx = <IonCheckbox></IonCheckbox>
+                fieldJsx = <IonCheckbox value={field.value} onChange={e => handleTypeChange(index, e)}></IonCheckbox>
               }
               return (
                 <div key={index}>
