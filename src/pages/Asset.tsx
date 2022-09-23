@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonCheckbox, useIonLoading, IonLoading, IonButtons, IonInput, IonItem, IonLabel, IonModal } from '@ionic/react'
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonCheckbox, useIonLoading, IonLoading, IonButtons, IonInput, IonItem, IonLabel, IonModal, useIonAlert } from '@ionic/react'
 import { RouteComponentProps } from 'react-router'
 import { API } from 'aws-amplify';
 import { getAsset, getAssetGroup, getAssetStatus, getAssetLocation, getAssetType } from '../graphql/queries';
@@ -29,7 +29,7 @@ interface FieldsInterface {
 }
 
 const Asset: React.FC<AssetProps> = ({ match }) => {
-
+  const [presentAlert] = useIonAlert();
   // user input
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -140,6 +140,27 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
       }
     }
     createReturnEvent();
+  }
+
+  const handleArchiveSubmit = () => {
+    if(status.name == "On Loan"){
+        presentAlert({
+            header: 'Hold On!',
+            subHeader: 'Asset cannot be archived while on loan.',
+            message: 'Return asset before archiving',
+            buttons: ['OK'],
+          })
+          return;
+        }
+    updateStatusCall('Archived');  
+  }
+
+  const handleRestoreSubmit = () => {
+    const createRestoreEvent = async () => {
+
+    }
+    createRestoreEvent();
+    updateStatusCall('Available');  
   }
 
   const handleMainSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -459,11 +480,18 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                   <IonButton type='submit'>Submit</IonButton>
                 </form>
 
-                {(status.name === 'Available') ? (
-                  <IonButton id="open-modal">Loan</IonButton>
-                ) : (
-                  <IonButton onClick={handleReturnSubmit}>Return</IonButton>
-                )}
+                {/*Display the button for Loan/Return */}
+                {status.name === "Available" &&<IonButton id="open-modal">Loan</IonButton>}
+                {status.name === "On Loan" &&<IonButton onClick={handleReturnSubmit}>Return</IonButton>}
+               
+                {/*Display the button for Archive/Restore */}
+                {(status.name === 'Available'|| status.name === 'On Loan') ?
+                (<IonButton onClick={handleArchiveSubmit}>Archive Asset</IonButton> ) 
+                : (<IonButton onClick={handleRestoreSubmit}>Restore Asset</IonButton>)}
+                
+                
+
+                
 
                 <IonModal ref={modal} trigger="open-modal" onWillDismiss={(ev) => onWillDismiss(ev)}>
                   <IonHeader>
