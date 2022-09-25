@@ -49,6 +49,7 @@ const TypeFieldCreator = ({ fields, setFields }: TypeFieldCreatorProps) => {
               <option value="number">Number</option>
               <option value="boolean">Boolean</option>
               <option value="date">Date</option>
+              <option value="signature">Digital Signature</option>
             </select>
             <IonButton onClick={() => { removeField(index) }}>Delete</IonButton>
           </div>

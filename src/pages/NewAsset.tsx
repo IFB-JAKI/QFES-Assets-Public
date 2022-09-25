@@ -100,6 +100,8 @@ const NewAsset = () => {
                 fieldJsx = <input type="date" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
               } else if (field.type === 'boolean') {
                 fieldJsx = <IonCheckbox value={field.value} onChange={e => handleTypeChange(index, e)}></IonCheckbox>
+              } else if (field.type === 'signature') {
+                fieldJsx = <input type="signature" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
               }
               return (
                 <div key={index}>

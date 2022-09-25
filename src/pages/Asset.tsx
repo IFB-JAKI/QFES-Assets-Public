@@ -60,6 +60,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   //sigPad
   const [dataURL, setDataURL] = React.useState<string | null>(null);
   let padRef = React.useRef<SignatureCanvas>(null);
+  
   const clear = () => {
     padRef.current?.clear();
   };
@@ -419,7 +420,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                 
 
                 
- 
+                {/*Information Gathered when item is loaned*/}
                 <IonModal ref={modal} trigger="open-modal" onWillDismiss={(ev) => onWillDismiss(ev)}>
                   <IonHeader>
                     <IonToolbar>
@@ -436,20 +437,24 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                       
 
                     </IonItem>
-                    <IonItem>
-                      <IonLabel position="stacked">Digital Signature</IonLabel>
-                      <SignatureCanvas ref={padRef} penColor='black'
-                        canvasProps={{width: 550, height: 200, className: 'sigCanvas'}}/>
-                      <ButtonGroup>
-                        <IonButton color = 'light' onClick={clear}>Clear</IonButton>
-                        <IonButton color = 'light' onClick={trim}>Finish</IonButton>
-                      </ButtonGroup>
-
-                    </IonItem>
                     {
                       (logFields && logFields.length > 0) && (
                         logFields.map((field, index) => {
                           let fieldJsx;
+                          if(field.type === 'signature') {
+                            return (
+                              <IonItem>
+                                <IonLabel position="stacked">Digital Signature</IonLabel>
+                                <SignatureCanvas ref={padRef} penColor='black'
+                                  canvasProps={{width: 550, height: 200, className: 'sigCanvas'}}/>
+                                <ButtonGroup>
+                                  <IonButton color = 'light' onClick={clear}>Clear</IonButton>
+                                  <IonButton color = 'light' onClick={trim}>Finish</IonButton>
+                                </ButtonGroup>
+
+                              </IonItem>
+                            )
+                          }
                           if (field.type === 'text') {
                             fieldJsx = <input type="text" value={field.value} onChange={e => handleLogChange(index, e)}></input>
                           } else if (field.type === 'number') {

@@ -53,11 +53,11 @@ const NewType = () => {
           <label className="mr-3">Type Name:</label>
           <input onChange={(e) => setName(e.target.value)} placeholder="Name" className="my-3"></input>
           <br></br>
-          <label className="mr-3">Asset Fields:</label>
+          <label className="mr-3">Information Fields for Asset Tpye:</label>
           <br></br>
           <TypeFieldCreator fields={assetFields} setFields={setAssetFields}/>
           <br></br>
-          <label className="mr-3 mt-6">Asset Log Fields:</label>
+          <label className="mr-3 mt-6">Type Specific Information Required On Asset Loan:</label>
           <br></br>
           <TypeFieldCreator fields={assetLogFields} setFields={setAssetLogFields}/>
           <br></br>
