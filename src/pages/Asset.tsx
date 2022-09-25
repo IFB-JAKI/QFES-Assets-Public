@@ -12,6 +12,7 @@ import { resultingClientExists } from 'workbox-core/_private';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { parse } from 'path';
 import SignatureCanvas from 'react-signature-canvas'
+import { ButtonGroup } from '@aws-amplify/ui-react';
 
 interface AssetProps
   extends RouteComponentProps<{
@@ -194,93 +195,6 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
     };
     updateAssetCall(assetDetails);
   }
-
-  //item is being archived
-  // const handleArchiveSubmit = () => {
-  //   //event.preventDefault();
-
-  //   if(asset.statusID == "a038cae9-333c-485a-a56d-8a18877df97a"){
-  //     presentAlert({
-  //       header: 'Hold On!',
-  //       subHeader: 'Asset cannot be archived while on loan.',
-  //       message: 'Return asset before archiving',
-  //       buttons: ['OK'],
-  //     })
-  //     return;
-  //   }
-  //   let assetDetails = {
-  //     id: asset.id,
-  //     statusID: '2748283f-120c-4153-8afc-f2fe68c94201'
-  //   }
-
-  //   const createStatusUpdate = async (): Promise<void> => {
-  //     try {
-  //       const result: any = await API.graphql({
-  //         query: updateAsset,
-  //         variables: { input: assetDetails },
-  //         authMode: 'AWS_IAM'
-  //       });
-  //       // @TODO Success or error toast here
-  //       console.log(result);
-  //       setAsset(result.data.updateAsset);
-  //       const resultUpdated: any = await API.graphql({
-  //         query: getAsset,
-  //         variables: { id: match.params.id },
-  //         authMode: 'AWS_IAM'
-  //       });
-  //       const statusResult: any = await API.graphql({
-  //         query: getAssetStatus,
-  //         variables: { id: resultUpdated.data.getAsset.statusID },
-  //         authMode: 'AWS_IAM'
-  //       });
-  //       setAsset(resultUpdated.data.getAsset);
-  //       setStatus(statusResult.data.getAssetStatus);
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //     return;
-  //   };
-  //   createStatusUpdate();
-  // }
-
-  // //item is being restored
-  // const handleRestoreSubmit = () => {
-  //   //event.preventDefault();
-
-  //   let assetDetails = {
-  //     id: asset.id,
-  //     statusID: '6e09c2e2-34a5-4da6-93f6-94fe5019705b'
-  //   }
-
-  //   const createStatusUpdate = async (): Promise<void> => {
-  //     try {
-  //       const result: any = await API.graphql({
-  //         query: updateAsset,
-  //         variables: { input: assetDetails },
-  //         authMode: 'AWS_IAM'
-  //       });
-  //       // @TODO Success or error toast here
-  //       console.log(result);
-  //       setAsset(result.data.updateAsset);
-  //       const resultUpdated: any = await API.graphql({
-  //         query: getAsset,
-  //         variables: { id: match.params.id },
-  //         authMode: 'AWS_IAM'
-  //       });
-  //       const statusResult: any = await API.graphql({
-  //         query: getAssetStatus,
-  //         variables: { id: resultUpdated.data.getAsset.statusID },
-  //         authMode: 'AWS_IAM'
-  //       });
-  //       setAsset(resultUpdated.data.getAsset);
-  //       setStatus(statusResult.data.getAssetStatus);
-  //     } catch (e) {
-  //       console.log(e);
-  //     }
-  //     return;
-  //   };
-  //   createStatusUpdate();
-  // }
 
   // Fetch all valid statuses
   useEffect(() => {
@@ -526,9 +440,10 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                       <IonLabel position="stacked">Digital Signature</IonLabel>
                       <SignatureCanvas ref={padRef} penColor='black'
                         canvasProps={{width: 550, height: 200, className: 'sigCanvas'}}/>
-
+                      <ButtonGroup>
                         <IonButton color = 'light' onClick={clear}>Clear</IonButton>
                         <IonButton color = 'light' onClick={trim}>Finish</IonButton>
+                      </ButtonGroup>
 
                     </IonItem>
                     {
