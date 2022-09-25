@@ -11,6 +11,7 @@ import { AssetType } from '../models';
 import { resultingClientExists } from 'workbox-core/_private';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { parse } from 'path';
+import SignatureCanvas from 'react-signature-canvas'
 
 interface AssetProps
   extends RouteComponentProps<{
@@ -54,6 +55,18 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   // modal logic
   const modal = useRef<HTMLIonModalElement>(null);
   const BorrowerInput = useRef<HTMLIonInputElement>(null);
+
+  //sigPad
+  const [dataURL, setDataURL] = React.useState<string | null>(null);
+  let padRef = React.useRef<SignatureCanvas>(null);
+  const clear = () => {
+    padRef.current?.clear();
+  };
+
+  const trim = () => {
+    const url = padRef.current?.getTrimmedCanvas().toDataURL("image/png");
+    if (url) setDataURL(url);
+  };
 
   const updateAssetCall = async (assetDetails: any, callback?: Function): Promise<void> => {
     try {
@@ -492,7 +505,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                 
 
                 
-
+ 
                 <IonModal ref={modal} trigger="open-modal" onWillDismiss={(ev) => onWillDismiss(ev)}>
                   <IonHeader>
                     <IonToolbar>
@@ -506,6 +519,17 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                     <IonItem>
                       <IonLabel position="stacked">Borrower</IonLabel>
                       <IonInput ref={BorrowerInput} type="text" placeholder="Borrower Name" />
+                      
+
+                    </IonItem>
+                    <IonItem>
+                      <IonLabel position="stacked">Digital Signature</IonLabel>
+                      <SignatureCanvas ref={padRef} penColor='black'
+                        canvasProps={{width: 550, height: 200, className: 'sigCanvas'}}/>
+
+                        <IonButton color = 'light' onClick={clear}>Clear</IonButton>
+                        <IonButton color = 'light' onClick={trim}>Finish</IonButton>
+
                     </IonItem>
                     {
                       (logFields && logFields.length > 0) && (
