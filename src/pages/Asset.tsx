@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonCheckbox, useIonLoading, IonLoading, IonButtons, IonInput, IonItem, IonLabel, IonModal, useIonAlert } from '@ionic/react'
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonCheckbox, useIonLoading, IonLoading, IonButtons, IonInput, IonItem, IonLabel, IonModal, useIonAlert, useIonModal } from '@ionic/react'
 import { RouteComponentProps } from 'react-router'
 import { API } from 'aws-amplify';
 import { getAsset, getAssetGroup, getAssetStatus, getAssetLocation, getAssetType } from '../graphql/queries';
@@ -11,6 +11,8 @@ import { AssetType } from '../models';
 import { resultingClientExists } from 'workbox-core/_private';
 import { OverlayEventDetail } from '@ionic/core/components';
 import { parse } from 'path';
+import { Router } from '@aws-amplify/ui-react/dist/types/components/Authenticator/Router';
+import LoanModal from '../components/LoanModal';
 
 interface AssetProps
   extends RouteComponentProps<{
@@ -54,6 +56,8 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   // modal logic
   const modal = useRef<HTMLIonModalElement>(null);
   const BorrowerInput = useRef<HTMLIonInputElement>(null);
+
+  const router = useIonRouter();
 
   const updateAssetCall = async (assetDetails: any, callback?: Function): Promise<void> => {
     try {
@@ -415,16 +419,6 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
     }
   }, [match.params.id]);
 
-  function confirm() {
-    modal.current?.dismiss(BorrowerInput.current?.value, 'confirm');
-  }
-
-  function onWillDismiss(ev: CustomEvent<OverlayEventDetail>) {
-    if (ev.detail.role === 'confirm') {
-      // action in modal confirmed
-      handleLoanSubmit();
-    }
-  }
 
   const handleTypeChange = (index: number, e: any) => {
     let data = [...typeFields];
@@ -432,10 +426,27 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
     setTypeFields(data);
   }
 
+  // Modal Logic
   const handleLogChange = (index: number, e: any) => {
     let data = [...logFields];
     data[index].value = e.target.value;
     setLogFields(data);
+  }
+
+  const [present, dismiss] = useIonModal(LoanModal, {
+    onDismiss: (data: string, role: string) => dismiss(data, role),
+    logFields: logFields,
+    handleLogChange: handleLogChange
+  });
+
+  function openModal() {
+    present({
+      onWillDismiss: (ev: CustomEvent<OverlayEventDetail>) => {
+        if (ev.detail.role === 'confirm') {
+          handleLoanSubmit();
+        }
+      },
+    });
   }
 
   return (
@@ -481,57 +492,13 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                 </form>
 
                 {/*Display the button for Loan/Return */}
-                {status.name === "Available" &&<IonButton id="open-modal">Loan</IonButton>}
+                {status.name === "Available" &&<IonButton onClick={() => openModal()}>Loan</IonButton>}
                 {status.name === "On Loan" &&<IonButton onClick={handleReturnSubmit}>Return</IonButton>}
                
                 {/*Display the button for Archive/Restore */}
                 {(status.name === 'Available'|| status.name === 'On Loan') ?
                 (<IonButton onClick={handleArchiveSubmit}>Archive Asset</IonButton> ) 
                 : (<IonButton onClick={handleRestoreSubmit}>Restore Asset</IonButton>)}
-                
-                
-
-                
-
-                <IonModal ref={modal} trigger="open-modal" onWillDismiss={(ev) => onWillDismiss(ev)}>
-                  <IonHeader>
-                    <IonToolbar>
-                      <IonButtons slot="start">
-                        <IonButton onClick={() => modal.current?.dismiss()}>Cancel</IonButton>
-                      </IonButtons>
-                      <IonTitle>Loan Asset</IonTitle>
-                    </IonToolbar>
-                  </IonHeader>
-                  <IonContent className="ion-padding">
-                    <IonItem>
-                      <IonLabel position="stacked">Borrower</IonLabel>
-                      <IonInput ref={BorrowerInput} type="text" placeholder="Borrower Name" />
-                    </IonItem>
-                    {
-                      (logFields && logFields.length > 0) && (
-                        logFields.map((field, index) => {
-                          let fieldJsx;
-                          if (field.type === 'text') {
-                            fieldJsx = <input type="text" value={field.value} onChange={e => handleLogChange(index, e)}></input>
-                          } else if (field.type === 'number') {
-                            fieldJsx = <input type="number" value={field.value} onChange={e => handleLogChange(index, e)}></input>
-                          } else if (field.type === 'date') {
-                            fieldJsx = <input type="date" value={field.value} onChange={e => handleLogChange(index, e)}></input>
-                          } else if (field.type === 'boolean') {
-                            fieldJsx = <IonCheckbox  value={field.value} onChange={e => handleLogChange(index, e)}></IonCheckbox>
-                          }
-                          return (
-                            <div key={index}>
-                              <label>{field.name}: </label>
-                              {fieldJsx}
-                            </div>
-                          )
-                        }, [])
-                      )
-                    }
-                    <IonButton onClick={confirm}>Loan</IonButton>
-                  </IonContent>
-                </IonModal>
 
                 <BackButton text="back" />
               </>
