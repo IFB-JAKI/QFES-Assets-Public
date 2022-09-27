@@ -374,7 +374,13 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
           (loaded) ? (
             (error === '') ? (
               <>
-                <h1>Asset Page for {name}</h1>
+              <div className="m-4 mb-0">
+                <BackButton text="back" />
+              </div>
+              
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="h-full bg-white p-2 m-4 rounded-lg shadow col-span-2">
+                  <h1 className='text-3xl font-montserrat font-bold text-primary-200 text-blue'>{name}</h1>
                 <form onSubmit={handleMainSubmit}>
                   <h1>Asset Name:</h1>
                   <input onChange={(e) => setName(e.target.value)} placeholder={name} defaultValue={name}></input>
@@ -408,6 +414,14 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                   <input type="file" accept='image/jpeg, image/png'></input>
                   <IonButton type='submit'>Submit</IonButton>
                 </form>
+                  </div>
+                  <div className="bg-white p-2 m-4 rounded-lg shadow">
+                    <h1>Asset Loan History</h1>
+                  </div>
+                </div>
+                
+                <div className="columns-1">
+                  <div className="bg-white p-2 mt-8 m-4 rounded-lg shadow">
 
                 {/*Display the button for Loan/Return */}
                 {status.name === "Available" &&<IonButton onClick={() => openModal()}>Loan</IonButton>}
@@ -418,7 +432,9 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                 (<IonButton onClick={handleArchiveSubmit}>Archive Asset</IonButton> ) 
                 : (<IonButton onClick={handleRestoreSubmit}>Restore Asset</IonButton>)}
                 
-                <BackButton text="back" />
+                
+                </div>
+                </div>
               </>
             ) : (
               <div>
@@ -435,7 +451,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                 message={'Loading...'}
               />
             )
-        }
+        }      
       </IonContent>
     </IonPage>
   )
