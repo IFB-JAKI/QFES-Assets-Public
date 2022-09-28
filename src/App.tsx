@@ -13,6 +13,7 @@ import NewAsset from './pages/NewAsset';
 import Reports from './pages/Reports';
 import Statistics from './pages/Statistics';
 import Search from './pages/Search';
+import Type from './pages/Type';
 
 import '@aws-amplify/ui-react/styles.css';
 
@@ -59,8 +60,8 @@ const components = {
             src={qfesLarge}
             maxWidth="100%"
             height='auto'
-            />
-          </div>
+          />
+        </div>
       </View>
     );
   },
@@ -87,26 +88,27 @@ const App = () => (
             <IonMenu menuId='primary' contentId='main'>
               <SideBar signOut={signOut} />
             </IonMenu>
-              <IonRouterOutlet id="main">
-                <Route exact path="/Home">
-                  {
-                    isPlatform('capacitor') ? (
-                      <QrScan />
-                    ) : (
-                      <Home user={user} />
-                    )
-                  }
-                </Route>
-                <Redirect exact from="/" to="/Home" />
-                <Route exact path="/asset/:id" component={Asset} />
-                <Route exact path="/NewAsset" component={NewAsset} />
-                <Route exact path="/NewType" component={NewType} />
-                <Route exact path="/Reports" component={Reports} />
-                <Route exact path="/Statistics" component={Statistics} />
-                <Route exact path="/Search" render={() => <Search user={user} />} />
-                <Route exact path="/NewStatus" component={NewStatus} />
-                <Route exact path="/NewLocation" component={NewLocation} />
-              </IonRouterOutlet>
+            <IonRouterOutlet id="main">
+              <Route exact path="/Home">
+                {
+                  isPlatform('capacitor') ? (
+                    <QrScan />
+                  ) : (
+                    <Home user={user} />
+                  )
+                }
+              </Route>
+              <Redirect exact from="/" to="/Home" />
+              <Route exact path="/asset/:id" component={Asset} />
+              <Route exact path="/NewAsset" component={NewAsset} />
+              <Route exact path="/NewType" component={NewType} />
+              <Route exact path="/Reports" component={Reports} />
+              <Route exact path="/Statistics" component={Statistics} />
+              <Route exact path="/Search" render={() => <Search user={user} />} />
+              <Route exact path="/NewStatus" component={NewStatus} />
+              <Route exact path="/NewLocation" component={NewLocation} />
+              <Route exact path="/Type" component={Type} />
+            </IonRouterOutlet>
           </IonSplitPane>
         </IonReactRouter>
       </IonApp>
