@@ -7,14 +7,13 @@ import Selector from '../components/Selector'
 import { createAsset } from '../graphql/mutations'
 import AssetSelector from '../components/AssetSelector'
 import { listAssetTypes, listAssetGroups, listAssetStatuses, listAssetLocations } from '../graphql/queries'
+import MultiAssetSelector from '../components/MultiAssetSelector'
 
 const NewGroup = ({ user }: any) => {
 
   const handleSubmit = () => {
-    
+
   }
-
-
 
   return (
     <IonPage>
@@ -24,6 +23,8 @@ const NewGroup = ({ user }: any) => {
           <form onSubmit={handleSubmit}>
             <IonLabel>Parent Asset</IonLabel>
             <AssetSelector />
+            <br></br>
+            <MultiAssetSelector />
             <IonButton type='submit'>Submit</IonButton>
           </form>
           <BackButton text="back" />
