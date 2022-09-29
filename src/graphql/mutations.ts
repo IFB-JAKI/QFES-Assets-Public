@@ -124,14 +124,10 @@ export const createAssetStatus = /* GraphQL */ `
       groupStatusID {
         items {
           id
-          name
-          template
-          numAssets
-          assetstatusID
-          description
-          imageLink
+          statusID
           createdAt
           updatedAt
+          assetGroupAssetId
         }
         nextToken
       }
@@ -169,14 +165,10 @@ export const updateAssetStatus = /* GraphQL */ `
       groupStatusID {
         items {
           id
-          name
-          template
-          numAssets
-          assetstatusID
-          description
-          imageLink
+          statusID
           createdAt
           updatedAt
+          assetGroupAssetId
         }
         nextToken
       }
@@ -214,14 +206,10 @@ export const deleteAssetStatus = /* GraphQL */ `
       groupStatusID {
         items {
           id
-          name
-          template
-          numAssets
-          assetstatusID
-          description
-          imageLink
+          statusID
           createdAt
           updatedAt
+          assetGroupAssetId
         }
         nextToken
       }
@@ -498,9 +486,25 @@ export const createAssetGroup = /* GraphQL */ `
   ) {
     createAssetGroup(input: $input, condition: $condition) {
       id
-      name
-      template
-      groupID {
+      asset {
+        id
+        assetName
+        QRCode
+        description
+        currentEvent
+        typeID
+        AssetEvents {
+          nextToken
+        }
+        groupID
+        statusID
+        imageLink
+        assetlocaID
+        assetTypeData
+        createdAt
+        updatedAt
+      }
+      childAssets {
         items {
           id
           assetName
@@ -518,12 +522,10 @@ export const createAssetGroup = /* GraphQL */ `
         }
         nextToken
       }
-      numAssets
-      assetstatusID
-      description
-      imageLink
+      statusID
       createdAt
       updatedAt
+      assetGroupAssetId
     }
   }
 `;
@@ -534,9 +536,25 @@ export const updateAssetGroup = /* GraphQL */ `
   ) {
     updateAssetGroup(input: $input, condition: $condition) {
       id
-      name
-      template
-      groupID {
+      asset {
+        id
+        assetName
+        QRCode
+        description
+        currentEvent
+        typeID
+        AssetEvents {
+          nextToken
+        }
+        groupID
+        statusID
+        imageLink
+        assetlocaID
+        assetTypeData
+        createdAt
+        updatedAt
+      }
+      childAssets {
         items {
           id
           assetName
@@ -554,12 +572,10 @@ export const updateAssetGroup = /* GraphQL */ `
         }
         nextToken
       }
-      numAssets
-      assetstatusID
-      description
-      imageLink
+      statusID
       createdAt
       updatedAt
+      assetGroupAssetId
     }
   }
 `;
@@ -570,9 +586,25 @@ export const deleteAssetGroup = /* GraphQL */ `
   ) {
     deleteAssetGroup(input: $input, condition: $condition) {
       id
-      name
-      template
-      groupID {
+      asset {
+        id
+        assetName
+        QRCode
+        description
+        currentEvent
+        typeID
+        AssetEvents {
+          nextToken
+        }
+        groupID
+        statusID
+        imageLink
+        assetlocaID
+        assetTypeData
+        createdAt
+        updatedAt
+      }
+      childAssets {
         items {
           id
           assetName
@@ -590,12 +622,10 @@ export const deleteAssetGroup = /* GraphQL */ `
         }
         nextToken
       }
-      numAssets
-      assetstatusID
-      description
-      imageLink
+      statusID
       createdAt
       updatedAt
+      assetGroupAssetId
     }
   }
 `;

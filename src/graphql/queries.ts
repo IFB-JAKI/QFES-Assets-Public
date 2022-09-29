@@ -76,14 +76,10 @@ export const getAssetStatus = /* GraphQL */ `
       groupStatusID {
         items {
           id
-          name
-          template
-          numAssets
-          assetstatusID
-          description
-          imageLink
+          statusID
           createdAt
           updatedAt
+          assetGroupAssetId
         }
         nextToken
       }
@@ -270,9 +266,25 @@ export const getAssetGroup = /* GraphQL */ `
   query GetAssetGroup($id: ID!) {
     getAssetGroup(id: $id) {
       id
-      name
-      template
-      groupID {
+      asset {
+        id
+        assetName
+        QRCode
+        description
+        currentEvent
+        typeID
+        AssetEvents {
+          nextToken
+        }
+        groupID
+        statusID
+        imageLink
+        assetlocaID
+        assetTypeData
+        createdAt
+        updatedAt
+      }
+      childAssets {
         items {
           id
           assetName
@@ -290,12 +302,10 @@ export const getAssetGroup = /* GraphQL */ `
         }
         nextToken
       }
-      numAssets
-      assetstatusID
-      description
-      imageLink
+      statusID
       createdAt
       updatedAt
+      assetGroupAssetId
     }
   }
 `;
@@ -308,17 +318,28 @@ export const listAssetGroups = /* GraphQL */ `
     listAssetGroups(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        name
-        template
-        groupID {
+        asset {
+          id
+          assetName
+          QRCode
+          description
+          currentEvent
+          typeID
+          groupID
+          statusID
+          imageLink
+          assetlocaID
+          assetTypeData
+          createdAt
+          updatedAt
+        }
+        childAssets {
           nextToken
         }
-        numAssets
-        assetstatusID
-        description
-        imageLink
+        statusID
         createdAt
         updatedAt
+        assetGroupAssetId
       }
       nextToken
     }

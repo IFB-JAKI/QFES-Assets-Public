@@ -146,15 +146,12 @@ export type ModelAssetGroupConnection = {
 export type AssetGroup = {
   __typename: "AssetGroup",
   id: string,
-  name: string,
-  template?: string | null,
-  groupID?: ModelAssetConnection | null,
-  numAssets?: number | null,
-  assetstatusID?: string | null,
-  description?: string | null,
-  imageLink?: string | null,
+  asset?: Asset | null,
+  childAssets?: ModelAssetConnection | null,
+  statusID?: string | null,
   createdAt: string,
   updatedAt: string,
+  assetGroupAssetId?: string | null,
 };
 
 export type UpdateAssetStatusInput = {
@@ -318,34 +315,22 @@ export type DeleteAssetLogInput = {
 
 export type CreateAssetGroupInput = {
   id?: string | null,
-  name: string,
-  template?: string | null,
-  numAssets?: number | null,
-  assetstatusID?: string | null,
-  description?: string | null,
-  imageLink?: string | null,
+  statusID?: string | null,
+  assetGroupAssetId?: string | null,
 };
 
 export type ModelAssetGroupConditionInput = {
-  name?: ModelStringInput | null,
-  template?: ModelStringInput | null,
-  numAssets?: ModelIntInput | null,
-  assetstatusID?: ModelIDInput | null,
-  description?: ModelStringInput | null,
-  imageLink?: ModelStringInput | null,
+  statusID?: ModelIDInput | null,
   and?: Array< ModelAssetGroupConditionInput | null > | null,
   or?: Array< ModelAssetGroupConditionInput | null > | null,
   not?: ModelAssetGroupConditionInput | null,
+  assetGroupAssetId?: ModelIDInput | null,
 };
 
 export type UpdateAssetGroupInput = {
   id: string,
-  name?: string | null,
-  template?: string | null,
-  numAssets?: number | null,
-  assetstatusID?: string | null,
-  description?: string | null,
-  imageLink?: string | null,
+  statusID?: string | null,
+  assetGroupAssetId?: string | null,
 };
 
 export type DeleteAssetGroupInput = {
@@ -428,15 +413,11 @@ export type ModelAssetLogFilterInput = {
 
 export type ModelAssetGroupFilterInput = {
   id?: ModelIDInput | null,
-  name?: ModelStringInput | null,
-  template?: ModelStringInput | null,
-  numAssets?: ModelIntInput | null,
-  assetstatusID?: ModelIDInput | null,
-  description?: ModelStringInput | null,
-  imageLink?: ModelStringInput | null,
+  statusID?: ModelIDInput | null,
   and?: Array< ModelAssetGroupFilterInput | null > | null,
   or?: Array< ModelAssetGroupFilterInput | null > | null,
   not?: ModelAssetGroupFilterInput | null,
+  assetGroupAssetId?: ModelIDInput | null,
 };
 
 export type CreateAssetLocationMutationVariables = {
@@ -579,14 +560,10 @@ export type CreateAssetStatusMutation = {
       items:  Array< {
         __typename: "AssetGroup",
         id: string,
-        name: string,
-        template?: string | null,
-        numAssets?: number | null,
-        assetstatusID?: string | null,
-        description?: string | null,
-        imageLink?: string | null,
+        statusID?: string | null,
         createdAt: string,
         updatedAt: string,
+        assetGroupAssetId?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -630,14 +607,10 @@ export type UpdateAssetStatusMutation = {
       items:  Array< {
         __typename: "AssetGroup",
         id: string,
-        name: string,
-        template?: string | null,
-        numAssets?: number | null,
-        assetstatusID?: string | null,
-        description?: string | null,
-        imageLink?: string | null,
+        statusID?: string | null,
         createdAt: string,
         updatedAt: string,
+        assetGroupAssetId?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -681,14 +654,10 @@ export type DeleteAssetStatusMutation = {
       items:  Array< {
         __typename: "AssetGroup",
         id: string,
-        name: string,
-        template?: string | null,
-        numAssets?: number | null,
-        assetstatusID?: string | null,
-        description?: string | null,
-        imageLink?: string | null,
+        statusID?: string | null,
         createdAt: string,
         updatedAt: string,
+        assetGroupAssetId?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -997,9 +966,27 @@ export type CreateAssetGroupMutation = {
   createAssetGroup?:  {
     __typename: "AssetGroup",
     id: string,
-    name: string,
-    template?: string | null,
-    groupID?:  {
+    asset?:  {
+      __typename: "Asset",
+      id: string,
+      assetName: string,
+      QRCode?: string | null,
+      description?: string | null,
+      currentEvent?: string | null,
+      typeID?: string | null,
+      AssetEvents?:  {
+        __typename: "ModelAssetLogConnection",
+        nextToken?: string | null,
+      } | null,
+      groupID?: string | null,
+      statusID?: string | null,
+      imageLink?: string | null,
+      assetlocaID?: string | null,
+      assetTypeData?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    childAssets?:  {
       __typename: "ModelAssetConnection",
       items:  Array< {
         __typename: "Asset",
@@ -1019,12 +1006,10 @@ export type CreateAssetGroupMutation = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    numAssets?: number | null,
-    assetstatusID?: string | null,
-    description?: string | null,
-    imageLink?: string | null,
+    statusID?: string | null,
     createdAt: string,
     updatedAt: string,
+    assetGroupAssetId?: string | null,
   } | null,
 };
 
@@ -1037,9 +1022,27 @@ export type UpdateAssetGroupMutation = {
   updateAssetGroup?:  {
     __typename: "AssetGroup",
     id: string,
-    name: string,
-    template?: string | null,
-    groupID?:  {
+    asset?:  {
+      __typename: "Asset",
+      id: string,
+      assetName: string,
+      QRCode?: string | null,
+      description?: string | null,
+      currentEvent?: string | null,
+      typeID?: string | null,
+      AssetEvents?:  {
+        __typename: "ModelAssetLogConnection",
+        nextToken?: string | null,
+      } | null,
+      groupID?: string | null,
+      statusID?: string | null,
+      imageLink?: string | null,
+      assetlocaID?: string | null,
+      assetTypeData?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    childAssets?:  {
       __typename: "ModelAssetConnection",
       items:  Array< {
         __typename: "Asset",
@@ -1059,12 +1062,10 @@ export type UpdateAssetGroupMutation = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    numAssets?: number | null,
-    assetstatusID?: string | null,
-    description?: string | null,
-    imageLink?: string | null,
+    statusID?: string | null,
     createdAt: string,
     updatedAt: string,
+    assetGroupAssetId?: string | null,
   } | null,
 };
 
@@ -1077,9 +1078,27 @@ export type DeleteAssetGroupMutation = {
   deleteAssetGroup?:  {
     __typename: "AssetGroup",
     id: string,
-    name: string,
-    template?: string | null,
-    groupID?:  {
+    asset?:  {
+      __typename: "Asset",
+      id: string,
+      assetName: string,
+      QRCode?: string | null,
+      description?: string | null,
+      currentEvent?: string | null,
+      typeID?: string | null,
+      AssetEvents?:  {
+        __typename: "ModelAssetLogConnection",
+        nextToken?: string | null,
+      } | null,
+      groupID?: string | null,
+      statusID?: string | null,
+      imageLink?: string | null,
+      assetlocaID?: string | null,
+      assetTypeData?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    childAssets?:  {
       __typename: "ModelAssetConnection",
       items:  Array< {
         __typename: "Asset",
@@ -1099,12 +1118,10 @@ export type DeleteAssetGroupMutation = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    numAssets?: number | null,
-    assetstatusID?: string | null,
-    description?: string | null,
-    imageLink?: string | null,
+    statusID?: string | null,
     createdAt: string,
     updatedAt: string,
+    assetGroupAssetId?: string | null,
   } | null,
 };
 
@@ -1200,14 +1217,10 @@ export type GetAssetStatusQuery = {
       items:  Array< {
         __typename: "AssetGroup",
         id: string,
-        name: string,
-        template?: string | null,
-        numAssets?: number | null,
-        assetstatusID?: string | null,
-        description?: string | null,
-        imageLink?: string | null,
+        statusID?: string | null,
         createdAt: string,
         updatedAt: string,
+        assetGroupAssetId?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1430,9 +1443,27 @@ export type GetAssetGroupQuery = {
   getAssetGroup?:  {
     __typename: "AssetGroup",
     id: string,
-    name: string,
-    template?: string | null,
-    groupID?:  {
+    asset?:  {
+      __typename: "Asset",
+      id: string,
+      assetName: string,
+      QRCode?: string | null,
+      description?: string | null,
+      currentEvent?: string | null,
+      typeID?: string | null,
+      AssetEvents?:  {
+        __typename: "ModelAssetLogConnection",
+        nextToken?: string | null,
+      } | null,
+      groupID?: string | null,
+      statusID?: string | null,
+      imageLink?: string | null,
+      assetlocaID?: string | null,
+      assetTypeData?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    childAssets?:  {
       __typename: "ModelAssetConnection",
       items:  Array< {
         __typename: "Asset",
@@ -1452,12 +1483,10 @@ export type GetAssetGroupQuery = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    numAssets?: number | null,
-    assetstatusID?: string | null,
-    description?: string | null,
-    imageLink?: string | null,
+    statusID?: string | null,
     createdAt: string,
     updatedAt: string,
+    assetGroupAssetId?: string | null,
   } | null,
 };
 
@@ -1473,18 +1502,30 @@ export type ListAssetGroupsQuery = {
     items:  Array< {
       __typename: "AssetGroup",
       id: string,
-      name: string,
-      template?: string | null,
-      groupID?:  {
+      asset?:  {
+        __typename: "Asset",
+        id: string,
+        assetName: string,
+        QRCode?: string | null,
+        description?: string | null,
+        currentEvent?: string | null,
+        typeID?: string | null,
+        groupID?: string | null,
+        statusID?: string | null,
+        imageLink?: string | null,
+        assetlocaID?: string | null,
+        assetTypeData?: string | null,
+        createdAt: string,
+        updatedAt: string,
+      } | null,
+      childAssets?:  {
         __typename: "ModelAssetConnection",
         nextToken?: string | null,
       } | null,
-      numAssets?: number | null,
-      assetstatusID?: string | null,
-      description?: string | null,
-      imageLink?: string | null,
+      statusID?: string | null,
       createdAt: string,
       updatedAt: string,
+      assetGroupAssetId?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -1610,14 +1651,10 @@ export type OnCreateAssetStatusSubscription = {
       items:  Array< {
         __typename: "AssetGroup",
         id: string,
-        name: string,
-        template?: string | null,
-        numAssets?: number | null,
-        assetstatusID?: string | null,
-        description?: string | null,
-        imageLink?: string | null,
+        statusID?: string | null,
         createdAt: string,
         updatedAt: string,
+        assetGroupAssetId?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1656,14 +1693,10 @@ export type OnUpdateAssetStatusSubscription = {
       items:  Array< {
         __typename: "AssetGroup",
         id: string,
-        name: string,
-        template?: string | null,
-        numAssets?: number | null,
-        assetstatusID?: string | null,
-        description?: string | null,
-        imageLink?: string | null,
+        statusID?: string | null,
         createdAt: string,
         updatedAt: string,
+        assetGroupAssetId?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1702,14 +1735,10 @@ export type OnDeleteAssetStatusSubscription = {
       items:  Array< {
         __typename: "AssetGroup",
         id: string,
-        name: string,
-        template?: string | null,
-        numAssets?: number | null,
-        assetstatusID?: string | null,
-        description?: string | null,
-        imageLink?: string | null,
+        statusID?: string | null,
         createdAt: string,
         updatedAt: string,
+        assetGroupAssetId?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1968,9 +1997,27 @@ export type OnCreateAssetGroupSubscription = {
   onCreateAssetGroup?:  {
     __typename: "AssetGroup",
     id: string,
-    name: string,
-    template?: string | null,
-    groupID?:  {
+    asset?:  {
+      __typename: "Asset",
+      id: string,
+      assetName: string,
+      QRCode?: string | null,
+      description?: string | null,
+      currentEvent?: string | null,
+      typeID?: string | null,
+      AssetEvents?:  {
+        __typename: "ModelAssetLogConnection",
+        nextToken?: string | null,
+      } | null,
+      groupID?: string | null,
+      statusID?: string | null,
+      imageLink?: string | null,
+      assetlocaID?: string | null,
+      assetTypeData?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    childAssets?:  {
       __typename: "ModelAssetConnection",
       items:  Array< {
         __typename: "Asset",
@@ -1990,12 +2037,10 @@ export type OnCreateAssetGroupSubscription = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    numAssets?: number | null,
-    assetstatusID?: string | null,
-    description?: string | null,
-    imageLink?: string | null,
+    statusID?: string | null,
     createdAt: string,
     updatedAt: string,
+    assetGroupAssetId?: string | null,
   } | null,
 };
 
@@ -2003,9 +2048,27 @@ export type OnUpdateAssetGroupSubscription = {
   onUpdateAssetGroup?:  {
     __typename: "AssetGroup",
     id: string,
-    name: string,
-    template?: string | null,
-    groupID?:  {
+    asset?:  {
+      __typename: "Asset",
+      id: string,
+      assetName: string,
+      QRCode?: string | null,
+      description?: string | null,
+      currentEvent?: string | null,
+      typeID?: string | null,
+      AssetEvents?:  {
+        __typename: "ModelAssetLogConnection",
+        nextToken?: string | null,
+      } | null,
+      groupID?: string | null,
+      statusID?: string | null,
+      imageLink?: string | null,
+      assetlocaID?: string | null,
+      assetTypeData?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    childAssets?:  {
       __typename: "ModelAssetConnection",
       items:  Array< {
         __typename: "Asset",
@@ -2025,12 +2088,10 @@ export type OnUpdateAssetGroupSubscription = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    numAssets?: number | null,
-    assetstatusID?: string | null,
-    description?: string | null,
-    imageLink?: string | null,
+    statusID?: string | null,
     createdAt: string,
     updatedAt: string,
+    assetGroupAssetId?: string | null,
   } | null,
 };
 
@@ -2038,9 +2099,27 @@ export type OnDeleteAssetGroupSubscription = {
   onDeleteAssetGroup?:  {
     __typename: "AssetGroup",
     id: string,
-    name: string,
-    template?: string | null,
-    groupID?:  {
+    asset?:  {
+      __typename: "Asset",
+      id: string,
+      assetName: string,
+      QRCode?: string | null,
+      description?: string | null,
+      currentEvent?: string | null,
+      typeID?: string | null,
+      AssetEvents?:  {
+        __typename: "ModelAssetLogConnection",
+        nextToken?: string | null,
+      } | null,
+      groupID?: string | null,
+      statusID?: string | null,
+      imageLink?: string | null,
+      assetlocaID?: string | null,
+      assetTypeData?: string | null,
+      createdAt: string,
+      updatedAt: string,
+    } | null,
+    childAssets?:  {
       __typename: "ModelAssetConnection",
       items:  Array< {
         __typename: "Asset",
@@ -2060,11 +2139,9 @@ export type OnDeleteAssetGroupSubscription = {
       } | null >,
       nextToken?: string | null,
     } | null,
-    numAssets?: number | null,
-    assetstatusID?: string | null,
-    description?: string | null,
-    imageLink?: string | null,
+    statusID?: string | null,
     createdAt: string,
     updatedAt: string,
+    assetGroupAssetId?: string | null,
   } | null,
 };

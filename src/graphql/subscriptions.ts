@@ -112,14 +112,10 @@ export const onCreateAssetStatus = /* GraphQL */ `
       groupStatusID {
         items {
           id
-          name
-          template
-          numAssets
-          assetstatusID
-          description
-          imageLink
+          statusID
           createdAt
           updatedAt
+          assetGroupAssetId
         }
         nextToken
       }
@@ -154,14 +150,10 @@ export const onUpdateAssetStatus = /* GraphQL */ `
       groupStatusID {
         items {
           id
-          name
-          template
-          numAssets
-          assetstatusID
-          description
-          imageLink
+          statusID
           createdAt
           updatedAt
+          assetGroupAssetId
         }
         nextToken
       }
@@ -196,14 +188,10 @@ export const onDeleteAssetStatus = /* GraphQL */ `
       groupStatusID {
         items {
           id
-          name
-          template
-          numAssets
-          assetstatusID
-          description
-          imageLink
+          statusID
           createdAt
           updatedAt
+          assetGroupAssetId
         }
         nextToken
       }
@@ -450,9 +438,25 @@ export const onCreateAssetGroup = /* GraphQL */ `
   subscription OnCreateAssetGroup {
     onCreateAssetGroup {
       id
-      name
-      template
-      groupID {
+      asset {
+        id
+        assetName
+        QRCode
+        description
+        currentEvent
+        typeID
+        AssetEvents {
+          nextToken
+        }
+        groupID
+        statusID
+        imageLink
+        assetlocaID
+        assetTypeData
+        createdAt
+        updatedAt
+      }
+      childAssets {
         items {
           id
           assetName
@@ -470,12 +474,10 @@ export const onCreateAssetGroup = /* GraphQL */ `
         }
         nextToken
       }
-      numAssets
-      assetstatusID
-      description
-      imageLink
+      statusID
       createdAt
       updatedAt
+      assetGroupAssetId
     }
   }
 `;
@@ -483,9 +485,25 @@ export const onUpdateAssetGroup = /* GraphQL */ `
   subscription OnUpdateAssetGroup {
     onUpdateAssetGroup {
       id
-      name
-      template
-      groupID {
+      asset {
+        id
+        assetName
+        QRCode
+        description
+        currentEvent
+        typeID
+        AssetEvents {
+          nextToken
+        }
+        groupID
+        statusID
+        imageLink
+        assetlocaID
+        assetTypeData
+        createdAt
+        updatedAt
+      }
+      childAssets {
         items {
           id
           assetName
@@ -503,12 +521,10 @@ export const onUpdateAssetGroup = /* GraphQL */ `
         }
         nextToken
       }
-      numAssets
-      assetstatusID
-      description
-      imageLink
+      statusID
       createdAt
       updatedAt
+      assetGroupAssetId
     }
   }
 `;
@@ -516,9 +532,25 @@ export const onDeleteAssetGroup = /* GraphQL */ `
   subscription OnDeleteAssetGroup {
     onDeleteAssetGroup {
       id
-      name
-      template
-      groupID {
+      asset {
+        id
+        assetName
+        QRCode
+        description
+        currentEvent
+        typeID
+        AssetEvents {
+          nextToken
+        }
+        groupID
+        statusID
+        imageLink
+        assetlocaID
+        assetTypeData
+        createdAt
+        updatedAt
+      }
+      childAssets {
         items {
           id
           assetName
@@ -536,12 +568,10 @@ export const onDeleteAssetGroup = /* GraphQL */ `
         }
         nextToken
       }
-      numAssets
-      assetstatusID
-      description
-      imageLink
+      statusID
       createdAt
       updatedAt
+      assetGroupAssetId
     }
   }
 `;
