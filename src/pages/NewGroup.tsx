@@ -19,11 +19,12 @@ const NewGroup = ({ user }: any) => {
     <IonPage>
       <Header user={user} title="New Group" />
       <IonContent>
-        <div className="m-2 rounded bg-white">
+        <div className="m-2 p-2 rounded bg-white">
           <form onSubmit={handleSubmit}>
             <IonLabel>Parent Asset</IonLabel>
             <AssetSelector />
             <br></br>
+            <IonLabel>Child Assets</IonLabel>
             <MultiAssetSelector />
             <IonButton type='submit'>Submit</IonButton>
           </form>
