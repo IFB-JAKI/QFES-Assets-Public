@@ -4,33 +4,26 @@ import { closeCircle, closeOutline } from 'ionicons/icons';
 import { useEffect, useState } from 'react'
 import { listAssets } from '../graphql/queries';
 
-const AssetSelector = () => {
+interface AssetSelectorProps {
+  assets: Array<any>;
+  setParentAsset: (assetID: string | undefined) => void;
+  parentAsset?: string;
+}
+
+const AssetSelector = ({ assets, setParentAsset, parentAsset }: AssetSelectorProps) => {
 
   const [text, setText] = useState<string>();
-  const [assets, setAssets] = useState(Array<any>());
-  const [parent, setParent] = useState<string>();
 
-  useEffect(() => {
-    const fetchAssets = async () => {
-      const result: any = await API.graphql({
-        query: listAssets,
-        authMode: 'AWS_IAM'
-      });
-      setAssets(result.data.listAssets.items);
-    }
-    fetchAssets();
-  }, []);
-
-  const handleParentSelect = (parent: string) => {
+  const handleParentSelect = (parentAsset: string) => {
     setText('');
-    setParent(parent);
+    setParentAsset(parentAsset);
   }
 
   return (
     <div className='relative'>
-      {parent ?
-        <div className='bg-orange rounded w-fit flex items-center text-white p-1' onClick={e => setParent(undefined)}>
-          {assets.find(item => item.id === parent)?.assetName}
+      {parentAsset ?
+        <div className='bg-orange rounded w-fit flex items-center text-white p-1' onClick={e => setParentAsset(undefined)}>
+          {assets.find(item => item.id === parentAsset)?.assetName}
           <IonIcon className='cursor-pointer' slot="end" icon={closeOutline} />
         </div>
         :
@@ -41,7 +34,7 @@ const AssetSelector = () => {
       }
       {text && text !== '' && <div className='shadow-lg w-64 p-3 z-50 absolute bg-white'>
         {assets.map((asset: any, index: number) => {
-          if (asset.assetName.toLowerCase().includes(text.toLowerCase()) && index < 10 && asset.id !== parent) {
+          if (asset.assetName.toLowerCase().includes(text.toLowerCase()) && index < 10 && asset.id !== parentAsset) {
             return (
               <div className="cursor-pointer hover:bg-primary-400 transition ease-in-out p-1 rounded" key={asset.id} onClick={e => handleParentSelect(asset.id)}>
                 {asset.assetName}
