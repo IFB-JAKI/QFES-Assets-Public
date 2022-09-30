@@ -37,11 +37,6 @@ interface FieldsInterface {
     value?: string
 }
 
-interface TypeFieldCreatorProps {
-    fields: FieldInputs[];
-    setFields: any;
-}
-
 const Type: React.FC<AssetProps> = ({ match }) => {
     const [presentAlert] = useIonAlert();
     // user input
@@ -70,10 +65,6 @@ const Type: React.FC<AssetProps> = ({ match }) => {
 
     // modal logic
     const BorrowerInput = useRef<HTMLIonInputElement>(null);
-
-    // array of asset fields for type
-    const [assetTypeFields, setAssetTypeFields] = React.useState(Array<FieldInputs>());
-    const [assetTypeLogFields, setAssetTypeLogFields] = React.useState(Array<FieldInputs>());
 
     const router = useIonRouter();
 
@@ -113,137 +104,58 @@ const Type: React.FC<AssetProps> = ({ match }) => {
     };
 
     // updates the asset type and page state with the new type if it is a valid status
-    const updateTypeCall = async (typeDetails: any, callback?: Function): Promise<void> => {
-        if (type?.id) {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+
+        event.preventDefault();
+
+        const assetFieldsJSON = JSON.stringify(typeFields);
+        const assetLogFieldsJSON = JSON.stringify(logFields);
+
+        let typeDetails = {
+            typeName: name,
+            dataTemplate: assetFieldsJSON,
+            logTemplate: assetLogFieldsJSON
+        }
+
+        const updateType = async (): Promise<void> => {
             try {
                 const result: any = await API.graphql({
                     query: updateAssetType,
                     variables: { input: typeDetails },
                     authMode: 'AWS_IAM'
                 });
-                if (callback) {
-                    callback(result.data.updateAsset);
-                }
-            } catch (e) {
-                console.log(e);
-            }
-        } else {
-            console.log('Error updating type');
-        }
-    };
-
-    const handleLoanSubmit = () => {
-        // create loan event
-        // get loan event id, assign to asset
-
-        const createLoanEvent = async () => {
-            let assetLogData = Array<any>();
-            let now = new Date().valueOf();
-            let assetLogDataString = JSON.stringify(assetLogData);
-            let BorrowerUserName = (BorrowerInput.current?.value) ? BorrowerInput.current?.value : 'Unknown';
-            try {
-                const result: any = await API.graphql({
-                    query: createAssetLog,
-                    variables: {
-                        input: {
-                            assetID: match.params.id,
-                            assetLogData: assetLogDataString,
-                            borrowerUsername: BorrowerUserName,
-                            borrowDate: now,
-                        }
-                    },
-                    authMode: 'AWS_IAM'
-                });
-                await updateAssetCall({ id: match.params.id, currentEvent: result.data.createAssetLog.id });
-            } catch (e) {
-                console.log(e);
-            }
-            return;
-        }
-        createLoanEvent();
-        updateStatusCall('On Loan');
-    }
-
-    const handleReturnSubmit = () => {
-        updateStatusCall('Available');
-        let now = new Date().valueOf();
-        // create return event
-        const createReturnEvent = async () => {
-            try {
-                const result: any = await API.graphql({
-                    query: createAssetLog,
-                    variables: {
-                        input: {
-                            assetID: match.params.id,
-                            returnDate: now,
-                        }
-                    },
-                    authMode: 'AWS_IAM'
-                });
+                // @TODO Success or error toast here
                 console.log(result);
+                router.goBack();
             } catch (e) {
                 console.log(e);
             }
-        }
-        createReturnEvent();
-    }
-
-    const handleArchiveSubmit = () => {
-        if (status.name == "On Loan") {
-            presentAlert({
-                header: 'Hold On!',
-                subHeader: 'Asset cannot be archived while on loan.',
-                message: 'Return asset before archiving',
-                buttons: ['OK'],
-            })
             return;
-        }
-        updateStatusCall('Archived');
-    }
+        };
 
-    const handleRestoreSubmit = () => {
-        const createRestoreEvent = async () => {
-
-        }
-        createRestoreEvent();
-        updateStatusCall('Available');
-    }
+        updateType();
+    };
 
     const handleMainSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
-        let typeInputs = typeFields.map((field) => {
-            return { name: field.name, value: field.value }
-        });
-
-        let assetDetails = {
-            id: match.params.id,
-            assetName: name,
-            description: description,
-            typeID: type.id,
-            groupID: group,
-            assetlocaID: location.id,
-            assetTypeData: JSON.stringify(typeInputs)
-        };
-        updateAssetCall(assetDetails);
-    }
-
-    const handleTypeSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+        const assetFieldsJSON = JSON.stringify(typeFields);
+        const assetLogFieldsJSON = JSON.stringify(logFields);
 
         let typeDetails = {
-            id: type.id,
-            typeName: type.name
-        };
+            typeName: name,
+            dataTemplate: assetFieldsJSON,
+            logTemplate: assetLogFieldsJSON
+        }
 
-        updateTypeCall(typeDetails);
+        //updateType();;
     }
 
-    // const removeField = (index: number) => {
-    //     let newFields = [...fields];
-    //     newFields.splice(index, 1);
-    //     setFields(newFields);
-    // }
+    const removeField = (index: number) => {
+        let newFields = [...typeFields];
+        newFields.splice(index, 1);
+        setTypeFields(newFields);
+    }
 
     useEffect(() => {
         setTypeFields([]);
@@ -368,32 +280,11 @@ const Type: React.FC<AssetProps> = ({ match }) => {
                                     <br></br>
                                     <label className="mr-3">Asset Fields:</label>
                                     <br></br>
-                                    {
-                                        typeFields.map((field, index) => {
-                                            let fieldJsx;
-                                            if (field.type === 'text') {
-                                                fieldJsx = <input type="text" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
-                                            } else if (field.type === 'number') {
-                                                fieldJsx = <input type="number" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
-                                            } else if (field.type === 'date') {
-                                                fieldJsx = <input type="date" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
-                                            } else if (field.type === 'boolean') {
-                                                fieldJsx = <IonCheckbox value={field.value} onChange={e => handleTypeChange(index, e)}></IonCheckbox>
-                                            }
-                                            return (
-                                                <div key={index}>
-                                                    <label>{field.name}: {field.type}</label>
-                                                    {/* <IonButton onClick={() => { removeField(index) }}>Delete</IonButton> */}
-                                                </div>
-                                            )
-                                        }, [])
-                                    }
-                                    <br></br>
-                                    <TypeFieldCreator fields={assetTypeFields} setFields={setAssetTypeFields} />
+                                    <TypeFieldCreator fields={typeFields} setFields={setTypeFields} />
                                     <br></br>
                                     <label className="mr-3 mt-6">Asset Log Fields:</label>
                                     <br></br>
-                                    <TypeFieldCreator fields={assetTypeLogFields} setFields={setAssetTypeLogFields} />
+                                    <TypeFieldCreator fields={logFields} setFields={setLogFields} />
                                     <br></br>
                                     <IonButton type='submit'>Submit</IonButton>
                                 </form>
