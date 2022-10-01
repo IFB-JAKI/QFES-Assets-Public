@@ -10,7 +10,7 @@ import MultiAssetSelector from '../components/MultiAssetSelector'
 const NewGroup = ({ user }: any) => {
 
   const handleSubmit = () => {
-
+    // waiting on asset page to be finished
   }
 
   const [parentAsset, setParentAsset] = useState<string>();
@@ -35,9 +35,9 @@ const NewGroup = ({ user }: any) => {
         <div className="m-2 p-2 rounded bg-white">
           <form onSubmit={handleSubmit}>
             <IonLabel>Parent Asset</IonLabel>
-            <AssetSelector assets={assets} parentAsset={parentAsset} setParentAsset={setParentAsset} />
+            <AssetSelector assets={assets} parentAsset={parentAsset} setParentAsset={setParentAsset} childAssets={childAssets} />
             <IonLabel>Child Assets</IonLabel>
-            <MultiAssetSelector assets={assets} childAssets={childAssets} setChildAssets={setChildAssets} />
+            <MultiAssetSelector assets={assets} childAssets={childAssets} setChildAssets={setChildAssets} parentAsset={parentAsset} />
             <IonButton type='submit'>Submit</IonButton>
           </form>
           <BackButton text="back" />

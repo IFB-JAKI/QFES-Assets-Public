@@ -8,16 +8,25 @@ interface AssetSelectorProps {
   assets: Array<any>;
   setParentAsset: (assetID: string | undefined) => void;
   parentAsset?: string;
+  childAssets: Array<string>;
 }
 
-const AssetSelector = ({ assets, setParentAsset, parentAsset }: AssetSelectorProps) => {
+const AssetSelector = ({ assets, setParentAsset, parentAsset, childAssets }: AssetSelectorProps) => {
 
   const [text, setText] = useState<string>();
+  const [filteredAssets, setFilteredAssets] = useState(assets);
 
   const handleParentSelect = (parentAsset: string) => {
     setText('');
     setParentAsset(parentAsset);
   }
+
+  // filter child assets from assets
+  useEffect(() => {
+    if (assets.length > 0) {
+      setFilteredAssets(assets.filter(asset => !childAssets.includes(asset.id)));
+    }
+  }, [childAssets, assets])
 
   return (
     <div className='relative'>
@@ -33,7 +42,7 @@ const AssetSelector = ({ assets, setParentAsset, parentAsset }: AssetSelectorPro
         </div>
       }
       {text && text !== '' && <div className='shadow-lg w-64 p-3 z-50 absolute bg-white'>
-        {assets.map((asset: any, index: number) => {
+        {filteredAssets.map((asset: any, index: number) => {
           if (asset.assetName.toLowerCase().includes(text.toLowerCase()) && index < 10 && asset.id !== parentAsset) {
             return (
               <div className="cursor-pointer hover:bg-primary-400 transition ease-in-out p-1 rounded" key={asset.id} onClick={e => handleParentSelect(asset.id)}>

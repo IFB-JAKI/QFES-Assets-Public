@@ -29,12 +29,16 @@ const Groups = ({ user }: GroupsProps) => {
 
   useEffect(() => {
     const fetchGroups = async () => {
-      const groupsResult: any = await API.graphql({
-        query: listAssetGroups,
-        variables: { limit: 1000 }
-      });
-      setGroups(groupsResult.data.listAssetGroups.items);
-      setFilteredGroups(groupsResult.data.listAssetGroups.items);
+      try {
+        const groupsResult: any = await API.graphql({
+          query: listAssetGroups,
+          variables: { limit: 1000 }
+        });
+        setGroups(groupsResult.data.listAssetGroups.items);
+        setFilteredGroups(groupsResult.data.listAssetGroups.items);
+      } catch (e: any) {
+        console.log("Error fetching Groups:", e);
+      }
     }
     fetchGroups();
   }, []);

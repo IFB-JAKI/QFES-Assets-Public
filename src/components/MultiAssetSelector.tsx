@@ -8,11 +8,22 @@ interface MultiAssetSelectorProps {
   assets: Array<any>;
   setChildAssets: (assetIDs: Array<string>) => void;
   childAssets: Array<string>;
+  parentAsset: string | undefined;
 }
 
-const MultiAssetSelector = ({ assets, childAssets, setChildAssets}: MultiAssetSelectorProps) => {
+const MultiAssetSelector = ({ assets, childAssets, setChildAssets, parentAsset}: MultiAssetSelectorProps) => {
 
   const [text, setText] = useState<string>();
+  const [filteredAssets, setFilteredAssets] = useState(assets);
+
+  // cant select parent and child at same time
+
+  useEffect(() => {
+    if (assets.length > 0) {
+      setFilteredAssets(assets.filter(asset => asset.id !== parentAsset));
+    }
+    console.log(parentAsset)
+  }, [parentAsset, assets])
 
   const handleAssetSelect = (assetID: string) => {
     setText('');
@@ -30,7 +41,7 @@ const MultiAssetSelector = ({ assets, childAssets, setChildAssets}: MultiAssetSe
         {text && text !== '' && <IonIcon className='cursor-pointer pr-1 text-2xl text-primary-300' slot="end" icon={closeOutline} onClick={e => setText('')} />}
       </div>
       {text && text !== '' && <div className='shadow-lg w-64 p-3 z-50 absolute bg-white'>
-        {assets.map((asset: any, index: number) => {
+        {filteredAssets.map((asset: any, index: number) => {
           if (asset.assetName.toLowerCase().includes(text.toLowerCase()) && index < 10 && asset.id !== childAssets.find(item => item === asset.id)) {
             return (
               <div className="cursor-pointer hover:bg-primary-400 transition ease-in-out p-1 rounded" key={asset.id} onClick={e => handleAssetSelect(asset.id)}>
