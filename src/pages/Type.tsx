@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonCheckbox, useIonLoading, IonLoading, IonButtons, IonInput, IonItem, IonLabel, IonModal, useIonAlert, useIonModal } from '@ionic/react'
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonCheckbox, useIonLoading, IonLoading, IonButtons, IonInput, IonItem, IonLabel, IonModal, useIonAlert, useIonModal, IonToast } from '@ionic/react'
 import { RouteComponentProps } from 'react-router'
 import { API } from 'aws-amplify';
 import { getAsset, getAssetGroup, getAssetStatus, getAssetLocation, getAssetType } from '../graphql/queries';
 import { listAssetGroups, listAssetLocations, listAssetStatuses, listAssetTypes } from '../graphql/queries';
-import { updateAssetStatus, updateAsset, createAssetLog, updateAssetType } from '../graphql/mutations';
+import { updateAssetStatus, updateAsset, createAssetLog, updateAssetType, createAssetType } from '../graphql/mutations';
 import BackButton from '../components/BackButton';
 import TypeFieldCreator from '../components/TypeFieldCreator';
 import Selector from '../components/Selector';
@@ -42,15 +42,15 @@ const Type: React.FC<AssetProps> = ({ match }) => {
     // user input
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [type, setType] = useState({ name: '', id: undefined, dataTemplate: '', logTemplate: '' });
+    const [type, setType] = useState({ typeName: '', id: undefined, dataTemplate: '', logTemplate: '' });
     const [status, setStatus] = useState({ name: '', id: undefined });
     const [location, setLocation] = useState({ name: '', id: undefined });
     const [group, setGroup] = useState(null);
     const [assetTypeData, setAssetTypeData] = useState(Array<FieldsInterface>());
 
     // dynamic field states
-    const [typeFields, setTypeFields] = useState(Array<any>());
-    const [logFields, setLogFields] = useState(Array<any>());
+    const [typeFields, setTypeFields] = React.useState(Array<FieldInputs>());
+    const [logFields, setLogFields] = React.useState(Array<FieldInputs>());
 
     // array of all possible statuses
     const [allStatuses, setAllStatuses] = useState(Array<Status>());
@@ -68,54 +68,40 @@ const Type: React.FC<AssetProps> = ({ match }) => {
 
     const router = useIonRouter();
 
-    const updateAssetCall = async (assetDetails: any, callback?: Function): Promise<void> => {
-        try {
-            const result: any = await API.graphql({
-                query: updateAsset,
-                variables: { input: assetDetails },
-                authMode: 'AWS_IAM'
-            });
-            if (callback) {
-                callback(result.data.updateAsset);
-            }
-        } catch (e) {
-            console.log(e);
-        }
-        return;
-    };
-
-    // updates the asset status and page state with the new status if it is a valid status
-    const updateStatusCall = async (statusName: string): Promise<void> => {
-        let status = allStatuses.find((status) => status.statusName === statusName);
-        if (status?.id) {
-            updateAssetCall({ id: match.params.id, statusID: status.id }, (asset: any) => {
-                try {
-                    let tempStatus = allStatuses.find((status) => status.id === asset.statusID);
-                    if (tempStatus && tempStatus?.statusName) {
-                        setStatus({ name: tempStatus.statusName, id: asset.statusID });
-                    }
-                } catch (e) {
-                    console.log(e);
-                }
-            });
-        } else {
-            console.log('Error updating status');
-        }
-    };
-
     // updates the asset type and page state with the new type if it is a valid status
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-
+    const handleMainSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         const assetFieldsJSON = JSON.stringify(typeFields);
         const assetLogFieldsJSON = JSON.stringify(logFields);
 
+        console.log(type.typeName + "Hello world");
+
         let typeDetails = {
-            typeName: name,
+            id: "9f72c051-203b-4712-a2c3-fccd64ec8550",
+            typeName: type.typeName, //change this to type name (i think its using asset name)
             dataTemplate: assetFieldsJSON,
             logTemplate: assetLogFieldsJSON
         }
+
+        // const createType = async (): Promise<void> => {
+        //     try {
+        //         const result: any = await API.graphql({
+        //             query: createAssetType,
+        //             variables: { input: typeDetails },
+        //             authMode: 'AWS_IAM'
+        //         });
+        //         // @TODO Success or error toast here
+        //         console.log(result);
+        //         console.log("test work");
+        //         router.goBack();
+        //     } catch (e) {
+        //         console.log(e);
+        //     }
+        //     return;
+        // };
+
+        // createType();
 
         const updateType = async (): Promise<void> => {
             try {
@@ -126,6 +112,7 @@ const Type: React.FC<AssetProps> = ({ match }) => {
                 });
                 // @TODO Success or error toast here
                 console.log(result);
+                console.log("test work");
                 router.goBack();
             } catch (e) {
                 console.log(e);
@@ -134,21 +121,6 @@ const Type: React.FC<AssetProps> = ({ match }) => {
         };
 
         updateType();
-    };
-
-    const handleMainSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        const assetFieldsJSON = JSON.stringify(typeFields);
-        const assetLogFieldsJSON = JSON.stringify(logFields);
-
-        let typeDetails = {
-            typeName: name,
-            dataTemplate: assetFieldsJSON,
-            logTemplate: assetLogFieldsJSON
-        }
-
-        //updateType();;
     }
 
     const removeField = (index: number) => {
@@ -182,7 +154,7 @@ const Type: React.FC<AssetProps> = ({ match }) => {
                     setTypeFields(merged);
                 } catch (e) {
                     console.log(e);
-                    setError("Could not parse data template for type " + type.name);
+                    setError("Could not parse data template for type " + type.typeName);
                 }
             }
         }
@@ -196,7 +168,7 @@ const Type: React.FC<AssetProps> = ({ match }) => {
                     })
                     setLogFields(parsedTemplate);
                 } catch (e) {
-                    setError("Could not parse log template for type " + type.name);
+                    setError("Could not parse log template for type " + type.typeName);
                 }
             }
         }
@@ -240,11 +212,9 @@ const Type: React.FC<AssetProps> = ({ match }) => {
                         variables: { id: typeId },
                         authMode: 'AWS_IAM'
                     });
-                    if (!typeResult) {
-                        throw new Error('Type not found');
-                    }
                     setType(typeResult.data.getAssetType);
-                    setLoaded(true)
+                    console.log(typeResult);
+                    setLoaded(true);
                 } catch (e) {
                     console.log(e);
                 }
@@ -260,7 +230,7 @@ const Type: React.FC<AssetProps> = ({ match }) => {
 
     const handleTypeChange = (index: number, e: any) => {
         let data = [...typeFields];
-        data[index].value = e.target.value;
+        data[index].type = e.target.value;
         setTypeFields(data);
     }
 
@@ -276,7 +246,7 @@ const Type: React.FC<AssetProps> = ({ match }) => {
                                 <form onSubmit={(e) => handleMainSubmit(e)} className="m-6">
                                     <h1>This is the id: {type?.id && type.id}</h1>
                                     <label className="mr-3">Type Name:</label>
-                                    <IonLabel>{type?.name && type.name}</IonLabel>
+                                    <IonLabel>{type?.typeName && type.typeName}</IonLabel>
                                     <br></br>
                                     <label className="mr-3">Asset Fields:</label>
                                     <br></br>
