@@ -14,6 +14,7 @@ import Reports from './pages/Reports';
 import Statistics from './pages/Statistics';
 import Search from './pages/Search';
 import Type from './pages/Type';
+import TypeSearch from './pages/TypeSearch'
 
 import '@aws-amplify/ui-react/styles.css';
 
@@ -107,7 +108,8 @@ const App = () => (
               <Route exact path="/Search" render={() => <Search user={user} />} />
               <Route exact path="/NewStatus" component={NewStatus} />
               <Route exact path="/NewLocation" component={NewLocation} />
-              <Route exact path="/Type" component={Type} />
+              <Route exact path="/Type/:id" component={Type} />
+              <Route exact path="/TypeSearch" component={TypeSearch} />
             </IonRouterOutlet>
           </IonSplitPane>
         </IonReactRouter>
