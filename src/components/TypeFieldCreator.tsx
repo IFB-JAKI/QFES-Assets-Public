@@ -1,4 +1,4 @@
-import { IonButton } from '@ionic/react';
+import { IonButton, IonInput, IonLabel, IonItem } from '@ionic/react';
 import React from 'react'
 import { FieldInputs } from '../types/FieldInputs';
 
@@ -9,7 +9,7 @@ interface TypeFieldCreatorProps {
 
 const TypeFieldCreator = ({ fields, setFields }: TypeFieldCreatorProps) => {
 
-  const handleNameChange = (index: number, event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleNameChange = (index: number, event: any) => {
     let newFields = [...fields];
     newFields[index].name = event.target.value;
     setFields(newFields);
@@ -36,25 +36,29 @@ const TypeFieldCreator = ({ fields, setFields }: TypeFieldCreatorProps) => {
       {fields.map((field, index) => {
         return (
           <div key={index} className="my-3">
-            <input
-              name="name"
-              placeholder="Name"
-              value={field.name}
-              onChange={(e) => { handleNameChange(index, e) }}
-              className="mr-3"
-            />
-            <select name="type" value={field.type} onChange={(e) => { handleTypeChange(index, e) }}>
-              <option disabled value="default">Select a Type</option>
-              <option value="text">Text</option>
-              <option value="number">Number</option>
-              <option value="boolean">Boolean</option>
-              <option value="date">Date</option>
-            </select>
-            <IonButton onClick={() => { removeField(index) }}>Delete</IonButton>
+            <IonItem>
+              <IonItem class="inputOutline">
+                <IonInput required
+                  name="name"
+                  placeholder="Name"
+                  value={field.name}
+                  onIonChange={e => { handleNameChange(index, e) }}
+                  className="mr-3"
+                />
+              </IonItem>
+              <select name="type" value={field.type} onChange={(e) => { handleTypeChange(index, e) }}>
+                <option disabled value="default">Select a Type</option>
+                <option value="text">Text</option>
+                <option value="number">Number</option>
+                <option value="boolean">Boolean</option>
+                <option value="date">Date</option>
+              </select>
+              <IonButton className="ml-7" size="default" onClick={() => { removeField(index) }}>Delete</IonButton>
+            </IonItem>
           </div>
         )
       })}
-      <IonButton onClick={(e) => addField()}>Add Field</IonButton>
+      <IonItem> <IonButton className="mx-auto" size="default" onClick={(e) => addField()}>Add Field</IonButton> </IonItem>
     </>
   )
 }

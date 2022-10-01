@@ -5,6 +5,7 @@ import { API } from 'aws-amplify';
 import { AgGridReact } from 'ag-grid-react'
 import Header from '../components/Header';
 import Selector from '../components/Selector';
+import BackButton from '../components/BackButton';
 
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
@@ -18,9 +19,6 @@ const TypeSearch = ({ user }: searchProps) => {
     const [filteredAssets, setFilteredAssets] = useState([]);
 
     const [search, setSearch] = useState('');
-    const [searchType, setSearchType] = useState({ id: undefined });
-    const [searchStatus, setSearchStatus] = useState({ id: undefined });
-    const [searchLocation, setSearchLocation] = useState({ id: undefined });
 
     const columnDefs = [
         { headerName: "Type ID", field: "id", sortable: true, filter: true, flex: 1 },
@@ -87,22 +85,28 @@ const TypeSearch = ({ user }: searchProps) => {
         <IonPage>
             {/* <Header title={"Search Types"} user={user} /> */}
             <IonContent>
-                <div className="bg-white p-2 m-4 rounded-lg shadow">
-                    <div className='flex'>
-                        <IonSearchbar value={search} onIonChange={e => setSearch(e.detail.value!)}></IonSearchbar>
+                <>
+                    <div className="m-4 mb-0">
+                        <BackButton text="Back" />
                     </div>
-                    <div className="ag-theme-alpine m-2" style={{ height: 500 }}>
-                        <AgGridReact
-                            domLayout={'autoHeight'}
-                            columnDefs={columnDefs}
-                            rowData={assets}
-                            pagination={true}
-                            paginationPageSize={25}
-                            onRowClicked={(row: any) => { router.push(`/Type/${row.data.id}`) }}
-                            rowStyle={rowStyle}
-                        />
+
+                    <div className="bg-white p-2 m-4 rounded-lg shadow">
+                        <div className='flex'>
+                            <IonSearchbar value={search} onIonChange={e => setSearch(e.detail.value!)}></IonSearchbar>
+                        </div>
+                        <div className="ag-theme-alpine m-2" style={{ height: 500 }}>
+                            <AgGridReact
+                                domLayout={'autoHeight'}
+                                columnDefs={columnDefs}
+                                rowData={assets}
+                                pagination={true}
+                                paginationPageSize={25}
+                                onRowClicked={(row: any) => { router.push(`/Type/${row.data.id}`) }}
+                                rowStyle={rowStyle}
+                            />
+                        </div>
                     </div>
-                </div>
+                </>
             </IonContent>
         </IonPage>
     )

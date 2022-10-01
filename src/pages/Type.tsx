@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonCheckbox, useIonLoading, IonLoading, IonButtons, IonInput, IonItem, IonLabel, IonModal, useIonAlert, useIonModal, IonToast } from '@ionic/react'
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonCheckbox, useIonLoading, IonLoading, IonButtons, IonInput, IonItem, IonLabel, IonModal, useIonAlert, useIonModal, IonToast, IonItemDivider } from '@ionic/react'
 import { RouteComponentProps } from 'react-router'
 import { API } from 'aws-amplify';
 import { getAsset, getAssetGroup, getAssetStatus, getAssetLocation, getAssetType } from '../graphql/queries';
@@ -68,7 +68,7 @@ const Type: React.FC<AssetProps> = ({ match }) => {
 
         let typeDetails = {
             id: match.params.id,
-            typeName: type.typeName, //change this to type name (i think its using asset name)
+            typeName: type.typeName,
             dataTemplate: assetFieldsJSON,
             logTemplate: assetLogFieldsJSON
         }
@@ -169,22 +169,37 @@ const Type: React.FC<AssetProps> = ({ match }) => {
                     (loaded) ? (
                         (error === '') ? (
                             <>
-                                <form onSubmit={(e) => handleMainSubmit(e)} className="m-6">
-                                    <h1>This is the id: {type?.id && type.id}</h1>
-                                    <label className="mr-3">Type Name:</label>
-                                    <IonLabel>{type?.typeName && type.typeName}</IonLabel>
-                                    <br></br>
-                                    <label className="mr-3">Asset Fields:</label>
-                                    <br></br>
-                                    <TypeFieldCreator fields={typeFields} setFields={setTypeFields} />
-                                    <br></br>
-                                    <label className="mr-3 mt-6">Asset Log Fields:</label>
-                                    <br></br>
-                                    <TypeFieldCreator fields={logFields} setFields={setLogFields} />
-                                    <br></br>
-                                    <IonButton type='submit'>Submit</IonButton>
-                                </form>
-                                <BackButton />
+                                <div className="m-4 mb-0">
+                                    <BackButton text="Back" />
+                                </div>
+
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div className="h-full bg-white p-2 m-4 rounded-lg shadow col-span-2">
+                                        <h1 className="text-3xl font-montserrat font-bold text-primary-200 text-blue">{type.typeName}</h1>
+
+                                        <form onSubmit={(e) => handleMainSubmit(e)} className="m-6">
+                                            <IonItem>
+                                                <IonLabel>Type ID: {type?.id && type.id}</IonLabel>
+                                            </IonItem>
+                                            <IonItem>
+                                                <IonLabel className="mr-3">Type Name:</IonLabel>
+                                                <IonInput value={type.typeName} placeholder={type.typeName} clearInput required></IonInput>
+                                            </IonItem>
+                                            <IonItem>
+                                                <IonLabel className="mr-3"><h2>Asset Fields:</h2></IonLabel>
+                                            </IonItem>
+                                            <TypeFieldCreator fields={typeFields} setFields={setTypeFields} />
+                                            <IonItem>
+                                                <IonLabel className="mr-3">Asset Log Fields:</IonLabel>
+                                            </IonItem>
+                                            <br></br>
+                                            <TypeFieldCreator fields={logFields} setFields={setLogFields} />
+                                            <br></br>
+                                            <IonButton type='submit'>Submit</IonButton>
+                                        </form>
+                                        <BackButton />
+                                    </div>
+                                </div>
                             </>
                         ) : (
                             <div>
