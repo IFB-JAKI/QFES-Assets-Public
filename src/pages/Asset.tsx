@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonCheckbox, useIonLoading, IonLoading, IonButtons, IonInput, IonItem, IonLabel, IonModal, useIonAlert, useIonModal } from '@ionic/react'
 import { RouteComponentProps } from 'react-router'
 import { API } from 'aws-amplify';
-import { getAsset, getAssetGroup, getAssetStatus, getAssetLocation, getAssetType } from '../graphql/queries';
+import { getAsset, getAssetGroup, getAssetStatus, getAssetLocation, getAssetType, getAssetLog, listAssetLogs } from '../graphql/queries';
 import { listAssetGroups, listAssetLocations, listAssetStatuses, listAssetTypes } from '../graphql/queries';
 import { updateAssetStatus, updateAsset, createAssetLog } from '../graphql/mutations';
 import BackButton from '../components/BackButton';
@@ -61,6 +61,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
 
   const router = useIonRouter();
 
+  const [loanLog, setLoanLog] = useState(Array<any>());
 
 
   const updateAssetCall = async (assetDetails: any, callback?: Function): Promise<void> => {
@@ -79,6 +80,33 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
     return;
   };
 
+
+    const getLoanLog = () => {
+      updateStatusCall('Available');
+      let now = new Date().valueOf();
+      // create return event
+      const createLoanLogEvent = async () => {
+        try {
+          // const result: any = await API.graphql({
+          //   query: getAssetLog,
+          //   variables: { id: match.params.id, }, 
+          //   authMode: 'AWS_IAM'
+          // });
+          const result: any = await API.graphql({
+            query: listAssetLogs,
+            authMode: 'AWS_IAM'
+          });
+          console.log(result);
+          setLoanLog(result.data.listAssetLogs.items);
+          //setLoanLog(result.data.getAssetLog.items);
+        } catch (e) {
+          console.log(e);
+        }
+        return;
+      }
+      createLoanLogEvent();
+    }
+  
   // updates the asset status and page state with the new status if it is a valid status
   const updateStatusCall = async (statusName: string): Promise<void> => {
     let status = allStatuses.find((status) => status.statusName === statusName);
@@ -106,6 +134,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
       let assetLogData = Array<any>();
       let now = new Date().valueOf();
       let assetLogDataString = JSON.stringify(assetLogData);
+      console.log(assetLogDataString);
       let BorrowerUserName = (BorrowerInput.current?.value) ? BorrowerInput.current?.value : 'Unknown';
       try {
         const result: any = await API.graphql({
@@ -417,6 +446,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                   </div>
                   <div className="bg-white p-2 m-4 rounded-lg shadow">
                     <h1>Asset Loan History</h1>
+                    <IonButton onClick={getLoanLog}>Loan History</IonButton>
                   </div>
                 </div>
                 
