@@ -325,7 +325,7 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "getAssetGroup",
+          "name" : "getGroup",
           "description" : null,
           "args" : [ {
             "name" : "id",
@@ -343,20 +343,20 @@
           } ],
           "type" : {
             "kind" : "OBJECT",
-            "name" : "AssetGroup",
+            "name" : "Group",
             "ofType" : null
           },
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "listAssetGroups",
+          "name" : "listGroups",
           "description" : null,
           "args" : [ {
             "name" : "filter",
             "description" : null,
             "type" : {
               "kind" : "INPUT_OBJECT",
-              "name" : "ModelAssetGroupFilterInput",
+              "name" : "ModelGroupFilterInput",
               "ofType" : null
             },
             "defaultValue" : null
@@ -381,7 +381,7 @@
           } ],
           "type" : {
             "kind" : "OBJECT",
-            "name" : "ModelAssetGroupConnection",
+            "name" : "ModelGroupConnection",
             "ofType" : null
           },
           "isDeprecated" : false,
@@ -1935,7 +1935,7 @@
             "description" : null,
             "type" : {
               "kind" : "INPUT_OBJECT",
-              "name" : "ModelAssetGroupFilterInput",
+              "name" : "ModelGroupFilterInput",
               "ofType" : null
             },
             "defaultValue" : null
@@ -1969,7 +1969,7 @@
           } ],
           "type" : {
             "kind" : "OBJECT",
-            "name" : "ModelAssetGroupConnection",
+            "name" : "ModelGroupConnection",
             "ofType" : null
           },
           "isDeprecated" : false,
@@ -2011,7 +2011,7 @@
         "possibleTypes" : null
       }, {
         "kind" : "OBJECT",
-        "name" : "ModelAssetGroupConnection",
+        "name" : "ModelGroupConnection",
         "description" : null,
         "fields" : [ {
           "name" : "items",
@@ -2025,7 +2025,7 @@
               "name" : null,
               "ofType" : {
                 "kind" : "OBJECT",
-                "name" : "AssetGroup",
+                "name" : "Group",
                 "ofType" : null
               }
             }
@@ -2050,7 +2050,7 @@
         "possibleTypes" : null
       }, {
         "kind" : "OBJECT",
-        "name" : "AssetGroup",
+        "name" : "Group",
         "description" : null,
         "fields" : [ {
           "name" : "id",
@@ -2167,7 +2167,7 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "assetGroupAssetId",
+          "name" : "groupAssetId",
           "description" : null,
           "args" : [ ],
           "type" : {
@@ -2184,7 +2184,7 @@
         "possibleTypes" : null
       }, {
         "kind" : "INPUT_OBJECT",
-        "name" : "ModelAssetGroupFilterInput",
+        "name" : "ModelGroupFilterInput",
         "description" : null,
         "fields" : null,
         "inputFields" : [ {
@@ -2213,7 +2213,7 @@
             "name" : null,
             "ofType" : {
               "kind" : "INPUT_OBJECT",
-              "name" : "ModelAssetGroupFilterInput",
+              "name" : "ModelGroupFilterInput",
               "ofType" : null
             }
           },
@@ -2226,7 +2226,7 @@
             "name" : null,
             "ofType" : {
               "kind" : "INPUT_OBJECT",
-              "name" : "ModelAssetGroupFilterInput",
+              "name" : "ModelGroupFilterInput",
               "ofType" : null
             }
           },
@@ -2236,12 +2236,12 @@
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
-            "name" : "ModelAssetGroupFilterInput",
+            "name" : "ModelGroupFilterInput",
             "ofType" : null
           },
           "defaultValue" : null
         }, {
-          "name" : "assetGroupAssetId",
+          "name" : "groupAssetId",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -3111,7 +3111,7 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "createAssetGroup",
+          "name" : "createGroup",
           "description" : null,
           "args" : [ {
             "name" : "input",
@@ -3121,7 +3121,7 @@
               "name" : null,
               "ofType" : {
                 "kind" : "INPUT_OBJECT",
-                "name" : "CreateAssetGroupInput",
+                "name" : "CreateGroupInput",
                 "ofType" : null
               }
             },
@@ -3131,20 +3131,20 @@
             "description" : null,
             "type" : {
               "kind" : "INPUT_OBJECT",
-              "name" : "ModelAssetGroupConditionInput",
+              "name" : "ModelGroupConditionInput",
               "ofType" : null
             },
             "defaultValue" : null
           } ],
           "type" : {
             "kind" : "OBJECT",
-            "name" : "AssetGroup",
+            "name" : "Group",
             "ofType" : null
           },
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "updateAssetGroup",
+          "name" : "updateGroup",
           "description" : null,
           "args" : [ {
             "name" : "input",
@@ -3154,7 +3154,7 @@
               "name" : null,
               "ofType" : {
                 "kind" : "INPUT_OBJECT",
-                "name" : "UpdateAssetGroupInput",
+                "name" : "UpdateGroupInput",
                 "ofType" : null
               }
             },
@@ -3164,20 +3164,20 @@
             "description" : null,
             "type" : {
               "kind" : "INPUT_OBJECT",
-              "name" : "ModelAssetGroupConditionInput",
+              "name" : "ModelGroupConditionInput",
               "ofType" : null
             },
             "defaultValue" : null
           } ],
           "type" : {
             "kind" : "OBJECT",
-            "name" : "AssetGroup",
+            "name" : "Group",
             "ofType" : null
           },
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "deleteAssetGroup",
+          "name" : "deleteGroup",
           "description" : null,
           "args" : [ {
             "name" : "input",
@@ -3187,7 +3187,7 @@
               "name" : null,
               "ofType" : {
                 "kind" : "INPUT_OBJECT",
-                "name" : "DeleteAssetGroupInput",
+                "name" : "DeleteGroupInput",
                 "ofType" : null
               }
             },
@@ -3197,14 +3197,14 @@
             "description" : null,
             "type" : {
               "kind" : "INPUT_OBJECT",
-              "name" : "ModelAssetGroupConditionInput",
+              "name" : "ModelGroupConditionInput",
               "ofType" : null
             },
             "defaultValue" : null
           } ],
           "type" : {
             "kind" : "OBJECT",
-            "name" : "AssetGroup",
+            "name" : "Group",
             "ofType" : null
           },
           "isDeprecated" : false,
@@ -4333,7 +4333,7 @@
         "possibleTypes" : null
       }, {
         "kind" : "INPUT_OBJECT",
-        "name" : "CreateAssetGroupInput",
+        "name" : "CreateGroupInput",
         "description" : null,
         "fields" : null,
         "inputFields" : [ {
@@ -4355,7 +4355,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "assetGroupAssetId",
+          "name" : "groupAssetId",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -4369,7 +4369,7 @@
         "possibleTypes" : null
       }, {
         "kind" : "INPUT_OBJECT",
-        "name" : "ModelAssetGroupConditionInput",
+        "name" : "ModelGroupConditionInput",
         "description" : null,
         "fields" : null,
         "inputFields" : [ {
@@ -4389,7 +4389,7 @@
             "name" : null,
             "ofType" : {
               "kind" : "INPUT_OBJECT",
-              "name" : "ModelAssetGroupConditionInput",
+              "name" : "ModelGroupConditionInput",
               "ofType" : null
             }
           },
@@ -4402,7 +4402,7 @@
             "name" : null,
             "ofType" : {
               "kind" : "INPUT_OBJECT",
-              "name" : "ModelAssetGroupConditionInput",
+              "name" : "ModelGroupConditionInput",
               "ofType" : null
             }
           },
@@ -4412,12 +4412,12 @@
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
-            "name" : "ModelAssetGroupConditionInput",
+            "name" : "ModelGroupConditionInput",
             "ofType" : null
           },
           "defaultValue" : null
         }, {
-          "name" : "assetGroupAssetId",
+          "name" : "groupAssetId",
           "description" : null,
           "type" : {
             "kind" : "INPUT_OBJECT",
@@ -4431,7 +4431,7 @@
         "possibleTypes" : null
       }, {
         "kind" : "INPUT_OBJECT",
-        "name" : "UpdateAssetGroupInput",
+        "name" : "UpdateGroupInput",
         "description" : null,
         "fields" : null,
         "inputFields" : [ {
@@ -4457,7 +4457,7 @@
           },
           "defaultValue" : null
         }, {
-          "name" : "assetGroupAssetId",
+          "name" : "groupAssetId",
           "description" : null,
           "type" : {
             "kind" : "SCALAR",
@@ -4471,7 +4471,7 @@
         "possibleTypes" : null
       }, {
         "kind" : "INPUT_OBJECT",
-        "name" : "DeleteAssetGroupInput",
+        "name" : "DeleteGroupInput",
         "description" : null,
         "fields" : null,
         "inputFields" : [ {
@@ -4661,34 +4661,34 @@
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "onCreateAssetGroup",
+          "name" : "onCreateGroup",
           "description" : null,
           "args" : [ ],
           "type" : {
             "kind" : "OBJECT",
-            "name" : "AssetGroup",
+            "name" : "Group",
             "ofType" : null
           },
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "onUpdateAssetGroup",
+          "name" : "onUpdateGroup",
           "description" : null,
           "args" : [ ],
           "type" : {
             "kind" : "OBJECT",
-            "name" : "AssetGroup",
+            "name" : "Group",
             "ofType" : null
           },
           "isDeprecated" : false,
           "deprecationReason" : null
         }, {
-          "name" : "onDeleteAssetGroup",
+          "name" : "onDeleteGroup",
           "description" : null,
           "args" : [ ],
           "type" : {
             "kind" : "OBJECT",
-            "name" : "AssetGroup",
+            "name" : "Group",
             "ofType" : null
           },
           "isDeprecated" : false,
@@ -4696,51 +4696,6 @@
         } ],
         "inputFields" : null,
         "interfaces" : [ ],
-        "enumValues" : null,
-        "possibleTypes" : null
-      }, {
-        "kind" : "INPUT_OBJECT",
-        "name" : "ModelBooleanInput",
-        "description" : null,
-        "fields" : null,
-        "inputFields" : [ {
-          "name" : "ne",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "Boolean",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "eq",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "Boolean",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "attributeExists",
-          "description" : null,
-          "type" : {
-            "kind" : "SCALAR",
-            "name" : "Boolean",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        }, {
-          "name" : "attributeType",
-          "description" : null,
-          "type" : {
-            "kind" : "ENUM",
-            "name" : "ModelAttributeTypes",
-            "ofType" : null
-          },
-          "defaultValue" : null
-        } ],
-        "interfaces" : null,
         "enumValues" : null,
         "possibleTypes" : null
       }, {
@@ -4843,6 +4798,51 @@
         "description" : "Built-in Float",
         "fields" : null,
         "inputFields" : null,
+        "interfaces" : null,
+        "enumValues" : null,
+        "possibleTypes" : null
+      }, {
+        "kind" : "INPUT_OBJECT",
+        "name" : "ModelBooleanInput",
+        "description" : null,
+        "fields" : null,
+        "inputFields" : [ {
+          "name" : "ne",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "Boolean",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "eq",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "Boolean",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "attributeExists",
+          "description" : null,
+          "type" : {
+            "kind" : "SCALAR",
+            "name" : "Boolean",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        }, {
+          "name" : "attributeType",
+          "description" : null,
+          "type" : {
+            "kind" : "ENUM",
+            "name" : "ModelAttributeTypes",
+            "ofType" : null
+          },
+          "defaultValue" : null
+        } ],
         "interfaces" : null,
         "enumValues" : null,
         "possibleTypes" : null
@@ -5630,6 +5630,22 @@
         "onFragment" : false,
         "onField" : true
       }, {
+        "name" : "aws_api_key",
+        "description" : "Tells the service this field/object has access authorized by an API key.",
+        "locations" : [ "OBJECT", "FIELD_DEFINITION" ],
+        "args" : [ ],
+        "onOperation" : false,
+        "onFragment" : false,
+        "onField" : false
+      }, {
+        "name" : "aws_oidc",
+        "description" : "Tells the service this field/object has access authorized by an OIDC token.",
+        "locations" : [ "OBJECT", "FIELD_DEFINITION" ],
+        "args" : [ ],
+        "onOperation" : false,
+        "onFragment" : false,
+        "onField" : false
+      }, {
         "name" : "deprecated",
         "description" : null,
         "locations" : [ "FIELD_DEFINITION", "ENUM_VALUE" ],
@@ -5643,22 +5659,6 @@
           },
           "defaultValue" : "\"No longer supported\""
         } ],
-        "onOperation" : false,
-        "onFragment" : false,
-        "onField" : false
-      }, {
-        "name" : "aws_api_key",
-        "description" : "Tells the service this field/object has access authorized by an API key.",
-        "locations" : [ "OBJECT", "FIELD_DEFINITION" ],
-        "args" : [ ],
-        "onOperation" : false,
-        "onFragment" : false,
-        "onField" : false
-      }, {
-        "name" : "aws_oidc",
-        "description" : "Tells the service this field/object has access authorized by an OIDC token.",
-        "locations" : [ "OBJECT", "FIELD_DEFINITION" ],
-        "args" : [ ],
         "onOperation" : false,
         "onFragment" : false,
         "onField" : false

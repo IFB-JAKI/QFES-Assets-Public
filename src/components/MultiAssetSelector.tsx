@@ -22,7 +22,6 @@ const MultiAssetSelector = ({ assets, childAssets, setChildAssets, parentAsset}:
     if (assets.length > 0) {
       setFilteredAssets(assets.filter(asset => asset.id !== parentAsset));
     }
-    console.log(parentAsset)
   }, [parentAsset, assets])
 
   const handleAssetSelect = (assetID: string) => {

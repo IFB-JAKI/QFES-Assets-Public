@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonCheckbox, useIonLoading, IonLoading, IonButtons, IonInput, IonItem, IonLabel, IonModal, useIonAlert, useIonModal } from '@ionic/react'
 import { RouteComponentProps } from 'react-router'
 import { API } from 'aws-amplify';
-import { getAsset, getAssetGroup, getAssetStatus, getAssetLocation, getAssetType } from '../graphql/queries';
-import { listAssetGroups, listAssetLocations, listAssetStatuses, listAssetTypes } from '../graphql/queries';
+import { getAsset, getGroup, getAssetStatus, getAssetLocation, getAssetType } from '../graphql/queries';
+import { listGroups, listAssetLocations, listAssetStatuses, listAssetTypes } from '../graphql/queries';
 import { updateAssetStatus, updateAsset, createAssetLog } from '../graphql/mutations';
 import BackButton from '../components/BackButton';
 import Selector from '../components/Selector';
@@ -485,7 +485,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                   }
                   <p>Asset Data: </p>
                   <Selector label="Asset Location: " queryType={listAssetLocations} handleChange={setLocation} nameKey="locationName" defaultValue={location?.id && location.id} />
-                  <Selector label="Asset Group" queryType={listAssetGroups} handleChange={setGroup} nameKey="name" />
+                  <Selector label="Asset Group" queryType={listGroups} handleChange={setGroup} nameKey="name" />
                   <h1>Select an Image:</h1>
                   <input type="file" accept='image/jpeg, image/png'></input>
                   <IonButton type='submit'>Submit</IonButton>

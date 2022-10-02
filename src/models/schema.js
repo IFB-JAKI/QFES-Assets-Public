@@ -14,7 +14,7 @@ export const schema = {
                     "name": "locationName",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "locationID": {
@@ -91,6 +91,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "QRCode": {
+                    "name": "QRCode",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "description": {
                     "name": "description",
                     "isArray": false,
@@ -109,7 +116,7 @@ export const schema = {
                     "name": "typeID",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "AssetEvents": {
@@ -130,14 +137,14 @@ export const schema = {
                     "name": "groupID",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "statusID": {
                     "name": "statusID",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "imageLink": {
@@ -151,7 +158,7 @@ export const schema = {
                     "name": "assetlocaID",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "assetTypeData": {
@@ -197,7 +204,7 @@ export const schema = {
                 {
                     "type": "key",
                     "properties": {
-                        "name": "byAssetGroup",
+                        "name": "byGroup",
                         "fields": [
                             "groupID"
                         ]
@@ -250,6 +257,13 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "assetID": {
+                    "name": "assetID",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
                 "borrowDate": {
                     "name": "borrowDate",
                     "isArray": false,
@@ -269,13 +283,6 @@ export const schema = {
                     "isArray": false,
                     "type": "AWSJSON",
                     "isRequired": false,
-                    "attributes": []
-                },
-                "assetID": {
-                    "name": "assetID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
                     "attributes": []
                 },
                 "borrowerUsername": {
@@ -358,7 +365,7 @@ export const schema = {
                     "name": "statusName",
                     "isArray": false,
                     "type": "String",
-                    "isRequired": false,
+                    "isRequired": true,
                     "attributes": []
                 },
                 "assetStatusID": {
@@ -379,14 +386,14 @@ export const schema = {
                     "name": "groupStatusID",
                     "isArray": true,
                     "type": {
-                        "model": "AssetGroup"
+                        "model": "Group"
                     },
                     "isRequired": false,
                     "attributes": [],
                     "isArrayNullable": true,
                     "association": {
                         "connectionType": "HAS_MANY",
-                        "associatedWith": "assetstatusID"
+                        "associatedWith": "statusID"
                     }
                 },
                 "createdAt": {
@@ -432,8 +439,8 @@ export const schema = {
                 }
             ]
         },
-        "AssetGroup": {
-            "name": "AssetGroup",
+        "Group": {
+            "name": "Group",
             "fields": {
                 "id": {
                     "name": "id",
@@ -442,22 +449,22 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "name": {
-                    "name": "name",
+                "asset": {
+                    "name": "asset",
                     "isArray": false,
-                    "type": "String",
+                    "type": {
+                        "model": "Asset"
+                    },
                     "isRequired": false,
-                    "attributes": []
+                    "attributes": [],
+                    "association": {
+                        "connectionType": "HAS_ONE",
+                        "associatedWith": "id",
+                        "targetName": "groupAssetId"
+                    }
                 },
-                "template": {
-                    "name": "template",
-                    "isArray": false,
-                    "type": "AWSJSON",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "groupID": {
-                    "name": "groupID",
+                "childAssets": {
+                    "name": "childAssets",
                     "isArray": true,
                     "type": {
                         "model": "Asset"
@@ -470,31 +477,10 @@ export const schema = {
                         "associatedWith": "groupID"
                     }
                 },
-                "numAssets": {
-                    "name": "numAssets",
-                    "isArray": false,
-                    "type": "Int",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "assetstatusID": {
-                    "name": "assetstatusID",
+                "statusID": {
+                    "name": "statusID",
                     "isArray": false,
                     "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "description": {
-                    "name": "description",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "imageLink": {
-                    "name": "imageLink",
-                    "isArray": false,
-                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -513,10 +499,17 @@ export const schema = {
                     "isRequired": false,
                     "attributes": [],
                     "isReadOnly": true
+                },
+                "groupAssetId": {
+                    "name": "groupAssetId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
                 }
             },
             "syncable": true,
-            "pluralName": "AssetGroups",
+            "pluralName": "Groups",
             "attributes": [
                 {
                     "type": "model",
@@ -527,7 +520,7 @@ export const schema = {
                     "properties": {
                         "name": "byAssetStatus",
                         "fields": [
-                            "assetstatusID"
+                            "statusID"
                         ]
                     }
                 },
@@ -571,7 +564,7 @@ export const schema = {
                     "name": "dataTemplate",
                     "isArray": false,
                     "type": "AWSJSON",
-                    "isRequired": true,
+                    "isRequired": false,
                     "attributes": []
                 },
                 "typeID": {
@@ -641,5 +634,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "c3f83aaecda155585bf3fa05983782cd"
+    "version": "65a683c1d6ee9b649c5645feeb61c141"
 };

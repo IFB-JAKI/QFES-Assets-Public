@@ -79,7 +79,7 @@ export const getAssetStatus = /* GraphQL */ `
           statusID
           createdAt
           updatedAt
-          assetGroupAssetId
+          groupAssetId
         }
         nextToken
       }
@@ -262,9 +262,9 @@ export const listAssetLogs = /* GraphQL */ `
     }
   }
 `;
-export const getAssetGroup = /* GraphQL */ `
-  query GetAssetGroup($id: ID!) {
-    getAssetGroup(id: $id) {
+export const getGroup = /* GraphQL */ `
+  query GetGroup($id: ID!) {
+    getGroup(id: $id) {
       id
       asset {
         id
@@ -305,17 +305,17 @@ export const getAssetGroup = /* GraphQL */ `
       statusID
       createdAt
       updatedAt
-      assetGroupAssetId
+      groupAssetId
     }
   }
 `;
-export const listAssetGroups = /* GraphQL */ `
-  query ListAssetGroups(
-    $filter: ModelAssetGroupFilterInput
+export const listGroups = /* GraphQL */ `
+  query ListGroups(
+    $filter: ModelGroupFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listAssetGroups(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listGroups(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         asset {
@@ -339,7 +339,7 @@ export const listAssetGroups = /* GraphQL */ `
         statusID
         createdAt
         updatedAt
-        assetGroupAssetId
+        groupAssetId
       }
       nextToken
     }

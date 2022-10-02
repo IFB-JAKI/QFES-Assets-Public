@@ -132,26 +132,26 @@ export type AssetStatus = {
   id: string,
   statusName: string,
   assetStatusID?: ModelAssetConnection | null,
-  groupStatusID?: ModelAssetGroupConnection | null,
+  groupStatusID?: ModelGroupConnection | null,
   createdAt: string,
   updatedAt: string,
 };
 
-export type ModelAssetGroupConnection = {
-  __typename: "ModelAssetGroupConnection",
-  items:  Array<AssetGroup | null >,
+export type ModelGroupConnection = {
+  __typename: "ModelGroupConnection",
+  items:  Array<Group | null >,
   nextToken?: string | null,
 };
 
-export type AssetGroup = {
-  __typename: "AssetGroup",
+export type Group = {
+  __typename: "Group",
   id: string,
   asset?: Asset | null,
   childAssets?: ModelAssetConnection | null,
   statusID?: string | null,
   createdAt: string,
   updatedAt: string,
-  assetGroupAssetId?: string | null,
+  groupAssetId?: string | null,
 };
 
 export type UpdateAssetStatusInput = {
@@ -313,27 +313,27 @@ export type DeleteAssetLogInput = {
   id: string,
 };
 
-export type CreateAssetGroupInput = {
+export type CreateGroupInput = {
   id?: string | null,
   statusID?: string | null,
-  assetGroupAssetId?: string | null,
+  groupAssetId?: string | null,
 };
 
-export type ModelAssetGroupConditionInput = {
+export type ModelGroupConditionInput = {
   statusID?: ModelIDInput | null,
-  and?: Array< ModelAssetGroupConditionInput | null > | null,
-  or?: Array< ModelAssetGroupConditionInput | null > | null,
-  not?: ModelAssetGroupConditionInput | null,
-  assetGroupAssetId?: ModelIDInput | null,
+  and?: Array< ModelGroupConditionInput | null > | null,
+  or?: Array< ModelGroupConditionInput | null > | null,
+  not?: ModelGroupConditionInput | null,
+  groupAssetId?: ModelIDInput | null,
 };
 
-export type UpdateAssetGroupInput = {
+export type UpdateGroupInput = {
   id: string,
   statusID?: string | null,
-  assetGroupAssetId?: string | null,
+  groupAssetId?: string | null,
 };
 
-export type DeleteAssetGroupInput = {
+export type DeleteGroupInput = {
   id: string,
 };
 
@@ -411,13 +411,13 @@ export type ModelAssetLogFilterInput = {
   not?: ModelAssetLogFilterInput | null,
 };
 
-export type ModelAssetGroupFilterInput = {
+export type ModelGroupFilterInput = {
   id?: ModelIDInput | null,
   statusID?: ModelIDInput | null,
-  and?: Array< ModelAssetGroupFilterInput | null > | null,
-  or?: Array< ModelAssetGroupFilterInput | null > | null,
-  not?: ModelAssetGroupFilterInput | null,
-  assetGroupAssetId?: ModelIDInput | null,
+  and?: Array< ModelGroupFilterInput | null > | null,
+  or?: Array< ModelGroupFilterInput | null > | null,
+  not?: ModelGroupFilterInput | null,
+  groupAssetId?: ModelIDInput | null,
 };
 
 export type CreateAssetLocationMutationVariables = {
@@ -556,14 +556,14 @@ export type CreateAssetStatusMutation = {
       nextToken?: string | null,
     } | null,
     groupStatusID?:  {
-      __typename: "ModelAssetGroupConnection",
+      __typename: "ModelGroupConnection",
       items:  Array< {
-        __typename: "AssetGroup",
+        __typename: "Group",
         id: string,
         statusID?: string | null,
         createdAt: string,
         updatedAt: string,
-        assetGroupAssetId?: string | null,
+        groupAssetId?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -603,14 +603,14 @@ export type UpdateAssetStatusMutation = {
       nextToken?: string | null,
     } | null,
     groupStatusID?:  {
-      __typename: "ModelAssetGroupConnection",
+      __typename: "ModelGroupConnection",
       items:  Array< {
-        __typename: "AssetGroup",
+        __typename: "Group",
         id: string,
         statusID?: string | null,
         createdAt: string,
         updatedAt: string,
-        assetGroupAssetId?: string | null,
+        groupAssetId?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -650,14 +650,14 @@ export type DeleteAssetStatusMutation = {
       nextToken?: string | null,
     } | null,
     groupStatusID?:  {
-      __typename: "ModelAssetGroupConnection",
+      __typename: "ModelGroupConnection",
       items:  Array< {
-        __typename: "AssetGroup",
+        __typename: "Group",
         id: string,
         statusID?: string | null,
         createdAt: string,
         updatedAt: string,
-        assetGroupAssetId?: string | null,
+        groupAssetId?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -957,14 +957,14 @@ export type DeleteAssetLogMutation = {
   } | null,
 };
 
-export type CreateAssetGroupMutationVariables = {
-  input: CreateAssetGroupInput,
-  condition?: ModelAssetGroupConditionInput | null,
+export type CreateGroupMutationVariables = {
+  input: CreateGroupInput,
+  condition?: ModelGroupConditionInput | null,
 };
 
-export type CreateAssetGroupMutation = {
-  createAssetGroup?:  {
-    __typename: "AssetGroup",
+export type CreateGroupMutation = {
+  createGroup?:  {
+    __typename: "Group",
     id: string,
     asset?:  {
       __typename: "Asset",
@@ -1009,18 +1009,18 @@ export type CreateAssetGroupMutation = {
     statusID?: string | null,
     createdAt: string,
     updatedAt: string,
-    assetGroupAssetId?: string | null,
+    groupAssetId?: string | null,
   } | null,
 };
 
-export type UpdateAssetGroupMutationVariables = {
-  input: UpdateAssetGroupInput,
-  condition?: ModelAssetGroupConditionInput | null,
+export type UpdateGroupMutationVariables = {
+  input: UpdateGroupInput,
+  condition?: ModelGroupConditionInput | null,
 };
 
-export type UpdateAssetGroupMutation = {
-  updateAssetGroup?:  {
-    __typename: "AssetGroup",
+export type UpdateGroupMutation = {
+  updateGroup?:  {
+    __typename: "Group",
     id: string,
     asset?:  {
       __typename: "Asset",
@@ -1065,18 +1065,18 @@ export type UpdateAssetGroupMutation = {
     statusID?: string | null,
     createdAt: string,
     updatedAt: string,
-    assetGroupAssetId?: string | null,
+    groupAssetId?: string | null,
   } | null,
 };
 
-export type DeleteAssetGroupMutationVariables = {
-  input: DeleteAssetGroupInput,
-  condition?: ModelAssetGroupConditionInput | null,
+export type DeleteGroupMutationVariables = {
+  input: DeleteGroupInput,
+  condition?: ModelGroupConditionInput | null,
 };
 
-export type DeleteAssetGroupMutation = {
-  deleteAssetGroup?:  {
-    __typename: "AssetGroup",
+export type DeleteGroupMutation = {
+  deleteGroup?:  {
+    __typename: "Group",
     id: string,
     asset?:  {
       __typename: "Asset",
@@ -1121,7 +1121,7 @@ export type DeleteAssetGroupMutation = {
     statusID?: string | null,
     createdAt: string,
     updatedAt: string,
-    assetGroupAssetId?: string | null,
+    groupAssetId?: string | null,
   } | null,
 };
 
@@ -1213,14 +1213,14 @@ export type GetAssetStatusQuery = {
       nextToken?: string | null,
     } | null,
     groupStatusID?:  {
-      __typename: "ModelAssetGroupConnection",
+      __typename: "ModelGroupConnection",
       items:  Array< {
-        __typename: "AssetGroup",
+        __typename: "Group",
         id: string,
         statusID?: string | null,
         createdAt: string,
         updatedAt: string,
-        assetGroupAssetId?: string | null,
+        groupAssetId?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1247,7 +1247,7 @@ export type ListAssetStatusesQuery = {
         nextToken?: string | null,
       } | null,
       groupStatusID?:  {
-        __typename: "ModelAssetGroupConnection",
+        __typename: "ModelGroupConnection",
         nextToken?: string | null,
       } | null,
       createdAt: string,
@@ -1435,13 +1435,13 @@ export type ListAssetLogsQuery = {
   } | null,
 };
 
-export type GetAssetGroupQueryVariables = {
+export type GetGroupQueryVariables = {
   id: string,
 };
 
-export type GetAssetGroupQuery = {
-  getAssetGroup?:  {
-    __typename: "AssetGroup",
+export type GetGroupQuery = {
+  getGroup?:  {
+    __typename: "Group",
     id: string,
     asset?:  {
       __typename: "Asset",
@@ -1486,21 +1486,21 @@ export type GetAssetGroupQuery = {
     statusID?: string | null,
     createdAt: string,
     updatedAt: string,
-    assetGroupAssetId?: string | null,
+    groupAssetId?: string | null,
   } | null,
 };
 
-export type ListAssetGroupsQueryVariables = {
-  filter?: ModelAssetGroupFilterInput | null,
+export type ListGroupsQueryVariables = {
+  filter?: ModelGroupFilterInput | null,
   limit?: number | null,
   nextToken?: string | null,
 };
 
-export type ListAssetGroupsQuery = {
-  listAssetGroups?:  {
-    __typename: "ModelAssetGroupConnection",
+export type ListGroupsQuery = {
+  listGroups?:  {
+    __typename: "ModelGroupConnection",
     items:  Array< {
-      __typename: "AssetGroup",
+      __typename: "Group",
       id: string,
       asset?:  {
         __typename: "Asset",
@@ -1525,7 +1525,7 @@ export type ListAssetGroupsQuery = {
       statusID?: string | null,
       createdAt: string,
       updatedAt: string,
-      assetGroupAssetId?: string | null,
+      groupAssetId?: string | null,
     } | null >,
     nextToken?: string | null,
   } | null,
@@ -1647,14 +1647,14 @@ export type OnCreateAssetStatusSubscription = {
       nextToken?: string | null,
     } | null,
     groupStatusID?:  {
-      __typename: "ModelAssetGroupConnection",
+      __typename: "ModelGroupConnection",
       items:  Array< {
-        __typename: "AssetGroup",
+        __typename: "Group",
         id: string,
         statusID?: string | null,
         createdAt: string,
         updatedAt: string,
-        assetGroupAssetId?: string | null,
+        groupAssetId?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1689,14 +1689,14 @@ export type OnUpdateAssetStatusSubscription = {
       nextToken?: string | null,
     } | null,
     groupStatusID?:  {
-      __typename: "ModelAssetGroupConnection",
+      __typename: "ModelGroupConnection",
       items:  Array< {
-        __typename: "AssetGroup",
+        __typename: "Group",
         id: string,
         statusID?: string | null,
         createdAt: string,
         updatedAt: string,
-        assetGroupAssetId?: string | null,
+        groupAssetId?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1731,14 +1731,14 @@ export type OnDeleteAssetStatusSubscription = {
       nextToken?: string | null,
     } | null,
     groupStatusID?:  {
-      __typename: "ModelAssetGroupConnection",
+      __typename: "ModelGroupConnection",
       items:  Array< {
-        __typename: "AssetGroup",
+        __typename: "Group",
         id: string,
         statusID?: string | null,
         createdAt: string,
         updatedAt: string,
-        assetGroupAssetId?: string | null,
+        groupAssetId?: string | null,
       } | null >,
       nextToken?: string | null,
     } | null,
@@ -1993,9 +1993,9 @@ export type OnDeleteAssetLogSubscription = {
   } | null,
 };
 
-export type OnCreateAssetGroupSubscription = {
-  onCreateAssetGroup?:  {
-    __typename: "AssetGroup",
+export type OnCreateGroupSubscription = {
+  onCreateGroup?:  {
+    __typename: "Group",
     id: string,
     asset?:  {
       __typename: "Asset",
@@ -2040,13 +2040,13 @@ export type OnCreateAssetGroupSubscription = {
     statusID?: string | null,
     createdAt: string,
     updatedAt: string,
-    assetGroupAssetId?: string | null,
+    groupAssetId?: string | null,
   } | null,
 };
 
-export type OnUpdateAssetGroupSubscription = {
-  onUpdateAssetGroup?:  {
-    __typename: "AssetGroup",
+export type OnUpdateGroupSubscription = {
+  onUpdateGroup?:  {
+    __typename: "Group",
     id: string,
     asset?:  {
       __typename: "Asset",
@@ -2091,13 +2091,13 @@ export type OnUpdateAssetGroupSubscription = {
     statusID?: string | null,
     createdAt: string,
     updatedAt: string,
-    assetGroupAssetId?: string | null,
+    groupAssetId?: string | null,
   } | null,
 };
 
-export type OnDeleteAssetGroupSubscription = {
-  onDeleteAssetGroup?:  {
-    __typename: "AssetGroup",
+export type OnDeleteGroupSubscription = {
+  onDeleteGroup?:  {
+    __typename: "Group",
     id: string,
     asset?:  {
       __typename: "Asset",
@@ -2142,6 +2142,6 @@ export type OnDeleteAssetGroupSubscription = {
     statusID?: string | null,
     createdAt: string,
     updatedAt: string,
-    assetGroupAssetId?: string | null,
+    groupAssetId?: string | null,
   } | null,
 };

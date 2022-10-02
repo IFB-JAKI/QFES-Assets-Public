@@ -4,13 +4,13 @@ import { schema } from './schema';
 
 
 
-const { AssetLocation, Asset, AssetLog, AssetStatus, AssetGroup, AssetType } = initSchema(schema);
+const { AssetLocation, Asset, AssetLog, AssetStatus, Group, AssetType } = initSchema(schema);
 
 export {
   AssetLocation,
   Asset,
   AssetLog,
   AssetStatus,
-  AssetGroup,
+  Group,
   AssetType
 };

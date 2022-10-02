@@ -127,7 +127,7 @@ export const createAssetStatus = /* GraphQL */ `
           statusID
           createdAt
           updatedAt
-          assetGroupAssetId
+          groupAssetId
         }
         nextToken
       }
@@ -168,7 +168,7 @@ export const updateAssetStatus = /* GraphQL */ `
           statusID
           createdAt
           updatedAt
-          assetGroupAssetId
+          groupAssetId
         }
         nextToken
       }
@@ -209,7 +209,7 @@ export const deleteAssetStatus = /* GraphQL */ `
           statusID
           createdAt
           updatedAt
-          assetGroupAssetId
+          groupAssetId
         }
         nextToken
       }
@@ -479,12 +479,12 @@ export const deleteAssetLog = /* GraphQL */ `
     }
   }
 `;
-export const createAssetGroup = /* GraphQL */ `
-  mutation CreateAssetGroup(
-    $input: CreateAssetGroupInput!
-    $condition: ModelAssetGroupConditionInput
+export const createGroup = /* GraphQL */ `
+  mutation CreateGroup(
+    $input: CreateGroupInput!
+    $condition: ModelGroupConditionInput
   ) {
-    createAssetGroup(input: $input, condition: $condition) {
+    createGroup(input: $input, condition: $condition) {
       id
       asset {
         id
@@ -525,16 +525,16 @@ export const createAssetGroup = /* GraphQL */ `
       statusID
       createdAt
       updatedAt
-      assetGroupAssetId
+      groupAssetId
     }
   }
 `;
-export const updateAssetGroup = /* GraphQL */ `
-  mutation UpdateAssetGroup(
-    $input: UpdateAssetGroupInput!
-    $condition: ModelAssetGroupConditionInput
+export const updateGroup = /* GraphQL */ `
+  mutation UpdateGroup(
+    $input: UpdateGroupInput!
+    $condition: ModelGroupConditionInput
   ) {
-    updateAssetGroup(input: $input, condition: $condition) {
+    updateGroup(input: $input, condition: $condition) {
       id
       asset {
         id
@@ -575,16 +575,16 @@ export const updateAssetGroup = /* GraphQL */ `
       statusID
       createdAt
       updatedAt
-      assetGroupAssetId
+      groupAssetId
     }
   }
 `;
-export const deleteAssetGroup = /* GraphQL */ `
-  mutation DeleteAssetGroup(
-    $input: DeleteAssetGroupInput!
-    $condition: ModelAssetGroupConditionInput
+export const deleteGroup = /* GraphQL */ `
+  mutation DeleteGroup(
+    $input: DeleteGroupInput!
+    $condition: ModelGroupConditionInput
   ) {
-    deleteAssetGroup(input: $input, condition: $condition) {
+    deleteGroup(input: $input, condition: $condition) {
       id
       asset {
         id
@@ -625,7 +625,7 @@ export const deleteAssetGroup = /* GraphQL */ `
       statusID
       createdAt
       updatedAt
-      assetGroupAssetId
+      groupAssetId
     }
   }
 `;

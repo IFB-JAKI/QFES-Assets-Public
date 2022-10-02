@@ -115,7 +115,7 @@ export const onCreateAssetStatus = /* GraphQL */ `
           statusID
           createdAt
           updatedAt
-          assetGroupAssetId
+          groupAssetId
         }
         nextToken
       }
@@ -153,7 +153,7 @@ export const onUpdateAssetStatus = /* GraphQL */ `
           statusID
           createdAt
           updatedAt
-          assetGroupAssetId
+          groupAssetId
         }
         nextToken
       }
@@ -191,7 +191,7 @@ export const onDeleteAssetStatus = /* GraphQL */ `
           statusID
           createdAt
           updatedAt
-          assetGroupAssetId
+          groupAssetId
         }
         nextToken
       }
@@ -434,9 +434,9 @@ export const onDeleteAssetLog = /* GraphQL */ `
     }
   }
 `;
-export const onCreateAssetGroup = /* GraphQL */ `
-  subscription OnCreateAssetGroup {
-    onCreateAssetGroup {
+export const onCreateGroup = /* GraphQL */ `
+  subscription OnCreateGroup {
+    onCreateGroup {
       id
       asset {
         id
@@ -477,13 +477,13 @@ export const onCreateAssetGroup = /* GraphQL */ `
       statusID
       createdAt
       updatedAt
-      assetGroupAssetId
+      groupAssetId
     }
   }
 `;
-export const onUpdateAssetGroup = /* GraphQL */ `
-  subscription OnUpdateAssetGroup {
-    onUpdateAssetGroup {
+export const onUpdateGroup = /* GraphQL */ `
+  subscription OnUpdateGroup {
+    onUpdateGroup {
       id
       asset {
         id
@@ -524,13 +524,13 @@ export const onUpdateAssetGroup = /* GraphQL */ `
       statusID
       createdAt
       updatedAt
-      assetGroupAssetId
+      groupAssetId
     }
   }
 `;
-export const onDeleteAssetGroup = /* GraphQL */ `
-  subscription OnDeleteAssetGroup {
-    onDeleteAssetGroup {
+export const onDeleteGroup = /* GraphQL */ `
+  subscription OnDeleteGroup {
+    onDeleteGroup {
       id
       asset {
         id
@@ -571,7 +571,7 @@ export const onDeleteAssetGroup = /* GraphQL */ `
       statusID
       createdAt
       updatedAt
-      assetGroupAssetId
+      groupAssetId
     }
   }
 `;

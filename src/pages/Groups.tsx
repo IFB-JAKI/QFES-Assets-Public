@@ -4,7 +4,7 @@ import { API } from 'aws-amplify';
 import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import Selector from '../components/Selector';
-import { listAssets, listAssetStatuses, listAssetTypes, listAssetLocations, listAssetGroups } from '../graphql/queries';
+import { listAssets, listAssetStatuses, listAssetTypes, listAssetLocations, listGroups } from '../graphql/queries';
 
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
@@ -31,11 +31,11 @@ const Groups = ({ user }: GroupsProps) => {
     const fetchGroups = async () => {
       try {
         const groupsResult: any = await API.graphql({
-          query: listAssetGroups,
+          query: listGroups,
           variables: { limit: 1000 }
         });
-        setGroups(groupsResult.data.listAssetGroups.items);
-        setFilteredGroups(groupsResult.data.listAssetGroups.items);
+        setGroups(groupsResult.data.listGroups.items);
+        setFilteredGroups(groupsResult.data.listGroups.items);
       } catch (e: any) {
         console.log("Error fetching Groups:", e);
       }
