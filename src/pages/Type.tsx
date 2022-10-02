@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonCheckbox, useIonLoading, IonLoading, IonButtons, IonInput, IonItem, IonLabel, IonModal, useIonAlert, useIonModal, IonToast, IonItemDivider } from '@ionic/react'
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonCheckbox, useIonLoading, IonLoading, IonButtons, IonInput, IonItem, IonLabel, IonModal, useIonAlert, useIonModal, IonToast, IonItemDivider, useIonToast } from '@ionic/react'
 import { RouteComponentProps } from 'react-router'
 import { API } from 'aws-amplify';
 import { getAsset, getAssetGroup, getAssetStatus, getAssetLocation, getAssetType } from '../graphql/queries';
 import { listAssetGroups, listAssetLocations, listAssetStatuses, listAssetTypes } from '../graphql/queries';
 import { updateAssetStatus, updateAsset, createAssetLog, updateAssetType, createAssetType } from '../graphql/mutations';
+import { deleteAssetType } from '../graphql/mutations';
 import BackButton from '../components/BackButton';
 import TypeFieldCreator from '../components/TypeFieldCreator';
 import Selector from '../components/Selector';
@@ -55,6 +56,9 @@ const Type: React.FC<AssetProps> = ({ match }) => {
     // modal logic
     const BorrowerInput = useRef<HTMLIonInputElement>(null);
 
+    //present toast
+    const [presentToast] = useIonToast();
+
     const router = useIonRouter();
 
     // updates the asset type and page state with the new type if it is a valid status
@@ -63,8 +67,6 @@ const Type: React.FC<AssetProps> = ({ match }) => {
 
         const assetFieldsJSON = JSON.stringify(typeFields);
         const assetLogFieldsJSON = JSON.stringify(logFields);
-
-        console.log(type.typeName + "Hello world");
 
         let typeDetails = {
             id: match.params.id,
@@ -82,7 +84,6 @@ const Type: React.FC<AssetProps> = ({ match }) => {
                 });
                 // @TODO Success or error toast here
                 console.log(result);
-                console.log("test work");
                 router.goBack();
             } catch (e) {
                 console.log(e);
@@ -91,6 +92,31 @@ const Type: React.FC<AssetProps> = ({ match }) => {
         };
 
         updateType();
+    }
+
+    const deleteType = async (): Promise<void> => {
+        const assetFieldsJSON = JSON.stringify(typeFields);
+        const assetLogFieldsJSON = JSON.stringify(logFields);
+
+        let typeDetails = {
+            id: match.params.id,
+            // typeName: type.typeName,
+            // dataTemplate: assetFieldsJSON,
+            // logTemplate: assetLogFieldsJSON
+        }
+
+        try {
+            const result: any = await API.graphql({
+                query: deleteAssetType,
+                variables: { input: typeDetails },
+                authMode: 'AWS_IAM'
+            })
+            console.log(result);
+            router.goBack();
+        } catch (e) {
+            console.log(e);
+        }
+        return;
     }
 
     useEffect(() => {
@@ -198,6 +224,23 @@ const Type: React.FC<AssetProps> = ({ match }) => {
                                             <IonButton type='submit'>Submit</IonButton>
                                         </form>
                                         <BackButton />
+                                        <IonButton onClick={() => {
+                                            presentToast({
+                                                message: 'Are you sure you want to delete this Type?',
+                                                duration: 10000,
+                                                buttons: [
+                                                    {
+                                                        text: 'Yes',
+                                                        role: 'confirm',
+                                                        handler: () => deleteType()
+                                                    },
+                                                    {
+                                                        text: 'No',
+                                                        role: 'cancel'
+                                                    }
+                                                ]
+                                            })
+                                        }}>Delete</IonButton>
                                     </div>
                                 </div>
                             </>
