@@ -120,7 +120,6 @@ const App = () => (
       </IonApp>
     )}
   </Authenticator>
-
 );
 
 export default App;
