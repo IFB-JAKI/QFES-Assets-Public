@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from 'react'
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonCheckbox, useIonLoading, IonLoading, IonButtons, IonInput, IonItem, IonLabel, IonModal, useIonAlert, useIonModal, IonToast, IonItemDivider, useIonToast } from '@ionic/react'
 import { RouteComponentProps } from 'react-router'
 import { API } from 'aws-amplify';
-import { getAsset, getAssetGroup, getAssetStatus, getAssetLocation, getAssetType } from '../graphql/queries';
-import { listAssetGroups, listAssetLocations, listAssetStatuses, listAssetTypes } from '../graphql/queries';
+import { getAsset, getGroup, getAssetStatus, getAssetLocation, getAssetType } from '../graphql/queries';
+import { listGroups, listAssetLocations, listAssetStatuses, listAssetTypes } from '../graphql/queries';
 import { updateAssetStatus, updateAsset, createAssetLog, updateAssetType, createAssetType } from '../graphql/mutations';
 import { deleteAssetType } from '../graphql/mutations';
 import BackButton from '../components/BackButton';
