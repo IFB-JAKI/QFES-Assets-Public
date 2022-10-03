@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react'
 import BackButton from '../components/BackButton'
 import Header from '../components/Header'
 import AssetSelector from '../components/AssetSelector'
-import { listAssetTypes, listGroups, listAssetStatuses, listAssetLocations, listAssets } from '../graphql/queries'
+import { listAssetTypes, listSimpleAssetGroups, listAssetStatuses, listAssetLocations, listAssets } from '../graphql/queries'
 import MultiAssetSelector from '../components/MultiAssetSelector'
-import { createGroup } from '../graphql/mutations'
+import { createSimpleAssetGroup, updateAsset } from '../graphql/mutations'
 
 const NewGroup = ({ user }: any) => {
 
@@ -27,25 +27,46 @@ const NewGroup = ({ user }: any) => {
       alert("The following assets are not available and cannot be added to a group: " + invalidAssets.map((asset: any) => asset.assetName).join(", "))
       return
     }
-    console.log(invalidAssets)
 
-    const createGroupCall = async () => {
+    const createSimpleAssetGroupCall = async () => {
       try {
-        const group = {
-          asset: parentAsset,
-          ChildAssets: childAssets,
-        }
         const groupResult: any = await API.graphql({
-          query: createGroup,
-          variables: { input: group }
+          query: createSimpleAssetGroup,
+          variables: {
+            input: {
+              parentAssetID: parentAsset
+            }
+          }
         });
         console.log("Group created:", groupResult);
+        childAssets.forEach(async (childAsset: string) => {
+        await API.graphql({
+            query: updateAsset,
+            variables: {
+              input: {
+                id: childAsset,
+                groupID: groupResult.data.createSimpleAssetGroup.id
+              }
+            }
+          });
+        await API.graphql({
+            query: updateAsset,
+            variables: {
+              input: {
+                id: parentAsset,
+                groupID: groupResult.data.createSimpleAssetGroup.id
+              }
+            }
+          });
+        });
       } catch (e: any) {
         console.log("Error creating Group:", e);
       }
     }
 
-    createGroupCall();
+
+
+    createSimpleAssetGroupCall();
   }
 
   useEffect(() => {
@@ -81,7 +102,7 @@ const NewGroup = ({ user }: any) => {
             <AssetSelector assets={assets} parentAsset={parentAsset} setParentAsset={setParentAsset} childAssets={childAssets} />
             <IonLabel>Child Assets</IonLabel>
             <MultiAssetSelector assets={assets} childAssets={childAssets} setChildAssets={setChildAssets} parentAsset={parentAsset} />
-            <IonButton type='submit'>Submit</IonButton>
+            <IonButton type='submit' disabled={parentAsset ? false : true}>Submit</IonButton>
           </form>
           <BackButton text="back" />
         </div>

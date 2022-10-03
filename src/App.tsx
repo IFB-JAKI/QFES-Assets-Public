@@ -113,7 +113,7 @@ const App = () => (
               <Route exact path="/NewStatus" component={NewStatus} />
               <Route exact path="/NewLocation" component={NewLocation} />
               <Route exact path="/Type/:id" component={Type} />
-              <Route exact path="/TypeSearch" component={TypeSearch} />
+              <Route exact path="/Types" render={() => <TypeSearch user={user}/>} />
             </IonRouterOutlet>
           </IonSplitPane>
         </IonReactRouter>

@@ -121,16 +121,6 @@ export const createAssetStatus = /* GraphQL */ `
         }
         nextToken
       }
-      groupStatusID {
-        items {
-          id
-          statusID
-          createdAt
-          updatedAt
-          groupAssetId
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -162,16 +152,6 @@ export const updateAssetStatus = /* GraphQL */ `
         }
         nextToken
       }
-      groupStatusID {
-        items {
-          id
-          statusID
-          createdAt
-          updatedAt
-          groupAssetId
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -200,16 +180,6 @@ export const deleteAssetStatus = /* GraphQL */ `
           assetTypeData
           createdAt
           updatedAt
-        }
-        nextToken
-      }
-      groupStatusID {
-        items {
-          id
-          statusID
-          createdAt
-          updatedAt
-          groupAssetId
         }
         nextToken
       }
@@ -479,31 +449,14 @@ export const deleteAssetLog = /* GraphQL */ `
     }
   }
 `;
-export const createGroup = /* GraphQL */ `
-  mutation CreateGroup(
-    $input: CreateGroupInput!
-    $condition: ModelGroupConditionInput
+export const createSimpleAssetGroup = /* GraphQL */ `
+  mutation CreateSimpleAssetGroup(
+    $input: CreateSimpleAssetGroupInput!
+    $condition: ModelSimpleAssetGroupConditionInput
   ) {
-    createGroup(input: $input, condition: $condition) {
+    createSimpleAssetGroup(input: $input, condition: $condition) {
       id
-      asset {
-        id
-        assetName
-        QRCode
-        description
-        currentEvent
-        typeID
-        AssetEvents {
-          nextToken
-        }
-        groupID
-        statusID
-        imageLink
-        assetlocaID
-        assetTypeData
-        createdAt
-        updatedAt
-      }
+      parentAssetID
       childAssets {
         items {
           id
@@ -522,38 +475,19 @@ export const createGroup = /* GraphQL */ `
         }
         nextToken
       }
-      statusID
       createdAt
       updatedAt
-      groupAssetId
     }
   }
 `;
-export const updateGroup = /* GraphQL */ `
-  mutation UpdateGroup(
-    $input: UpdateGroupInput!
-    $condition: ModelGroupConditionInput
+export const updateSimpleAssetGroup = /* GraphQL */ `
+  mutation UpdateSimpleAssetGroup(
+    $input: UpdateSimpleAssetGroupInput!
+    $condition: ModelSimpleAssetGroupConditionInput
   ) {
-    updateGroup(input: $input, condition: $condition) {
+    updateSimpleAssetGroup(input: $input, condition: $condition) {
       id
-      asset {
-        id
-        assetName
-        QRCode
-        description
-        currentEvent
-        typeID
-        AssetEvents {
-          nextToken
-        }
-        groupID
-        statusID
-        imageLink
-        assetlocaID
-        assetTypeData
-        createdAt
-        updatedAt
-      }
+      parentAssetID
       childAssets {
         items {
           id
@@ -572,38 +506,19 @@ export const updateGroup = /* GraphQL */ `
         }
         nextToken
       }
-      statusID
       createdAt
       updatedAt
-      groupAssetId
     }
   }
 `;
-export const deleteGroup = /* GraphQL */ `
-  mutation DeleteGroup(
-    $input: DeleteGroupInput!
-    $condition: ModelGroupConditionInput
+export const deleteSimpleAssetGroup = /* GraphQL */ `
+  mutation DeleteSimpleAssetGroup(
+    $input: DeleteSimpleAssetGroupInput!
+    $condition: ModelSimpleAssetGroupConditionInput
   ) {
-    deleteGroup(input: $input, condition: $condition) {
+    deleteSimpleAssetGroup(input: $input, condition: $condition) {
       id
-      asset {
-        id
-        assetName
-        QRCode
-        description
-        currentEvent
-        typeID
-        AssetEvents {
-          nextToken
-        }
-        groupID
-        statusID
-        imageLink
-        assetlocaID
-        assetTypeData
-        createdAt
-        updatedAt
-      }
+      parentAssetID
       childAssets {
         items {
           id
@@ -622,10 +537,8 @@ export const deleteGroup = /* GraphQL */ `
         }
         nextToken
       }
-      statusID
       createdAt
       updatedAt
-      groupAssetId
     }
   }
 `;

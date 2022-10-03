@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { IonPage, IonContent, IonSearchbar, useIonRouter } from '@ionic/react'
+import { IonPage, IonContent, IonSearchbar, useIonRouter, IonButton } from '@ionic/react'
 import { listAssetLocations, listAssets, listAssetStatuses, listAssetTypes } from '../graphql/queries';
 import { API } from 'aws-amplify';
 import { AgGridReact } from 'ag-grid-react'
@@ -83,17 +83,17 @@ const TypeSearch = ({ user }: searchProps) => {
 
     return (
         <IonPage>
-            {/* <Header title={"Search Types"} user={user} /> */}
+            <Header title={"Search Types"} user={user} />
             <IonContent>
                 <>
                     <div className="m-4 mb-0">
                         <BackButton text="Back" />
                     </div>
-
                     <div className="bg-white p-2 m-4 rounded-lg shadow">
-                        <div className='flex'>
-                            <IonSearchbar value={search} onIonChange={e => setSearch(e.detail.value!)}></IonSearchbar>
-                        </div>
+                    <div className='flex'>
+            <IonSearchbar value={search} onIonChange={e => setSearch(e.detail.value!)}></IonSearchbar>
+            <IonButton routerLink='/NewType'className="ml-2" expand="block">New Type</IonButton>
+          </div>
                         <div className="ag-theme-alpine m-2" style={{ height: 500 }}>
                             <AgGridReact
                                 domLayout={'autoHeight'}

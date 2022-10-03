@@ -109,16 +109,6 @@ export const onCreateAssetStatus = /* GraphQL */ `
         }
         nextToken
       }
-      groupStatusID {
-        items {
-          id
-          statusID
-          createdAt
-          updatedAt
-          groupAssetId
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -147,16 +137,6 @@ export const onUpdateAssetStatus = /* GraphQL */ `
         }
         nextToken
       }
-      groupStatusID {
-        items {
-          id
-          statusID
-          createdAt
-          updatedAt
-          groupAssetId
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -182,16 +162,6 @@ export const onDeleteAssetStatus = /* GraphQL */ `
           assetTypeData
           createdAt
           updatedAt
-        }
-        nextToken
-      }
-      groupStatusID {
-        items {
-          id
-          statusID
-          createdAt
-          updatedAt
-          groupAssetId
         }
         nextToken
       }
@@ -434,28 +404,11 @@ export const onDeleteAssetLog = /* GraphQL */ `
     }
   }
 `;
-export const onCreateGroup = /* GraphQL */ `
-  subscription OnCreateGroup {
-    onCreateGroup {
+export const onCreateSimpleAssetGroup = /* GraphQL */ `
+  subscription OnCreateSimpleAssetGroup {
+    onCreateSimpleAssetGroup {
       id
-      asset {
-        id
-        assetName
-        QRCode
-        description
-        currentEvent
-        typeID
-        AssetEvents {
-          nextToken
-        }
-        groupID
-        statusID
-        imageLink
-        assetlocaID
-        assetTypeData
-        createdAt
-        updatedAt
-      }
+      parentAssetID
       childAssets {
         items {
           id
@@ -474,35 +427,16 @@ export const onCreateGroup = /* GraphQL */ `
         }
         nextToken
       }
-      statusID
       createdAt
       updatedAt
-      groupAssetId
     }
   }
 `;
-export const onUpdateGroup = /* GraphQL */ `
-  subscription OnUpdateGroup {
-    onUpdateGroup {
+export const onUpdateSimpleAssetGroup = /* GraphQL */ `
+  subscription OnUpdateSimpleAssetGroup {
+    onUpdateSimpleAssetGroup {
       id
-      asset {
-        id
-        assetName
-        QRCode
-        description
-        currentEvent
-        typeID
-        AssetEvents {
-          nextToken
-        }
-        groupID
-        statusID
-        imageLink
-        assetlocaID
-        assetTypeData
-        createdAt
-        updatedAt
-      }
+      parentAssetID
       childAssets {
         items {
           id
@@ -521,35 +455,16 @@ export const onUpdateGroup = /* GraphQL */ `
         }
         nextToken
       }
-      statusID
       createdAt
       updatedAt
-      groupAssetId
     }
   }
 `;
-export const onDeleteGroup = /* GraphQL */ `
-  subscription OnDeleteGroup {
-    onDeleteGroup {
+export const onDeleteSimpleAssetGroup = /* GraphQL */ `
+  subscription OnDeleteSimpleAssetGroup {
+    onDeleteSimpleAssetGroup {
       id
-      asset {
-        id
-        assetName
-        QRCode
-        description
-        currentEvent
-        typeID
-        AssetEvents {
-          nextToken
-        }
-        groupID
-        statusID
-        imageLink
-        assetlocaID
-        assetTypeData
-        createdAt
-        updatedAt
-      }
+      parentAssetID
       childAssets {
         items {
           id
@@ -568,10 +483,8 @@ export const onDeleteGroup = /* GraphQL */ `
         }
         nextToken
       }
-      statusID
       createdAt
       updatedAt
-      groupAssetId
     }
   }
 `;

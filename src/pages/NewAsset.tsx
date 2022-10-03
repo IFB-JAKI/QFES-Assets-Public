@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { IonPage, IonContent, IonButton, useIonRouter, IonCheckbox } from '@ionic/react'
 import BackButton from '../components/BackButton'
-import { getAssetType, listGroups, listAssetLocations, listAssetStatuses, listAssetTypes } from '../graphql/queries';
+import { getAssetType, listSimpleAssetGroups, listAssetLocations, listAssetStatuses, listAssetTypes } from '../graphql/queries';
 import { createAsset } from '../graphql/mutations';
 import { API } from 'aws-amplify';
 import Selector from '../components/Selector';
@@ -110,7 +110,7 @@ const NewAsset = () => {
             }, [])
           }
           <IonButton routerLink='/newType'>New Type</IonButton>
-          <Selector label="Group" queryType={listGroups} handleChange={setGroup} nameKey="name" />
+          <Selector label="Group" queryType={listSimpleAssetGroups} handleChange={setGroup} nameKey="name" />
           <Selector label="Status" queryType={listAssetStatuses} handleChange={setStatus} nameKey="statusName" />
           <Selector label="Location" queryType={listAssetLocations} handleChange={setLocation} nameKey="locationName" />
           <IonButton type='submit'>Submit</IonButton>

@@ -73,16 +73,6 @@ export const getAssetStatus = /* GraphQL */ `
         }
         nextToken
       }
-      groupStatusID {
-        items {
-          id
-          statusID
-          createdAt
-          updatedAt
-          groupAssetId
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -99,9 +89,6 @@ export const listAssetStatuses = /* GraphQL */ `
         id
         statusName
         assetStatusID {
-          nextToken
-        }
-        groupStatusID {
           nextToken
         }
         createdAt
@@ -262,28 +249,11 @@ export const listAssetLogs = /* GraphQL */ `
     }
   }
 `;
-export const getGroup = /* GraphQL */ `
-  query GetGroup($id: ID!) {
-    getGroup(id: $id) {
+export const getSimpleAssetGroup = /* GraphQL */ `
+  query GetSimpleAssetGroup($id: ID!) {
+    getSimpleAssetGroup(id: $id) {
       id
-      asset {
-        id
-        assetName
-        QRCode
-        description
-        currentEvent
-        typeID
-        AssetEvents {
-          nextToken
-        }
-        groupID
-        statusID
-        imageLink
-        assetlocaID
-        assetTypeData
-        createdAt
-        updatedAt
-      }
+      parentAssetID
       childAssets {
         items {
           id
@@ -302,44 +272,30 @@ export const getGroup = /* GraphQL */ `
         }
         nextToken
       }
-      statusID
       createdAt
       updatedAt
-      groupAssetId
     }
   }
 `;
-export const listGroups = /* GraphQL */ `
-  query ListGroups(
-    $filter: ModelGroupFilterInput
+export const listSimpleAssetGroups = /* GraphQL */ `
+  query ListSimpleAssetGroups(
+    $filter: ModelSimpleAssetGroupFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listGroups(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listSimpleAssetGroups(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
         id
-        asset {
-          id
-          assetName
-          QRCode
-          description
-          currentEvent
-          typeID
-          groupID
-          statusID
-          imageLink
-          assetlocaID
-          assetTypeData
-          createdAt
-          updatedAt
-        }
+        parentAssetID
         childAssets {
           nextToken
         }
-        statusID
         createdAt
         updatedAt
-        groupAssetId
       }
       nextToken
     }

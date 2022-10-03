@@ -4,10 +4,11 @@ import { API } from 'aws-amplify';
 import React, { useEffect, useState } from 'react'
 import Header from '../components/Header'
 import Selector from '../components/Selector';
-import { listAssets, listAssetStatuses, listAssetTypes, listAssetLocations, listGroups } from '../graphql/queries';
+import { listAssets, listAssetStatuses, listAssetTypes, listAssetLocations, listSimpleAssetGroups } from '../graphql/queries';
 
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+import { group } from 'console';
 
 interface GroupsProps {
   user: any;
@@ -15,13 +16,13 @@ interface GroupsProps {
 
 const Groups = ({ user }: GroupsProps) => {
   const [groups, setGroups] = useState([]);
-  const [filteredGroups, setFilteredGroups] = useState([]);
+  const [filteredGroups, setFilteredGroups] = useState(Array<any>());
+  const [assets, setAssets] = useState(Array<any>());
 
   const [search, setSearch] = useState('');
 
   const columnDefs = [
     { headerName: "Name", field: "name", sortable: true, filter: true, flex: 1 },
-    { headerName: "Assets", field: "assets", sortable: true, filter: true, flex: 1 },
     { headerName: "Description", field: "description", sortable: true, filter: true, flex: 1 }
   ];
 
@@ -31,21 +32,44 @@ const Groups = ({ user }: GroupsProps) => {
     const fetchGroups = async () => {
       try {
         const groupsResult: any = await API.graphql({
-          query: listGroups,
+          query: listSimpleAssetGroups,
           variables: { limit: 1000 }
         });
-        setGroups(groupsResult.data.listGroups.items);
-        setFilteredGroups(groupsResult.data.listGroups.items);
+        setGroups(groupsResult.data.listSimpleAssetGroups.items);
       } catch (e: any) {
         console.log("Error fetching Groups:", e);
       }
     }
+    const fetchAssets = async () => {
+      try {
+        const assetsResult: any = await API.graphql({
+          query: listAssets,
+          variables: { limit: 1000 }
+        });
+        setAssets(assetsResult.data.listAssets.items);
+      } catch (e: any) {
+        console.log("Error fetching Assets:", e);
+      }
+    }
     fetchGroups();
+    fetchAssets();
   }, []);
 
   useEffect(() => {
-    setFilteredGroups(groups.filter((group: any) => group.name.toLowerCase().includes(search.toLowerCase())));
-  }, [search]);
+    if (groups.length > 0 && assets.length > 0) {
+      //setFilteredGroups(groups.filter((group: any) => assets.find((asset: any) => asset.id === group.parentAssetID)?.assetName?.toLowerCase().includes(search.toLowerCase())));
+      const filtered = groups.map((group: any) => {
+        let asset = assets.find((asset: any) => asset.id === group.parentAssetID);
+        if (asset && asset.assetName.toLowerCase().includes(search.toLowerCase())) {
+          return {
+            name: asset.assetName,
+            description: asset.description,
+          }
+        }
+      });
+      setFilteredGroups(filtered.filter((group: any) => group !== undefined));
+    }
+  }, [search, groups, assets]);
 
   const rowStyle = { cursor: 'pointer' };
 

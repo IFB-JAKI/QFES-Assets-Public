@@ -20,11 +20,11 @@ type AssetStatusMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type GroupMetaData = {
+type AssetTypeMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type AssetTypeMetaData = {
+type SimpleAssetGroupMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
@@ -75,23 +75,10 @@ export declare class AssetStatus {
   readonly id: string;
   readonly statusName: string;
   readonly assetStatusID?: (Asset | null)[] | null;
-  readonly groupStatusID?: (Group | null)[] | null;
   readonly createdAt?: string | null;
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<AssetStatus, AssetStatusMetaData>);
   static copyOf(source: AssetStatus, mutator: (draft: MutableModel<AssetStatus, AssetStatusMetaData>) => MutableModel<AssetStatus, AssetStatusMetaData> | void): AssetStatus;
-}
-
-export declare class Group {
-  readonly id: string;
-  readonly asset?: Asset | null;
-  readonly childAssets?: (Asset | null)[] | null;
-  readonly statusID?: string | null;
-  readonly createdAt?: string | null;
-  readonly updatedAt?: string | null;
-  readonly groupAssetId?: string | null;
-  constructor(init: ModelInit<Group, GroupMetaData>);
-  static copyOf(source: Group, mutator: (draft: MutableModel<Group, GroupMetaData>) => MutableModel<Group, GroupMetaData> | void): Group;
 }
 
 export declare class AssetType {
@@ -104,4 +91,14 @@ export declare class AssetType {
   readonly updatedAt?: string | null;
   constructor(init: ModelInit<AssetType, AssetTypeMetaData>);
   static copyOf(source: AssetType, mutator: (draft: MutableModel<AssetType, AssetTypeMetaData>) => MutableModel<AssetType, AssetTypeMetaData> | void): AssetType;
+}
+
+export declare class SimpleAssetGroup {
+  readonly id: string;
+  readonly parentAssetID?: string | null;
+  readonly childAssets?: (Asset | null)[] | null;
+  readonly createdAt?: string | null;
+  readonly updatedAt?: string | null;
+  constructor(init: ModelInit<SimpleAssetGroup, SimpleAssetGroupMetaData>);
+  static copyOf(source: SimpleAssetGroup, mutator: (draft: MutableModel<SimpleAssetGroup, SimpleAssetGroupMetaData>) => MutableModel<SimpleAssetGroup, SimpleAssetGroupMetaData> | void): SimpleAssetGroup;
 }

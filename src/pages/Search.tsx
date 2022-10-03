@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { IonPage, IonContent, IonSearchbar, useIonRouter } from '@ionic/react'
+import { IonPage, IonContent, IonSearchbar, useIonRouter, IonButton } from '@ionic/react'
 import { listAssetLocations, listAssets, listAssetStatuses, listAssetTypes } from '../graphql/queries';
 import { API } from 'aws-amplify';
 import { AgGridReact } from 'ag-grid-react'
@@ -135,6 +135,7 @@ const Search = ({ user }: searchProps) => {
             <Selector label="Status" queryType={listAssetStatuses} handleChange={setSearchStatus} nameKey="statusName" placeHolder='All' />
             <Selector label="Type" queryType={listAssetTypes} handleChange={setSearchType} nameKey="typeName" placeHolder='All' />
             <Selector label="Location" queryType={listAssetLocations} handleChange={setSearchLocation} nameKey="locationName" placeHolder='All' />
+            <IonButton routerLink='/NewAsset'className="ml-2" expand="block">New Asset</IonButton>
           </div>
           <div className="ag-theme-alpine m-2" style={{ height: 500 }}>
             <AgGridReact
