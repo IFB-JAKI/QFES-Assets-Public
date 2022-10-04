@@ -414,7 +414,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                   <h1>Asset Name:</h1>
                   <input onChange={(e) => setName(e.target.value)} placeholder={name} defaultValue={name}></input>
                   <h1>Asset Description:</h1>
-                  <input onChange={(e) => setDescription(e.target.value)} placeholder={description} defaultValue={description}></input>
+                  <h1 className='text-xl font-montserrat bg-primary-500 rounded p-1'><input onChange={(e) => setDescription(e.target.value)} placeholder={description} defaultValue={description}></input></h1>
                   <Selector label="Asset Type: " queryType={listAssetTypes} handleChange={setType} nameKey="typeName" defaultValue={type?.id && type.id} />
                   {
                     typeFields.map((field, index) => {
@@ -430,8 +430,8 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                       }
                       return (
                         <div key={index}>
-                          <label>{field.name}: </label>
-                          {fieldJsx}
+                           <h1 className='text-xl font-montserrat'><label>{field.name}: </label></h1>
+                          <h2 className='font-montserrat bg-primary-500 rounded p-1'>{fieldJsx}</h2> 
                         </div>
                       )
                     }, [])
