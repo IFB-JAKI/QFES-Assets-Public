@@ -121,20 +121,6 @@ export const createAssetStatus = /* GraphQL */ `
         }
         nextToken
       }
-      groupStatusID {
-        items {
-          id
-          name
-          template
-          numAssets
-          assetstatusID
-          description
-          imageLink
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -166,20 +152,6 @@ export const updateAssetStatus = /* GraphQL */ `
         }
         nextToken
       }
-      groupStatusID {
-        items {
-          id
-          name
-          template
-          numAssets
-          assetstatusID
-          description
-          imageLink
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -206,20 +178,6 @@ export const deleteAssetStatus = /* GraphQL */ `
           imageLink
           assetlocaID
           assetTypeData
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
-      groupStatusID {
-        items {
-          id
-          name
-          template
-          numAssets
-          assetstatusID
-          description
-          imageLink
           createdAt
           updatedAt
         }
@@ -491,16 +449,15 @@ export const deleteAssetLog = /* GraphQL */ `
     }
   }
 `;
-export const createAssetGroup = /* GraphQL */ `
-  mutation CreateAssetGroup(
-    $input: CreateAssetGroupInput!
-    $condition: ModelAssetGroupConditionInput
+export const createSimpleAssetGroup = /* GraphQL */ `
+  mutation CreateSimpleAssetGroup(
+    $input: CreateSimpleAssetGroupInput!
+    $condition: ModelSimpleAssetGroupConditionInput
   ) {
-    createAssetGroup(input: $input, condition: $condition) {
+    createSimpleAssetGroup(input: $input, condition: $condition) {
       id
-      name
-      template
-      groupID {
+      parentAssetID
+      childAssets {
         items {
           id
           assetName
@@ -518,25 +475,20 @@ export const createAssetGroup = /* GraphQL */ `
         }
         nextToken
       }
-      numAssets
-      assetstatusID
-      description
-      imageLink
       createdAt
       updatedAt
     }
   }
 `;
-export const updateAssetGroup = /* GraphQL */ `
-  mutation UpdateAssetGroup(
-    $input: UpdateAssetGroupInput!
-    $condition: ModelAssetGroupConditionInput
+export const updateSimpleAssetGroup = /* GraphQL */ `
+  mutation UpdateSimpleAssetGroup(
+    $input: UpdateSimpleAssetGroupInput!
+    $condition: ModelSimpleAssetGroupConditionInput
   ) {
-    updateAssetGroup(input: $input, condition: $condition) {
+    updateSimpleAssetGroup(input: $input, condition: $condition) {
       id
-      name
-      template
-      groupID {
+      parentAssetID
+      childAssets {
         items {
           id
           assetName
@@ -554,25 +506,20 @@ export const updateAssetGroup = /* GraphQL */ `
         }
         nextToken
       }
-      numAssets
-      assetstatusID
-      description
-      imageLink
       createdAt
       updatedAt
     }
   }
 `;
-export const deleteAssetGroup = /* GraphQL */ `
-  mutation DeleteAssetGroup(
-    $input: DeleteAssetGroupInput!
-    $condition: ModelAssetGroupConditionInput
+export const deleteSimpleAssetGroup = /* GraphQL */ `
+  mutation DeleteSimpleAssetGroup(
+    $input: DeleteSimpleAssetGroupInput!
+    $condition: ModelSimpleAssetGroupConditionInput
   ) {
-    deleteAssetGroup(input: $input, condition: $condition) {
+    deleteSimpleAssetGroup(input: $input, condition: $condition) {
       id
-      name
-      template
-      groupID {
+      parentAssetID
+      childAssets {
         items {
           id
           assetName
@@ -590,10 +537,6 @@ export const deleteAssetGroup = /* GraphQL */ `
         }
         nextToken
       }
-      numAssets
-      assetstatusID
-      description
-      imageLink
       createdAt
       updatedAt
     }

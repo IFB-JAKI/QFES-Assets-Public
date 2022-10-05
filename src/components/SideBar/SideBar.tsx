@@ -26,9 +26,13 @@ const SideBar = ({ signOut }: SideBarProps) => {
             <IonIcon icon={listOutline} className='mr-3'></IonIcon>
             Assets
             </SideBarOption>
-            <SideBarOption route="/Statistics">
+            <SideBarOption route="/Types">
               <IonIcon icon={statsChartOutline} className='mr-3'></IonIcon>
-              Statistics
+              Types
+              </SideBarOption>
+              <SideBarOption route="/Groups">
+              <IonIcon icon={statsChartOutline} className='mr-3'></IonIcon>
+              Groups
               </SideBarOption>
             <SideBarOption route="/Reports">
               <IonIcon icon={documentTextOutline} className='mr-3'></IonIcon>

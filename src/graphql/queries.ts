@@ -73,20 +73,6 @@ export const getAssetStatus = /* GraphQL */ `
         }
         nextToken
       }
-      groupStatusID {
-        items {
-          id
-          name
-          template
-          numAssets
-          assetstatusID
-          description
-          imageLink
-          createdAt
-          updatedAt
-        }
-        nextToken
-      }
       createdAt
       updatedAt
     }
@@ -103,9 +89,6 @@ export const listAssetStatuses = /* GraphQL */ `
         id
         statusName
         assetStatusID {
-          nextToken
-        }
-        groupStatusID {
           nextToken
         }
         createdAt
@@ -266,13 +249,12 @@ export const listAssetLogs = /* GraphQL */ `
     }
   }
 `;
-export const getAssetGroup = /* GraphQL */ `
-  query GetAssetGroup($id: ID!) {
-    getAssetGroup(id: $id) {
+export const getSimpleAssetGroup = /* GraphQL */ `
+  query GetSimpleAssetGroup($id: ID!) {
+    getSimpleAssetGroup(id: $id) {
       id
-      name
-      template
-      groupID {
+      parentAssetID
+      childAssets {
         items {
           id
           assetName
@@ -290,33 +272,28 @@ export const getAssetGroup = /* GraphQL */ `
         }
         nextToken
       }
-      numAssets
-      assetstatusID
-      description
-      imageLink
       createdAt
       updatedAt
     }
   }
 `;
-export const listAssetGroups = /* GraphQL */ `
-  query ListAssetGroups(
-    $filter: ModelAssetGroupFilterInput
+export const listSimpleAssetGroups = /* GraphQL */ `
+  query ListSimpleAssetGroups(
+    $filter: ModelSimpleAssetGroupFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listAssetGroups(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listSimpleAssetGroups(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+    ) {
       items {
         id
-        name
-        template
-        groupID {
+        parentAssetID
+        childAssets {
           nextToken
         }
-        numAssets
-        assetstatusID
-        description
-        imageLink
         createdAt
         updatedAt
       }
