@@ -446,6 +446,15 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                   <div className="bg-white p-2 m-4 rounded-lg shadow">
                     <h1>Asset Loan History</h1>
                     <IonButton onClick={getLoanLog}>Loan History</IonButton>
+                    {
+                      loanLog.map((log, index) => {
+                        if(log.borrowDate.length > 0){
+                          return <ul key={log.id}>{log.borrowDate}</ul>
+                        }
+                        return <h1>Log is a return</h1>
+                        
+                      })
+                    }
                   </div>
                 </div>
                 
@@ -464,8 +473,6 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                 
                 </div>
                 </div>
-
-                <BackButton text="back" />
               </>
             ) : (
               <div>
