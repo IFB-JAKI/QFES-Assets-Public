@@ -15,6 +15,7 @@ import SignatureCanvas from 'react-signature-canvas'
 import { ButtonGroup } from '@aws-amplify/ui-react';
 import { Router } from '@aws-amplify/ui-react/dist/types/components/Authenticator/Router';
 import LoanModal from '../components/LoanModal';
+import { bool } from 'prop-types';
 
 interface AssetProps
   extends RouteComponentProps<{
@@ -81,22 +82,21 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   };
 
 
-    const getLoanLog = () => {
-      updateStatusCall('Available');
-      let now = new Date().valueOf();
-      // create return event
+  useEffect(() => {
+      // collect loan log information
       const createLoanLogEvent = async () => {
         try {
-          // const result: any = await API.graphql({
-          //   query: getAssetLog,
-          //   variables: { id: match.params.id, }, 
-          //   authMode: 'AWS_IAM'
-          // });
+          const resultLog: any = await API.graphql({
+            query: getAssetLog,
+            variables: { id: "4dd4af8d-6258-4c4d-a656-6dc56dda9753" },
+            authMode: 'AWS_IAM'
+          });
           const result: any = await API.graphql({
             query: listAssetLogs,
             authMode: 'AWS_IAM'
           });
           console.log(result);
+          console.log(resultLog);
           setLoanLog(result.data.listAssetLogs.items);
           //setLoanLog(result.data.getAssetLog.items);
         } catch (e) {
@@ -105,8 +105,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
         return;
       }
       createLoanLogEvent();
-    }
-  
+    },[]);
   // updates the asset status and page state with the new status if it is a valid status
   const updateStatusCall = async (statusName: string): Promise<void> => {
     let status = allStatuses.find((status) => status.statusName === statusName);
@@ -217,6 +216,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
       assetTypeData: JSON.stringify(typeInputs)
     };
     updateAssetCall(assetDetails);
+    setSaved(true);
   }
 
   // Fetch all valid statuses
@@ -394,7 +394,17 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
       },
     });
   }
+  function changeInDescription(e: any) {
+    setSaved(false);
+    setDescription(e.target.value)
+  }
 
+  function changeInName(e: any) {
+    setSaved(false);
+    setName(e.target.value)
+  }
+  
+  let changes = false;
   return (
     <IonPage>
       <IonContent>
@@ -405,15 +415,14 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
               <div className="m-4 mb-0">
                 <BackButton text="back" />
               </div>
-              
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="h-full bg-white p-2 m-4 rounded-lg shadow col-span-2">
+                  <div className="h-full bg-white p-4 m-4 rounded-lg shadow col-span-2">
                   <h1 className='text-3xl font-montserrat font-bold text-primary-200 text-blue'>{name}</h1>
                 <form onSubmit={handleMainSubmit}>
                   <h1>Asset Name:</h1>
-                  <input onChange={(e) => setName(e.target.value)} placeholder={name} defaultValue={name}></input>
+                  <input onChange={(e) => changeInName(e)} placeholder={name} defaultValue={name}></input>
                   <h1>Asset Description:</h1>
-                  <h1 className='text-xl font-montserrat bg-primary-500 rounded p-1'><input onChange={(e) => setDescription(e.target.value)} placeholder={description} defaultValue={description}></input></h1>
+                  <h1 className='text-xl font-montserrat bg-white rounded p-1'><input className="bg-white w-full" onChange={(e) => changeInDescription(e)} placeholder={description} defaultValue={description}></input></h1>
                   <Selector label="Asset Type: " queryType={listAssetTypes} handleChange={setType} nameKey="typeName" defaultValue={type?.id && type.id} />
                   {
                     typeFields.map((field, index) => {
@@ -440,19 +449,24 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                   <Selector label="Asset Group" queryType={listSimpleAssetGroups} handleChange={setGroup} nameKey="name" />
                   <h1>Select an Image:</h1>
                   <input type="file" accept='image/jpeg, image/png'></input>
-                  <IonButton type='submit'>Submit</IonButton>
+                  <br></br>
+                  {saved === false&&<IonButton type='submit'>Save Changes</IonButton>}
                 </form>
                   </div>
-                  <div className="bg-white p-2 m-4 rounded-lg shadow">
-                    <h1>Asset Loan History</h1>
-                    <IonButton onClick={getLoanLog}>Loan History</IonButton>
+                  <div className="bg-white p-4 m-4 rounded-lg shadow">
+                    <h1 className='text-3xl font-montserrat font-bold text-primary-200 text-blue'>Asset Loan History</h1>
+                    
                     {
                       loanLog.map((log, index) => {
-                        if(log.borrowDate.length > 0){
-                          return <ul key={log.id}>{log.borrowDate}</ul>
-                        }
-                        return <h1>Log is a return</h1>
-                        
+                        if(log.assetID == match.params.id){      
+                          if(log.borrowDate !== null){
+                            var myDate = new Date( log.borrowDate);
+                            return<ul className="font-montserrat text-xl ml-4">{("Loaned: " + myDate.toLocaleDateString())}</ul>
+                            return <ul key={log.id}>{log.borrowDate}</ul>
+                          }
+                          var myDate = new Date( log.returnDate);
+                          return<ul className="font-montserrat text-xl ml-4">{("Returned: " + myDate.toLocaleDateString())}</ul>
+                      }
                       })
                     }
                   </div>
@@ -461,14 +475,15 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                 <div className="columns-1">
                   <div className="bg-white p-2 mt-8 m-4 rounded-lg shadow">
 
-                {/*Display the button for Loan/Return */}
-                {status.name === "Available" &&<IonButton onClick={() => openModal()}>Loan</IonButton>}
+                {/*Display the button for Loan/Return */}   
+                {saved === false&&<h1>Changes must be saved before item can be loaned</h1>}        
+                {saved != false && status.name === "Available" &&<IonButton onClick={() => openModal()}>Loan</IonButton>}
                 {status.name === "On Loan" &&<IonButton onClick={handleReturnSubmit}>Return</IonButton>}
                
                 {/*Display the button for Archive/Restore */}
                 {(status.name === 'Available'|| status.name === 'On Loan') ?
-                (<IonButton onClick={handleArchiveSubmit}>Archive Asset</IonButton> ) 
-                : (<IonButton onClick={handleRestoreSubmit}>Restore Asset</IonButton>)}
+                (<IonButton color="secondary" onClick={handleArchiveSubmit}>Archive Asset</IonButton> ) 
+                : (<IonButton color="secondary" onClick={handleRestoreSubmit}>Restore Asset</IonButton>)}
                 
                 
                 </div>
