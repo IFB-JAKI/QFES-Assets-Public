@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonCheckbox, useIonLoading, IonLoading, IonButtons, IonInput, IonItem, IonLabel, IonModal, useIonAlert, useIonModal } from '@ionic/react'
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonCheckbox, useIonLoading, IonLoading, IonButtons, IonInput, IonItem, IonLabel, IonModal, useIonAlert, useIonModal, useIonToast } from '@ionic/react'
 import { RouteComponentProps } from 'react-router'
 import { API } from 'aws-amplify';
 import { getAsset, getSimpleAssetGroup, getAssetStatus, getAssetLocation, getAssetType, getAssetLog, listAssetLogs } from '../graphql/queries';
@@ -35,6 +35,7 @@ interface FieldsInterface {
 
 const Asset: React.FC<AssetProps> = ({ match }) => {
   const [presentAlert] = useIonAlert();
+  const [presentToast] = useIonToast();
   // user input
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -64,6 +65,14 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
 
   const [loanLog, setLoanLog] = useState(Array<any>());
 
+  const presentActionToast = (position: 'top' | 'middle' | 'bottom', message: string) => {
+    presentToast({
+      message: message,
+      duration: 1500,
+      position: position,
+      
+    });
+  }
 
   const updateAssetCall = async (assetDetails: any, callback?: Function): Promise<void> => {
     try {
@@ -176,6 +185,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
       }
     }
     createReturnEvent();
+    presentActionToast('bottom', "Item Returned");
   }
 
   const handleArchiveSubmit = () => {
@@ -188,15 +198,18 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
           })
           return;
         }
-    updateStatusCall('Archived');  
+    updateStatusCall('Archived');
+    presentActionToast('bottom', "Item Archived");  
   }
 
   const handleRestoreSubmit = () => {
     const createRestoreEvent = async () => {
 
     }
+    presentActionToast('bottom', "Item Restored"); 
     createRestoreEvent();
-    updateStatusCall('Available');  
+    updateStatusCall('Available'); 
+    
   }
 
   const handleMainSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -391,6 +404,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
       onWillDismiss: (ev: CustomEvent<OverlayEventDetail>) => {
         if (ev.detail.role === 'confirm') {
           handleLoanSubmit();
+          presentActionToast('bottom', "Item Loaned");
         }
       },
     });
@@ -437,13 +451,13 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                     typeFields.map((field, index) => {
                       let fieldJsx;
                       if (field.type === 'text') {
-                        fieldJsx = <input className="bg-neutral-400 text-white pl-2 w-full" type="text" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
+                        fieldJsx = <input className="bg-neutral-400 text-white pl-2 w-full rounded" type="text" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
                       } else if (field.type === 'number') {
-                        fieldJsx = <input className="bg-neutral-400 text-white pl-2 w-full" type="number" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
+                        fieldJsx = <input className="bg-neutral-400 text-white pl-2 w-full rounded" type="number" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
                       } else if (field.type === 'date') {
-                        fieldJsx = <input className="bg-neutral-400 text-white pl-2 w-full" type="date" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
+                        fieldJsx = <input className="bg-neutral-400 text-white pl-2 w-full rounded" type="date" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
                       } else if (field.type === 'boolean') {
-                        fieldJsx = <IonCheckbox className="bg-neutral-400 text-white w-full" value={field.value} onChange={e => handleTypeChange(index, e)}></IonCheckbox>
+                        fieldJsx = <IonCheckbox className="bg-neutral-400 text-white w-full rounded" value={field.value} onChange={e => handleTypeChange(index, e)}></IonCheckbox>
                       }
                       return (
                         <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 m-2"key={index}>
