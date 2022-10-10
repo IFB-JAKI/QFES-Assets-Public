@@ -19,7 +19,9 @@ module.exports = {
           500: "#FFFFFF",
         },
         orange:"#FE5E37",
-        blue: "#142F54"
+        blue: "#142F54",
+        red:"#E2231A",
+        stone:"#0D1F21"
       },
     },
     fontFamily: {

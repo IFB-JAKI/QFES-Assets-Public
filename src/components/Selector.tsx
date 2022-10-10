@@ -51,14 +51,14 @@ const Selector = ({ nullable = true, handleChange, queryType, label, nameKey, pl
     )
   } else {
     return (
-      <div>
+      <div className='text-l font-montserrat'>
         <label>{label}</label>
-        <select className='bg-primary-500 rounded p-1' onChange={(e) => handleChange(data.find(item => item.id === e.target.value))} value={defaultValue}>
+        <select className='bg-neutral-400 text-white text-l rounded p-1 m-1' onChange={(e) => handleChange(data.find(item => item.id === e.target.value))} value={defaultValue}>
           {nullable && <option value="">{placeHolder}</option>}
           {
             data.map((option: any) => {
               return (
-                <option value={option.id} key={option.id}>{option[nameKey]}</option>
+                <option className="bg-neutral-400 text-white text-l"value={option.id} key={option.id}>{option[nameKey]}</option>
               )
             })
           }
