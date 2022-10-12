@@ -4,7 +4,7 @@ import React from 'react'
 
 interface headerProps {
   title: string;
-  user: any;
+  user?: any;
 }
 
 const Header = ({ title, user }: headerProps) => {
@@ -22,7 +22,7 @@ const Header = ({ title, user }: headerProps) => {
         <IonButtons slot="secondary">
           <IonButton>
             <IonIcon slot="end" icon={personCircle} />
-            {user.attributes.name}
+            {user?.attributes.name}
           </IonButton>
         </IonButtons>
         <IonTitle className='text-3xl font-montserrat font-bold text-primary-200'>{title}</IonTitle>

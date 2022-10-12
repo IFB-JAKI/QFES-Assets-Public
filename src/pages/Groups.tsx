@@ -64,6 +64,7 @@ const Groups = ({ user }: GroupsProps) => {
           return {
             name: asset.assetName,
             description: asset.description,
+            id: group.id
           }
         }
       });

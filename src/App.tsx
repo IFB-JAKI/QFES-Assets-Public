@@ -47,6 +47,7 @@ import SideBar from './components/SideBar/SideBar';
 import qfesLarge from './assets/img/qfes-large-no-background.png';
 import Groups from './pages/Groups';
 import NewGroup from './pages/NewGroup';
+import EditGroup from './pages/EditGroup';
 
 Amplify.configure(awsconfig);
 
@@ -110,6 +111,7 @@ const App = () => (
               <Route exact path="/Search" render={() => <Search user={user} />} />
               <Route exact path="/Groups" render={() => <Groups user={user} />} />
               <Route exact path="/groups/new" render={() => <NewGroup user={user} />} />
+              <Route exact path="/group/:id" component={EditGroup} />
               <Route exact path="/NewStatus" component={NewStatus} />
               <Route exact path="/NewLocation" component={NewLocation} />
               <Route exact path="/Type/:id" component={Type} />
