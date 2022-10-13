@@ -68,7 +68,7 @@ const LoanModal = ({
               return (
                  <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 m-2"key={index}>
                  <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>{field.name}: </label></h1>
-                <h2 className='font-montserrat rounded p-1 pl-2 pb-2 pr-2 content-end'>{fieldJsx}</h2> 
+                <h2 className='font-montserrat text-white rounded p-1 pl-2 pb-2 pr-2 content-end'>{fieldJsx}</h2> 
               </div>
               )
             }, [])
