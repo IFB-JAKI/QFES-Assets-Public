@@ -1,4 +1,4 @@
-import { IonButton, IonCheckbox, IonContent, IonInput, IonLabel, IonList, IonPage, IonSearchbar, useIonAlert, useIonRouter } from '@ionic/react'
+import { IonButton, IonCheckbox, IonContent, IonInput, IonLabel, IonList, IonPage, IonSearchbar, useIonAlert, useIonRouter, useIonToast } from '@ionic/react'
 import { API } from 'aws-amplify'
 import React, { useEffect, useState } from 'react'
 import BackButton from '../components/BackButton'
@@ -23,6 +23,7 @@ const EditGroup: React.FC<EditGroupProps> = ({ match }) => {
   const [assets, setAssets] = useState<any>([]);
   const [availableID, setAvailableID] = useState<string>();
   const [deleteAlert] = useIonAlert();
+  const [toast] = useIonToast();
 
   const router = useIonRouter();
 
@@ -96,6 +97,14 @@ const EditGroup: React.FC<EditGroupProps> = ({ match }) => {
             }
           });
         });
+        const presentToast = () => {
+          toast({
+            message: 'Group updated successfully',
+            duration: 1500,
+            position: 'bottom'
+          });
+        }
+        presentToast();
       } catch (e: any) {
         console.log("Error creating Group:", e);
       }
