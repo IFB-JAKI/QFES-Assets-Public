@@ -17,10 +17,11 @@ const MultiAssetSelector = ({ assets, childAssets, setChildAssets, parentAsset}:
   const [filteredAssets, setFilteredAssets] = useState(assets);
 
   // cant select parent and child at same time
-
+  // cant select child in other group.
   useEffect(() => {
     if (assets.length > 0) {
-      setFilteredAssets(assets.filter(asset => asset.id !== parentAsset));
+      const tempFiltered = assets.filter(asset => asset.id !== parentAsset);
+      setFilteredAssets(tempFiltered.filter(asset => asset.groupID === null));
     }
   }, [parentAsset, assets])
 
