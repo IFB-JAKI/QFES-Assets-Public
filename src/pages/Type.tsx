@@ -195,10 +195,6 @@ const Type: React.FC<AssetProps> = ({ match }) => {
                     (loaded) ? (
                         (error === '') ? (
                             <>
-                                <div className="m-4 mb-0">
-                                    <BackButton text="Back" />
-                                </div>
-
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                     <div className="h-full bg-white p-2 m-4 rounded-lg shadow col-span-2">
                                         <h1 className="text-3xl font-montserrat font-bold text-primary-200 text-blue">{type.typeName}</h1>
@@ -224,7 +220,7 @@ const Type: React.FC<AssetProps> = ({ match }) => {
                                             <IonButton type='submit'>Submit</IonButton>
                                         </form>
                                         <BackButton />
-                                        <IonButton onClick={() => {
+                                        <IonButton color="danger" onClick={() => {
                                             presentToast({
                                                 message: 'Are you sure you want to delete this Type?',
                                                 duration: 10000,
