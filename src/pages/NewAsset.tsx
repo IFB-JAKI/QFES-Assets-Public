@@ -30,7 +30,7 @@ const NewAsset = () => {
     let typeInputs = typeFields.map((field) => {
       return { name: field.name, value: field.value }
     });
-    
+
     let assetDetails = {
       assetName: name,
       description: description,
@@ -56,6 +56,17 @@ const NewAsset = () => {
     };
     createAssetCall();
   }
+
+  // const getImage = async (e: any) => {
+  //   const file = e.target.files[0];
+  //   try {
+  //     await Storage.put(file.name, file, {
+  //       contentType: "image/png", // contentType is optional
+  //     });
+  //   } catch (error) {
+  //     console.log("Error uploading file: ", error);
+  //   }
+  // }
 
   useEffect(() => {
     if (type && type.dataTemplate !== '') {
