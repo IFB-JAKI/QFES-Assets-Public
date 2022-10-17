@@ -53,14 +53,14 @@ const TypeFieldCreator = ({ fields, setFields }: TypeFieldCreatorProps) => {
                 <option value="boolean">Boolean</option>
                 <option value="date">Date</option>
                 <option value="signature">Digital Signature</option>
-            </select>
-              
+              </select>
+
               <IonButton className="ml-7" size="default" onClick={() => { removeField(index) }}>Delete</IonButton>
             </IonItem>
           </div>
         )
       })}
-      <IonItem> <IonButton className="mx-auto" size="default" onClick={(e) => addField()}>Add Field</IonButton> </IonItem>
+      <IonItem> <IonButton color="medium" className="mx-auto" size="default" onClick={(e) => addField()}>Add Field</IonButton> </IonItem>
     </>
   )
 }

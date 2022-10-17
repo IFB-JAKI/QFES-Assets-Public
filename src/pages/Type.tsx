@@ -95,20 +95,11 @@ const Type: React.FC<AssetProps> = ({ match }) => {
     }
 
     const deleteType = async (): Promise<void> => {
-        const assetFieldsJSON = JSON.stringify(typeFields);
-        const assetLogFieldsJSON = JSON.stringify(logFields);
-
-        let typeDetails = {
-            id: match.params.id,
-            // typeName: type.typeName,
-            // dataTemplate: assetFieldsJSON,
-            // logTemplate: assetLogFieldsJSON
-        }
 
         try {
             const result: any = await API.graphql({
                 query: deleteAssetType,
-                variables: { input: typeDetails },
+                variables: { input: match.params.id },
                 authMode: 'AWS_IAM'
             })
             console.log(result);
@@ -220,7 +211,7 @@ const Type: React.FC<AssetProps> = ({ match }) => {
                                             <IonButton type='submit'>Submit</IonButton>
                                         </form>
                                         <BackButton />
-                                        <IonButton color="danger" onClick={() => {
+                                        <IonButton color="light" onClick={() => {
                                             presentToast({
                                                 message: 'Are you sure you want to delete this Type?',
                                                 duration: 10000,

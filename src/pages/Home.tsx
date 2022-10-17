@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react'
 import BackButton from '../components/BackButton'
 import { listAssetLocations, listAssets, listAssetStatuses, listAssetTypes } from '../graphql/queries';
 import { API } from 'aws-amplify';
+
 interface HomeProps {
   user: any;
 }
@@ -123,11 +124,8 @@ const Home = ({ user }: HomeProps) => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>SEARCH</IonTitle>
-        </IonToolbar>
-      </IonHeader>
+      <Header title={"HOME"} user={user} />
+
 
       <div className="grid grid-cols-1">
         <div className="h-full bg-white p-4 m-4 rounded-lg shadow col-span-2" key={1}>
