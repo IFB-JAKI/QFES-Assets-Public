@@ -442,7 +442,11 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                           <input className="text-3xl font-montserrat font-bold text-primary-200 text-blue bg-white" onChange={(e) => changeInName(e)} placeholder={name} defaultValue={name}></input>
                         </div>
                         <div className="col-span-1">
-                          <h1 className="text-3xl font-montserrat font-bold text-primary-200 text-blue bg-white md:text-right">{status.name}</h1>
+                          {(status.name === "Available") ? (<h1 className="text-3xl font-montserrat font-bold text-green-600 bg-white md:text-right">{status.name}</h1>) 
+                          : (status.name === 'On Loan') ?
+                          (<h1 className="text-3xl font-montserrat font-bold text-red bg-white md:text-right">{status.name}</h1>) 
+                          : (status.name === "Archived") ? <h1 className="text-3xl font-montserrat font-bold text-orange bg-white md:text-right">{status.name}</h1>
+                          : <h1 className="text-3xl font-montserrat font-bold text-primary-200 text-blue bg-white md:text-right">{status.name}</h1>}
                         </div>
 
                       </div>
