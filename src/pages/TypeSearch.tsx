@@ -16,7 +16,6 @@ interface searchProps {
 
 const TypeSearch = ({ user }: searchProps) => {
     const [assets, setAssets] = useState([]);
-    const [filteredAssets, setFilteredAssets] = useState([]);
 
     const [search, setSearch] = useState('');
 
@@ -86,14 +85,11 @@ const TypeSearch = ({ user }: searchProps) => {
             <Header title={"Search Types"} user={user} />
             <IonContent>
                 <>
-                    <div className="m-4 mb-0">
-                        <BackButton text="Back" />
-                    </div>
                     <div className="bg-white p-2 m-4 rounded-lg shadow">
-                    <div className='flex'>
-            <IonSearchbar value={search} onIonChange={e => setSearch(e.detail.value!)}></IonSearchbar>
-            <IonButton routerLink='/NewType'className="ml-2" expand="block">New Type</IonButton>
-          </div>
+                        <div className='flex'>
+                            <IonSearchbar value={search} onIonChange={e => setSearch(e.detail.value!)}></IonSearchbar>
+                            <IonButton routerLink='/NewType' className="ml-2" expand="block">New Type</IonButton>
+                        </div>
                         <div className="ag-theme-alpine m-2" style={{ height: 500 }}>
                             <AgGridReact
                                 domLayout={'autoHeight'}

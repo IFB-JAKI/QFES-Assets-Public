@@ -9,9 +9,10 @@ interface AssetSelectorProps {
   setParentAsset: (assetID: string | undefined) => void;
   parentAsset?: string;
   childAssets: Array<string>;
+  currentGroup?: string | undefined;
 }
-
-const AssetSelector = ({ assets, setParentAsset, parentAsset, childAssets }: AssetSelectorProps) => {
+// Selects a parent asset for a group, filters assets already selected as children and assets in other groups.
+const AssetSelector = ({ assets, setParentAsset, parentAsset, childAssets, currentGroup }: AssetSelectorProps) => {
 
   const [text, setText] = useState<string>();
   const [filteredAssets, setFilteredAssets] = useState(assets);
@@ -24,7 +25,12 @@ const AssetSelector = ({ assets, setParentAsset, parentAsset, childAssets }: Ass
   // filter child assets from assets
   useEffect(() => {
     if (assets.length > 0) {
-      setFilteredAssets(assets.filter(asset => !childAssets.includes(asset.id)));
+      const tempFiltered = assets.filter(asset => !childAssets.includes(asset.id));
+      if (currentGroup) {
+        setFilteredAssets(tempFiltered.filter(asset => asset.groupID === null || asset.groupID === currentGroup));
+      } else {
+        setFilteredAssets(tempFiltered.filter(asset => asset.groupID === null));
+      }
     }
   }, [childAssets, assets])
 
