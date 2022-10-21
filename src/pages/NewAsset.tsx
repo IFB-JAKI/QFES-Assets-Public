@@ -20,6 +20,7 @@ const NewAsset = ({ user }: GroupsProps) => {
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [QRCode, setQRCode] = useState('');
 
   const [type, setType] = useState({ name: '', id: null, dataTemplate: '' });
   const [typeFields, setTypeFields] = useState(Array<typeFieldsInterface>());
@@ -37,6 +38,7 @@ const NewAsset = ({ user }: GroupsProps) => {
 
     let assetDetails = {
       assetName: name,
+      QRCode: QRCode,
       description: description,
       typeID: type.id,
       groupID: group,
@@ -52,10 +54,12 @@ const NewAsset = ({ user }: GroupsProps) => {
           variables: { input: assetDetails },
           authMode: 'AWS_IAM'
         });
+        console.log(result);
         // @TODO Success or error toast here
       } catch (e) {
         console.log(e);
       }
+      
       return;
     };
     createAssetCall();
@@ -102,47 +106,63 @@ const NewAsset = ({ user }: GroupsProps) => {
         <div className="m-4 mb-0">
           <BackButton text="back" />
         </div>
+        
         <div className="bg-white p-4 m-4 rounded-lg shadow">
-          <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
+          <div className="grid grid-cols-1 lg:grid-cols-3">
           <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 pr-4 mb-2" key={1}>
             <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Asset Name: </label></h1>
             <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={name} onChange={(e) => setName(e.target.value)} placeholder="Asset Name" ></input>
           </div>
-          <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 pr-4" key={1}>
+          <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 pr-4 mb-2" key={1}>
             <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Asset Description: </label></h1>
             <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Asset Description"></input>
           </div>
-            <Selector label="Type" queryType={listAssetTypes} handleChange={setType} nameKey="typeName" />
-            <p>Asset Data: </p>
+          <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 pr-4 mb-2" key={1}>
+            <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>QFES Asset ID: </label></h1>
+            <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={QRCode} onChange={(e) => setQRCode(e.target.value)} placeholder="QFES Asset ID"></input>
+          </div>
+          </div>
+          <h1 className='text-2xl font-montserrat mt-4 font-bold '>Asset Type:</h1>
+            <Selector label="" queryType={listAssetTypes} handleChange={setType} nameKey="typeName" />
+            <IonButton color="secondary" routerLink='/newType'>New Type</IonButton>
+          <h1 className='text-2xl font-montserrat mt-4 font-bold '>General Asset Data:</h1>
             {
               (typeFields && typeFields.length > 0) && typeFields.map((field, index) => {
                 let fieldJsx;
                 if (field.type === 'text') {
-                  fieldJsx = <input type="text" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
+                  fieldJsx = <input className="bg-neutral-400 text-white pl-2 w-full rounded" type="text" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
                 } else if (field.type === 'number') {
-                  fieldJsx = <input type="number" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
+                  fieldJsx = <input className="bg-neutral-400 text-white pl-2 w-full rounded" type="number" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
                 } else if (field.type === 'date') {
-                  fieldJsx = <input type="date" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
+                  fieldJsx = <input className="bg-neutral-400 text-white pl-2 w-full rounded" type="date" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
                 } else if (field.type === 'boolean') {
-                  fieldJsx = <IonCheckbox value={field.value} onChange={e => handleTypeChange(index, e)}></IonCheckbox>
+                  fieldJsx = <IonCheckbox className="bg-neutral-400 text-white w-full rounded" value={field.value} onChange={e => handleTypeChange(index, e)}></IonCheckbox>
                 } else if (field.type === 'signature') {
                   fieldJsx = <input type="signature" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
                 }
                 return (
-                  <div key={index}>
-                    <label>{field.name}: </label>
-                    {fieldJsx}
+                  <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 m-2" key={index}>
+                    <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>{field.name}: </label></h1>
+                    <h2 className='font-montserrat rounded p-1 pl-2 pb-2 pr-2 content-end'>{fieldJsx}</h2>
                   </div>
                 )
               }, [])
             }
-            <IonButton routerLink='/newType'>New Type</IonButton>
+            <div className="ml-2">
+            <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 p-2 m-2 text-white pl-2 pt-2 font-bold font-montserrat">
+                        <Selector label="Asset Location: " queryType={listAssetLocations} handleChange={setLocation} nameKey="locationName" />
+                      </div><div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 p-2 m-2 text-white pl-2 pt-2 font-bold font-montserrat">
+                        <Selector label="Asset Group: " queryType={listSimpleAssetGroups} handleChange={setGroup} nameKey="name" /></div>
             <Selector label="Group" queryType={listSimpleAssetGroups} handleChange={setGroup} nameKey="name" />
             <Selector label="Status" queryType={listAssetStatuses} handleChange={setStatus} nameKey="statusName" />
             <Selector label="Location" queryType={listAssetLocations} handleChange={setLocation} nameKey="locationName" />
+            </div>
             <IonButton type='submit'>Submit</IonButton>
-          </form>
-        </div>
+            </form>
+          </div>
+          
+        
       </IonContent>
     </IonPage>
   )

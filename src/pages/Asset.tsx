@@ -507,10 +507,10 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                         if (log.assetID == match.params.id) {
                           if (log.borrowDate !== null) {
                             var myDate = new Date(log.borrowDate);
-                            return <ul key={log.id} className="font-montserrat text-xl ml-4">{("Loaned: " + myDate.toLocaleDateString())}</ul>
+                            return <ul key={log.id} className="font-montserrat lg:text-xl md:text-l sm:text-l ml-4">{("Loaned: " + myDate.toLocaleDateString())}</ul>
                           }
                           var myDate = new Date(log.returnDate);
-                          return <ul className="font-montserrat text-xl ml-4">{("Returned: " + myDate.toLocaleDateString())}</ul>
+                          return <ul className="font-montserrat lg:text-xl md:text-l sm:text-l ml-4">{("Returned: " + myDate.toLocaleDateString())}</ul>
                         }
                       })
                     }
