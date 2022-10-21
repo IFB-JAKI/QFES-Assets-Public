@@ -5,8 +5,12 @@ import { getAssetType, listSimpleAssetGroups, listAssetLocations, listAssetStatu
 import { createAsset } from '../graphql/mutations';
 import { API } from 'aws-amplify';
 import Selector from '../components/Selector';
+import Header from '../components/Header';
 
-const NewAsset = () => {
+interface GroupsProps {
+  user: any;
+}
+const NewAsset = ({ user }: GroupsProps) => {
 
   interface typeFieldsInterface {
     name: string,
@@ -93,43 +97,52 @@ const NewAsset = () => {
 
   return (
     <IonPage>
+      <Header title={"New Asset"} user={user} />
       <IonContent>
-        <h1>New Asset</h1>
-        <form onSubmit={handleSubmit}>
-          <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Asset Name" ></input>
-          <input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Asset Description"></input>
-          <Selector label="Type" queryType={listAssetTypes} handleChange={setType} nameKey="typeName" />
-          <p>Asset Data: </p>
-          {
-            (typeFields && typeFields.length > 0) && typeFields.map((field, index) => {
-              let fieldJsx;
-              if (field.type === 'text') {
-                fieldJsx = <input type="text" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
-              } else if (field.type === 'number') {
-                fieldJsx = <input type="number" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
-              } else if (field.type === 'date') {
-                fieldJsx = <input type="date" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
-              } else if (field.type === 'boolean') {
-                fieldJsx = <IonCheckbox value={field.value} onChange={e => handleTypeChange(index, e)}></IonCheckbox>
-              } else if (field.type === 'signature') {
-                fieldJsx = <input type="signature" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
-              }
-              return (
-                <div key={index}>
-                  <label>{field.name}: </label>
-                  {fieldJsx}
-                </div>
-              )
-            }, [])
-          }
-          <IonButton routerLink='/newType'>New Type</IonButton>
-          <Selector label="Group" queryType={listSimpleAssetGroups} handleChange={setGroup} nameKey="name" />
-          <Selector label="Status" queryType={listAssetStatuses} handleChange={setStatus} nameKey="statusName" />
-          <Selector label="Location" queryType={listAssetLocations} handleChange={setLocation} nameKey="locationName" />
-          <IonButton type='submit'>Submit</IonButton>
-        </form>
-
-        <BackButton text="back" />
+        <div className="m-4 mb-0">
+          <BackButton text="back" />
+        </div>
+        <div className="bg-white p-4 m-4 rounded-lg shadow">
+          <form onSubmit={handleSubmit}>
+          <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 pr-4 mb-2" key={1}>
+            <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Asset Name: </label></h1>
+            <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={name} onChange={(e) => setName(e.target.value)} placeholder="Asset Name" ></input>
+          </div>
+          <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 pr-4" key={1}>
+            <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Asset Description: </label></h1>
+            <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Asset Description"></input>
+          </div>
+            <Selector label="Type" queryType={listAssetTypes} handleChange={setType} nameKey="typeName" />
+            <p>Asset Data: </p>
+            {
+              (typeFields && typeFields.length > 0) && typeFields.map((field, index) => {
+                let fieldJsx;
+                if (field.type === 'text') {
+                  fieldJsx = <input type="text" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
+                } else if (field.type === 'number') {
+                  fieldJsx = <input type="number" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
+                } else if (field.type === 'date') {
+                  fieldJsx = <input type="date" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
+                } else if (field.type === 'boolean') {
+                  fieldJsx = <IonCheckbox value={field.value} onChange={e => handleTypeChange(index, e)}></IonCheckbox>
+                } else if (field.type === 'signature') {
+                  fieldJsx = <input type="signature" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
+                }
+                return (
+                  <div key={index}>
+                    <label>{field.name}: </label>
+                    {fieldJsx}
+                  </div>
+                )
+              }, [])
+            }
+            <IonButton routerLink='/newType'>New Type</IonButton>
+            <Selector label="Group" queryType={listSimpleAssetGroups} handleChange={setGroup} nameKey="name" />
+            <Selector label="Status" queryType={listAssetStatuses} handleChange={setStatus} nameKey="statusName" />
+            <Selector label="Location" queryType={listAssetLocations} handleChange={setLocation} nameKey="locationName" />
+            <IonButton type='submit'>Submit</IonButton>
+          </form>
+        </div>
       </IonContent>
     </IonPage>
   )

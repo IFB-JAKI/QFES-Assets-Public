@@ -16,6 +16,7 @@ import { ButtonGroup } from '@aws-amplify/ui-react';
 import { Router } from '@aws-amplify/ui-react/dist/types/components/Authenticator/Router';
 import LoanModal from '../components/LoanModal';
 import { bool } from 'prop-types';
+import Header from '../components/Header';
 
 interface AssetProps
   extends RouteComponentProps<{
@@ -33,6 +34,10 @@ interface FieldsInterface {
   value?: string
 }
 
+interface GroupsProps {
+  user: any;
+}
+
 const Asset: React.FC<AssetProps> = ({ match }) => {
   const [presentAlert] = useIonAlert();
   const [presentToast] = useIonToast();
@@ -40,7 +45,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [type, setType] = useState({ name: '', id: undefined, dataTemplate: '', logTemplate: '' });
-  const [status, setStatus] = useState({ name: '', id: undefined });
+  const [status, setStatus] = useState({ name: 'Í', id: undefined });
   const [location, setLocation] = useState({ name: '', id: undefined });
   const [group, setGroup] = useState(null);
   const [assetTypeData, setAssetTypeData] = useState(Array<FieldsInterface>());
@@ -64,6 +69,10 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   const router = useIonRouter();
 
   const [loanLog, setLoanLog] = useState(Array<any>());
+
+  interface GroupsProps {
+    user: any;
+  }
 
   const presentActionToast = (position: 'top' | 'middle' | 'bottom', message: string) => {
     presentToast({
@@ -426,6 +435,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   let changes = false;
   return (
     <IonPage>
+      {/*<Header title={"Groups"} user={user} />*/}
       <IonContent>
         {
           (loaded) ? (
