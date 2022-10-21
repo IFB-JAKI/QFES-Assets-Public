@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { IonPage, IonContent, IonButton, useIonRouter, IonCheckbox } from '@ionic/react'
+import { IonPage, IonContent, IonButton, useIonRouter, IonCheckbox, useIonToast } from '@ionic/react'
 import BackButton from '../components/BackButton'
 import { getAssetType, listSimpleAssetGroups, listAssetLocations, listAssetStatuses, listAssetTypes } from '../graphql/queries';
 import { createAsset } from '../graphql/mutations';
@@ -28,9 +28,24 @@ const NewAsset = ({ user }: GroupsProps) => {
   const [group, setGroup] = useState(null);
   const [status, setStatus] = useState({ name: null, id: null });
   const [location, setLocation] = useState({ name: null, id: null });
+  const [presentToast] = useIonToast();
+
+  const presentActionToast = (position: 'top' | 'middle' | 'bottom', message: string) => {
+    presentToast({
+      message: message,
+      duration: 1500,
+      position: position,
+
+    });
+  }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log(name)
+    if(name === "" || status.id === null || QRCode === ""){
+      presentActionToast('bottom', "Please fill in required fields (*)");
+      return;
+    }
 
     let typeInputs = typeFields.map((field) => {
       return { name: field.name, value: field.value }
@@ -111,7 +126,7 @@ const NewAsset = ({ user }: GroupsProps) => {
         <form onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 lg:grid-cols-3">
           <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 pr-4 mb-2" key={1}>
-            <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Asset Name: </label></h1>
+            <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Asset Name*: </label></h1>
             <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={name} onChange={(e) => setName(e.target.value)} placeholder="Asset Name" ></input>
           </div>
           <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 pr-4 mb-2" key={1}>
@@ -119,7 +134,7 @@ const NewAsset = ({ user }: GroupsProps) => {
             <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Asset Description"></input>
           </div>
           <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 pr-4 mb-2" key={1}>
-            <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>QFES Asset ID: </label></h1>
+            <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>QFES Asset ID*: </label></h1>
             <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={QRCode} onChange={(e) => setQRCode(e.target.value)} placeholder="QFES Asset ID"></input>
           </div>
           </div>
@@ -155,7 +170,7 @@ const NewAsset = ({ user }: GroupsProps) => {
                       </div><div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 p-2 m-2 text-white pl-2 pt-2 font-bold font-montserrat">
                         <Selector label="Asset Group: " queryType={listSimpleAssetGroups} handleChange={setGroup} nameKey="name" /></div>
             <Selector label="Group" queryType={listSimpleAssetGroups} handleChange={setGroup} nameKey="name" />
-            <Selector label="Status" queryType={listAssetStatuses} handleChange={setStatus} nameKey="statusName" />
+            <Selector label="Status*" queryType={listAssetStatuses} handleChange={setStatus} nameKey="statusName" />
             <Selector label="Location" queryType={listAssetLocations} handleChange={setLocation} nameKey="locationName" />
             </div>
             <IonButton type='submit'>Submit</IonButton>
