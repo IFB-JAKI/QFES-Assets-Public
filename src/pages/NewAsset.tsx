@@ -124,16 +124,16 @@ const NewAsset = ({ user }: GroupsProps) => {
         
         <div className="bg-white p-4 m-4 rounded-lg shadow">
         <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 lg:grid-cols-3">
-          <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 pr-4 mb-2" key={1}>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="bg-stone rounded-lg shadow w-full pr-4 mb-2" key={1}>
             <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Asset Name*: </label></h1>
             <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={name} onChange={(e) => setName(e.target.value)} placeholder="Asset Name" ></input>
           </div>
-          <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 pr-4 mb-2" key={1}>
+          <div className="bg-stone rounded-lg shadow w-full pr-4 mb-2" key={1}>
             <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Asset Description: </label></h1>
             <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Asset Description"></input>
           </div>
-          <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 pr-4 mb-2" key={1}>
+          <div className="bg-stone rounded-lg shadow w-full pr-4 mb-2" key={1}>
             <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>QFES Asset ID*: </label></h1>
             <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={QRCode} onChange={(e) => setQRCode(e.target.value)} placeholder="QFES Asset ID"></input>
           </div>

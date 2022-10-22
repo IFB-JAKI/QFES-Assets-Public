@@ -17,6 +17,7 @@ import { Router } from '@aws-amplify/ui-react/dist/types/components/Authenticato
 import LoanModal from '../components/LoanModal';
 import { bool } from 'prop-types';
 import Header from '../components/Header';
+import { qrCode } from 'ionicons/icons';
 
 interface AssetProps
   extends RouteComponentProps<{
@@ -44,6 +45,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   // user input
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [QRCode, setQRCode] = useState('');
   const [type, setType] = useState({ name: '', id: undefined, dataTemplate: '', logTemplate: '' });
   const [status, setStatus] = useState({ name: 'Í', id: undefined });
   const [location, setLocation] = useState({ name: '', id: undefined });
@@ -325,6 +327,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
         Promise.all([
           setName(asset.assetName),
           setDescription(asset.description),
+          setQRCode(asset.QRCode),
           fetchType(asset.typeID),
           fetchStatus(asset.statusID),
           fetchLocation(asset.assetlocaID),
@@ -427,6 +430,11 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
     setDescription(e.target.value)
   }
 
+  function changeInQRCode(e: any) {
+    setSaved(false);
+    setQRCode(e.target.value)
+  }
+
   function changeInName(e: any) {
     setSaved(false);
     setName(e.target.value)
@@ -460,8 +468,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                         </div>
 
                       </div>
-
-                      <h1 className="text-l font-san serif">PLACEHOLDER FOR QFES ASSET ID</h1>
+                      <h1 className='text-xl font-san-serif bg-white rounded'><input className="bg-white w-full" onChange={(e) => changeInQRCode(e)} placeholder={QRCode} defaultValue={QRCode}></input></h1>
                       {/* @TODO Add handling for image placement here */}
                       <h1 className='text-xl font-montserrat bg-white rounded pt-4'><input className="bg-white w-full" onChange={(e) => changeInDescription(e)} placeholder={description} defaultValue={description}></input></h1>
                       <h1 className='text-xl font-montserrat bg-white rounded pt-4'><Selector label="Asset Type: " queryType={listAssetTypes} handleChange={setType} nameKey="typeName" defaultValue={type?.id && type.id} /></h1>
