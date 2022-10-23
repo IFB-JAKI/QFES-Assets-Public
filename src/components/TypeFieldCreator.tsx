@@ -46,7 +46,7 @@ const TypeFieldCreator = ({ fields, setFields }: TypeFieldCreatorProps) => {
                   className="mr-3"
                 />
               </IonItem>
-              <select name="type" value={field.type} onChange={(e) => { handleTypeChange(index, e) }}>
+              <select className="bg-white"name="type" value={field.type} onChange={(e) => { handleTypeChange(index, e) }}>
                 <option disabled value="default">Select a Type</option>
                 <option value="text">Text</option>
                 <option value="number">Number</option>
@@ -55,7 +55,7 @@ const TypeFieldCreator = ({ fields, setFields }: TypeFieldCreatorProps) => {
                 <option value="signature">Digital Signature</option>
               </select>
 
-              <IonButton className="ml-7" size="default" onClick={() => { removeField(index) }}>Delete</IonButton>
+              <IonButton className="ml-7" color="danger" size="default" onClick={() => { removeField(index) }}>Delete</IonButton>
             </IonItem>
           </div>
         )
