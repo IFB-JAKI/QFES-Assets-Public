@@ -16,6 +16,8 @@ import { ButtonGroup } from '@aws-amplify/ui-react';
 import { Router } from '@aws-amplify/ui-react/dist/types/components/Authenticator/Router';
 import LoanModal from '../components/LoanModal';
 import { bool } from 'prop-types';
+import Header from '../components/Header';
+import { qrCode } from 'ionicons/icons';
 
 interface AssetProps
   extends RouteComponentProps<{
@@ -33,12 +35,17 @@ interface FieldsInterface {
   value?: string
 }
 
+interface GroupsProps {
+  user: any;
+}
+
 const Asset: React.FC<AssetProps> = ({ match }) => {
   const [presentAlert] = useIonAlert();
   const [presentToast] = useIonToast();
   // user input
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [QRCode, setQRCode] = useState('');
   const [type, setType] = useState({ name: '', id: undefined, dataTemplate: '', logTemplate: '' });
   const [status, setStatus] = useState({ name: '', id: undefined });
   const [location, setLocation] = useState({ name: '', id: undefined });
@@ -64,6 +71,10 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   const router = useIonRouter();
 
   const [loanLog, setLoanLog] = useState(Array<any>());
+
+  interface GroupsProps {
+    user: any;
+  }
 
   const presentActionToast = (position: 'top' | 'middle' | 'bottom', message: string) => {
     presentToast({
@@ -316,6 +327,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
         Promise.all([
           setName(asset.assetName),
           setDescription(asset.description),
+          setQRCode(asset.QRCode),
           fetchType(asset.typeID),
           fetchStatus(asset.statusID),
           fetchLocation(asset.assetlocaID),
@@ -418,6 +430,11 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
     setDescription(e.target.value)
   }
 
+  function changeInQRCode(e: any) {
+    setSaved(false);
+    setQRCode(e.target.value)
+  }
+
   function changeInName(e: any) {
     setSaved(false);
     setName(e.target.value)
@@ -426,6 +443,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   let changes = false;
   return (
     <IonPage>
+      {/*<Header title={"Groups"} user={user} />*/}
       <IonContent>
         {
           (loaded) ? (
@@ -450,8 +468,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                         </div>
 
                       </div>
-
-                      <h1 className="text-l font-san serif">PLACEHOLDER FOR QFES ASSET ID</h1>
+                      <h1 className='text-xl font-san-serif bg-white rounded'><input className="bg-white w-full" onChange={(e) => changeInQRCode(e)} placeholder={QRCode} defaultValue={QRCode}></input></h1>
                       {/* @TODO Add handling for image placement here */}
                       <h1 className='text-xl font-montserrat bg-white rounded pt-4'><input className="bg-white w-full" onChange={(e) => changeInDescription(e)} placeholder={description} defaultValue={description}></input></h1>
                       <h1 className='text-xl font-montserrat bg-white rounded pt-4'><Selector label="Asset Type: " queryType={listAssetTypes} handleChange={setType} nameKey="typeName" defaultValue={type?.id && type.id} /></h1>
@@ -497,10 +514,10 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                         if (log.assetID == match.params.id) {
                           if (log.borrowDate !== null) {
                             var myDate = new Date(log.borrowDate);
-                            return <ul key={log.id} className="font-montserrat text-xl ml-4">{("Loaned: " + myDate.toLocaleDateString())}</ul>
+                            return <ul key={log.id} className="font-montserrat lg:text-xl md:text-l sm:text-l ml-4">{("Loaned: " + myDate.toLocaleDateString())}</ul>
                           }
                           var myDate = new Date(log.returnDate);
-                          return <ul className="font-montserrat text-xl ml-4">{("Returned: " + myDate.toLocaleDateString())}</ul>
+                          return <ul className="font-montserrat lg:text-xl md:text-l sm:text-l ml-4">{("Returned: " + myDate.toLocaleDateString())}</ul>
                         }
                       })
                     }

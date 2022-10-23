@@ -35,18 +35,21 @@ const TypeFieldCreator = ({ fields, setFields }: TypeFieldCreatorProps) => {
     <>
       {fields.map((field, index) => {
         return (
-          <div key={index} className="my-3">
+          <div key={index} className="mt-3">
             <IonItem>
+              <div className="mb-2">
               <IonItem class="inputOutline">
                 <IonInput required
                   name="name"
-                  placeholder="Name"
+                  placeholder="Field Name"
                   value={field.name}
                   onIonChange={e => { handleNameChange(index, e) }}
                   className="mr-3"
                 />
+
               </IonItem>
-              <select name="type" value={field.type} onChange={(e) => { handleTypeChange(index, e) }}>
+              </div>
+              <select className="bg-white"name="type" value={field.type} onChange={(e) => { handleTypeChange(index, e) }}>
                 <option disabled value="default">Select a Type</option>
                 <option value="text">Text</option>
                 <option value="number">Number</option>
@@ -55,12 +58,12 @@ const TypeFieldCreator = ({ fields, setFields }: TypeFieldCreatorProps) => {
                 <option value="signature">Digital Signature</option>
               </select>
 
-              <IonButton className="ml-7" size="default" onClick={() => { removeField(index) }}>Delete</IonButton>
+              <IonButton className="ml-7" color="danger" size="default" onClick={() => { removeField(index) }}>Delete</IonButton>
             </IonItem>
           </div>
         )
       })}
-      <IonItem> <IonButton color="medium" className="mx-auto" size="default" onClick={(e) => addField()}>Add Field</IonButton> </IonItem>
+      <IonItem> <IonButton color="medium" className="my-2" size="default" onClick={(e) => addField()}>New Field</IonButton> </IonItem>
     </>
   )
 }

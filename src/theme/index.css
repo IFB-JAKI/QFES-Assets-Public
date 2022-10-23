@@ -21,3 +21,13 @@ ion-split-pane {
 .amplify-button--primary:hover {
   background-color: #23416b;
 }
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: red;
+  opacity: 1; /* Firefox */
+}
+
+input::placeholder {
+  opacity: 0.5;
+  color: white;
+}
