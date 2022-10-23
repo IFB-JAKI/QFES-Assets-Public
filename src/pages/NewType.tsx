@@ -1,4 +1,4 @@
-import { IonButton, IonContent, IonPage } from '@ionic/react'
+import { IonButton, IonContent, IonPage, useIonToast } from '@ionic/react'
 import { API } from 'aws-amplify';
 import React from 'react'
 import BackButton from '../components/BackButton'
@@ -16,12 +16,23 @@ const NewType = ({ user }: NewTypeProps) => {
   const [name, setName] = React.useState('');
   const [assetFields, setAssetFields] = React.useState(Array<FieldInputs>());
   const [assetLogFields, setAssetLogFields] = React.useState(Array<FieldInputs>());
-
+  const [presentToast] = useIonToast();
   const router = useIonRouter();
+  const presentActionToast = (position: 'top' | 'middle' | 'bottom', message: string) => {
+    presentToast({
+      message: message,
+      duration: 3000,
+      position: position,
+
+    });
+  }
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    if(name === ""){
+      presentActionToast('bottom', "Please fill in required fields (*)");
+      return;
+    }
     const assetFieldsJSON = JSON.stringify(assetFields);
     const assetLogFieldsJSON = JSON.stringify(assetLogFields);
 
@@ -69,7 +80,7 @@ const NewType = ({ user }: NewTypeProps) => {
             </div>
             <h1 className='text-2xl font-montserrat mt-4 font-bold '>Type Specific Information Required On Asset Loan:</h1>
             <TypeFieldCreator fields={assetLogFields} setFields={setAssetLogFields}/>
-            <IonButton type='submit'>Submit</IonButton>
+            <IonButton className="mt-4"type='submit'>Submit</IonButton>
           </div>
         </form>
       </IonContent>
@@ -78,3 +89,7 @@ const NewType = ({ user }: NewTypeProps) => {
 }
 
 export default NewType
+
+function presentToast(arg0: { message: string; duration: number; position: "top" | "middle" | "bottom"; }) {
+  throw new Error('Function not implemented.');
+}

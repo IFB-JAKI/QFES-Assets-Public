@@ -34,7 +34,7 @@ const NewAsset = ({ user }: GroupsProps) => {
   const presentActionToast = (position: 'top' | 'middle' | 'bottom', message: string) => {
     presentToast({
       message: message,
-      duration: 1500,
+      duration: 3000,
       position: position,
 
     });
