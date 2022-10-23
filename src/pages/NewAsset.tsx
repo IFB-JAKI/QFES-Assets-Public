@@ -139,15 +139,21 @@ const NewAsset = ({ user }: GroupsProps) => {
             <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={QRCode} onChange={(e) => setQRCode(e.target.value)} placeholder="QFES Asset ID"></input>
           </div>
           </div>
+          <div className="grid grid-cols-1 md:grid-cols-3">
+          <div>
           <h1 className='text-2xl font-montserrat mt-4 font-bold '>Asset Type:</h1>
             <Selector label="" queryType={listAssetTypes} handleChange={setType} nameKey="typeName" />
             <IonButton color="secondary" routerLink='/newType'>New Type</IonButton>
+            </div>
+          {/* Image section, code to be added by Josh */}
+          <div>
+            <h1 className="text-2xl font-montserrat mt-4 font-bold">Select an Image:</h1>
+            <input className="ml-2 font-montserrat" type="file" accept='image/jpeg, image/png'></input>
+            </div>
+          </div>
           <h1 className='text-2xl font-montserrat mt-4 font-bold '>General Asset Data:</h1>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-full  p-2 lg:h-3/4 text-white pl-2 pt-2 font-bold font-montserrat">
-              <Selector label="Asset Group: " queryType={listSimpleAssetGroups} handleChange={setGroup} nameKey="name" />
-            </div>
             <div className="top-0 bg-stone rounded-lg shadow md:w-1/2 lg:h-3/4 lg:w-full p-2 text-white pl-2 pt-2 font-bold font-montserrat">
             <Selector label="Status*: " queryType={listAssetStatuses} handleChange={setStatus} nameKey="statusName" />
             </div>

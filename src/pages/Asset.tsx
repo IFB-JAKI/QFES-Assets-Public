@@ -47,7 +47,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   const [description, setDescription] = useState('');
   const [QRCode, setQRCode] = useState('');
   const [type, setType] = useState({ name: '', id: undefined, dataTemplate: '', logTemplate: '' });
-  const [status, setStatus] = useState({ name: 'Í', id: undefined });
+  const [status, setStatus] = useState({ name: '', id: undefined });
   const [location, setLocation] = useState({ name: '', id: undefined });
   const [group, setGroup] = useState(null);
   const [assetTypeData, setAssetTypeData] = useState(Array<FieldsInterface>());
