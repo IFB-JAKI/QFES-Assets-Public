@@ -35,17 +35,20 @@ const TypeFieldCreator = ({ fields, setFields }: TypeFieldCreatorProps) => {
     <>
       {fields.map((field, index) => {
         return (
-          <div key={index} className="my-3">
+          <div key={index} className="mt-3">
             <IonItem>
+              <div className="mb-2">
               <IonItem class="inputOutline">
                 <IonInput required
                   name="name"
-                  placeholder="Name"
+                  placeholder="Field Name"
                   value={field.name}
                   onIonChange={e => { handleNameChange(index, e) }}
                   className="mr-3"
                 />
+
               </IonItem>
+              </div>
               <select className="bg-white"name="type" value={field.type} onChange={(e) => { handleTypeChange(index, e) }}>
                 <option disabled value="default">Select a Type</option>
                 <option value="text">Text</option>
@@ -60,7 +63,7 @@ const TypeFieldCreator = ({ fields, setFields }: TypeFieldCreatorProps) => {
           </div>
         )
       })}
-      <IonItem> <IonButton color="medium" className="mx-auto" size="default" onClick={(e) => addField()}>Add Field</IonButton> </IonItem>
+      <IonItem> <IonButton color="medium" className="my-2" size="default" onClick={(e) => addField()}>New Field</IonButton> </IonItem>
     </>
   )
 }

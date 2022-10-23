@@ -6,8 +6,12 @@ import { createAssetType } from '../graphql/mutations';
 import { useIonRouter } from '@ionic/react';
 import { FieldInputs } from '../types/FieldInputs';
 import TypeFieldCreator from '../components/TypeFieldCreator';
-
-const NewType = () => {
+import Header from '../components/Header';
+interface NewTypeProps {
+  user: any;
+}
+const NewType = ({ user }: NewTypeProps) => {
+  
 
   const [name, setName] = React.useState('');
   const [assetFields, setAssetFields] = React.useState(Array<FieldInputs>());
@@ -48,22 +52,26 @@ const NewType = () => {
 
   return (
     <IonPage>
+      <Header title={"New Type"} user={user} />
       <IonContent>
-        <form onSubmit={(e) => handleSubmit(e)} className="m-6">
-          <label className="mr-3">Type Name:</label>
-          <input onChange={(e) => setName(e.target.value)} placeholder="Name" className="my-3"></input>
-          <br></br>
-          <label className="mr-3">Information Fields for Asset Tpye:</label>
-          <br></br>
-          <TypeFieldCreator fields={assetFields} setFields={setAssetFields}/>
-          <br></br>
-          <label className="mr-3 mt-6">Type Specific Information Required On Asset Loan:</label>
-          <br></br>
-          <TypeFieldCreator fields={assetLogFields} setFields={setAssetLogFields}/>
-          <br></br>
-          <IonButton type='submit'>Submit</IonButton>
+      <div className="m-4 mb-0">
+          <BackButton text="back" />
+        </div>
+        <form onSubmit={(e) => handleSubmit(e)} className="">
+          <div className="bg-white p-4 m-4 rounded-lg shadow">
+            <div className="bg-stone rounded-lg shadow lg:w-1/4 pr-4 mb-2" key={1}>
+              <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Type Name*: </label></h1>
+              <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" ></input>
+            </div>
+            <h1 className='text-2xl font-montserrat mt-4 font-bold '>Information Fields for Asset Type:</h1>
+            <div className="w-1/2">
+            <TypeFieldCreator fields={assetFields} setFields={setAssetFields}/>
+            </div>
+            <h1 className='text-2xl font-montserrat mt-4 font-bold '>Type Specific Information Required On Asset Loan:</h1>
+            <TypeFieldCreator fields={assetLogFields} setFields={setAssetLogFields}/>
+            <IonButton type='submit'>Submit</IonButton>
+          </div>
         </form>
-        <BackButton />
       </IonContent>
     </IonPage>
   )
