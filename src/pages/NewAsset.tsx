@@ -27,7 +27,8 @@ const NewAsset = ({ user }: GroupsProps) => {
 
   const [group, setGroup] = useState(null);
   const [status, setStatus] = useState({ name: null, id: null });
-  const [location, setLocation] = useState({ name: null, id: null });
+  //const [location, setLocation] = useState({ name: null, id: null });
+  const [location, setLocation] = useState('');
   const [presentToast] = useIonToast();
 
   const presentActionToast = (position: 'top' | 'middle' | 'bottom', message: string) => {
@@ -58,7 +59,7 @@ const NewAsset = ({ user }: GroupsProps) => {
       typeID: type.id,
       groupID: group,
       statusID: status.id,
-      assetlocaID: location.id,
+      assetlocaID: location,
       assetTypeData: JSON.stringify(typeInputs)
     }
 
@@ -129,11 +130,11 @@ const NewAsset = ({ user }: GroupsProps) => {
             <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Asset Name*: </label></h1>
             <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={name} onChange={(e) => setName(e.target.value)} placeholder="Asset Name" ></input>
           </div>
-          <div className="bg-stone rounded-lg shadow w-full pr-4 mb-2" key={1}>
+          <div className="bg-stone rounded-lg shadow w-full pr-4 mb-2" key={2}>
             <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Asset Description: </label></h1>
             <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Asset Description"></input>
           </div>
-          <div className="bg-stone rounded-lg shadow w-full pr-4 mb-2" key={1}>
+          <div className="bg-stone rounded-lg shadow w-full pr-4 mb-2" key={3}>
             <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>QFES Asset ID*: </label></h1>
             <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={QRCode} onChange={(e) => setQRCode(e.target.value)} placeholder="QFES Asset ID"></input>
           </div>
@@ -142,6 +143,19 @@ const NewAsset = ({ user }: GroupsProps) => {
             <Selector label="" queryType={listAssetTypes} handleChange={setType} nameKey="typeName" />
             <IonButton color="secondary" routerLink='/newType'>New Type</IonButton>
           <h1 className='text-2xl font-montserrat mt-4 font-bold '>General Asset Data:</h1>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-full  p-2 lg:h-3/4 text-white pl-2 pt-2 font-bold font-montserrat">
+              <Selector label="Asset Group: " queryType={listSimpleAssetGroups} handleChange={setGroup} nameKey="name" />
+            </div>
+            <div className="top-0 bg-stone rounded-lg shadow md:w-1/2 lg:h-3/4 lg:w-full p-2 text-white pl-2 pt-2 font-bold font-montserrat">
+            <Selector label="Status*: " queryType={listAssetStatuses} handleChange={setStatus} nameKey="statusName" />
+            </div>
+            <div className="bg-stone rounded-lg md:w-1/2 shadow lg:w-full pr-4 mb-2 " key={1}>
+              <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Asset Location: </label></h1>
+              <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Asset Location"></input>
+            </div>
+            </div>
             {
               (typeFields && typeFields.length > 0) && typeFields.map((field, index) => {
                 let fieldJsx;
@@ -157,22 +171,13 @@ const NewAsset = ({ user }: GroupsProps) => {
                   fieldJsx = <input type="signature" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
                 }
                 return (
-                  <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 m-2" key={index}>
+                  <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 mt-2" key={index}>
                     <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>{field.name}: </label></h1>
                     <h2 className='font-montserrat rounded p-1 pl-2 pb-2 pr-2 content-end'>{fieldJsx}</h2>
                   </div>
                 )
               }, [])
             }
-            <div className="ml-2">
-            <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 p-2 m-2 text-white pl-2 pt-2 font-bold font-montserrat">
-                        <Selector label="Asset Location: " queryType={listAssetLocations} handleChange={setLocation} nameKey="locationName" />
-                      </div><div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 p-2 m-2 text-white pl-2 pt-2 font-bold font-montserrat">
-                        <Selector label="Asset Group: " queryType={listSimpleAssetGroups} handleChange={setGroup} nameKey="name" /></div>
-            <Selector label="Group" queryType={listSimpleAssetGroups} handleChange={setGroup} nameKey="name" />
-            <Selector label="Status*" queryType={listAssetStatuses} handleChange={setStatus} nameKey="statusName" />
-            <Selector label="Location" queryType={listAssetLocations} handleChange={setLocation} nameKey="locationName" />
-            </div>
             <IonButton type='submit'>Submit</IonButton>
             </form>
           </div>
