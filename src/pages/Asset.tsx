@@ -48,7 +48,8 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   const [QRCode, setQRCode] = useState('');
   const [type, setType] = useState({ name: '', id: undefined, dataTemplate: '', logTemplate: '' });
   const [status, setStatus] = useState({ name: '', id: undefined });
-  const [location, setLocation] = useState({ name: '', id: undefined });
+  //const [location, setLocation] = useState({ name: '', id: undefined });
+  const [assetLocation, setLocation] = useState('');
   const [group, setGroup] = useState(null);
   const [assetTypeData, setAssetTypeData] = useState(Array<FieldsInterface>());
 
@@ -240,7 +241,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
       description: description,
       typeID: type.id,
       groupID: group,
-      assetlocaID: location.id,
+      assetlocaID: assetLocation,
       assetTypeData: JSON.stringify(typeInputs)
     };
     updateAssetCall(assetDetails);
@@ -331,6 +332,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
           fetchType(asset.typeID),
           fetchStatus(asset.statusID),
           fetchLocation(asset.assetlocaID),
+          setLocation(asset.assetlocaID),
           setAssetTypeData(JSON.parse(asset.assetTypeData))
         ]).then(() =>
           setLoaded(true)
@@ -382,7 +384,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
             variables: { id: locationID },
             authMode: 'AWS_IAM'
           });
-          setLocation(locationResult.data.getAssetLocation);
+          //setLocation(locationResult.data.getAssetLocation);
         } catch (e) {
           console.log(e);
         }
@@ -440,6 +442,12 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
     setName(e.target.value)
   }
 
+  function changeInLocation(e: any) {
+    setSaved(false);
+    setLocation(e.target.value);
+    console.log(e.target.value)
+  }
+
   let changes = false;
   return (
     <IonPage>
@@ -468,9 +476,9 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                         </div>
 
                       </div>
-                      <h1 className='text-xl font-san-serif bg-white rounded'><input className="bg-white w-full" onChange={(e) => changeInQRCode(e)} placeholder={QRCode} defaultValue={QRCode}></input></h1>
+                      <h1 className='text-xl font-san-serif bg-white rounded'><input className="bg-white w-full" onChange={(e) => changeInQRCode(e)} placeholder="QFES QR CODE ID" defaultValue={QRCode}></input></h1>
                       {/* @TODO Add handling for image placement here */}
-                      <h1 className='text-xl font-montserrat bg-white rounded pt-4'><input className="bg-white w-full" onChange={(e) => changeInDescription(e)} placeholder={description} defaultValue={description}></input></h1>
+                      <h1 className='text-xl font-montserrat bg-white rounded pt-4'><input className="text-black bg-white w-full" defaultValue={description} onChange={(e) => changeInDescription(e)}  placeholder="Asset Description"></input></h1>
                       <h1 className='text-xl font-montserrat bg-white rounded pt-4'><Selector label="Asset Type: " queryType={listAssetTypes} handleChange={setType} nameKey="typeName" defaultValue={type?.id && type.id} /></h1>
                       {
                         typeFields.map((field, index) => {
@@ -493,15 +501,24 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                         }, [])
                       }
                       <h1 className="text-xl font-montserrat">Asset Data: </h1>
-                      <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 p-2 m-2 text-white pl-2 pt-2 font-bold font-montserrat">
+                      <div className="grid grid-cols-1 md:grid-cols-3">
+                      <div className="bg-stone rounded-lg shadow w-full pr-4 mb-2" key={1}>
+                      
+                      <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Asset Location: </label></h1>
+                        <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={assetLocation} onChange={(e) => changeInLocation(e)} placeholder="Asset Location" ></input>
+                      </div>
+                      {/* <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 p-2 m-2 text-white pl-2 pt-2 font-bold font-montserrat">
                         <Selector label="Asset Location: " queryType={listAssetLocations} handleChange={setLocation} nameKey="locationName" defaultValue={location?.id && location.id} />
-                      </div><div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 p-2 m-2 text-white pl-2 pt-2 font-bold font-montserrat">
+                      </div> */}
+                      <div className="my-0 bg-stone rounded-lg pt-2 pb-2 h-3/4 shadow md:w-1/2 lg:w-80 p-2 m-2 text-white pl-2 pt-2 font-bold font-montserrat">
                         <Selector label="Asset Group: " queryType={listSimpleAssetGroups} handleChange={setGroup} nameKey="name" /></div>
                       {/* @TODO Add handling of changing this button to change image if image exists*/}
                       <h1 className="text-xl font-montserrat">Select an Image:</h1>
                       <input className="ml-2 font-montserrat" type="file" accept='image/jpeg, image/png'></input>
+                      
                       <br></br>
                       <br></br>
+                      </div>
                       {saved === false && <IonButton type='submit'>Save Changes</IonButton>}
                       {saved === false && <IonButton color="danger" type='submit'>Discard Changes</IonButton>}
                     </form>

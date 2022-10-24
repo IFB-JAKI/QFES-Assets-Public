@@ -29,5 +29,5 @@ ion-split-pane {
 
 input::placeholder {
   opacity: 0.5;
-  color: white;
+  color: rgb(0, 0, 0);
 }
