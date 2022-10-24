@@ -50,7 +50,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   const [status, setStatus] = useState({ name: '', id: undefined });
   //const [location, setLocation] = useState({ name: '', id: undefined });
   const [assetLocation, setLocation] = useState('');
-  const [group, setGroup] = useState(null);
+  const [group, setGroup] = useState('');
   const [assetTypeData, setAssetTypeData] = useState(Array<FieldsInterface>());
 
   // dynamic field states
@@ -333,6 +333,8 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
           fetchStatus(asset.statusID),
           fetchLocation(asset.assetlocaID),
           setLocation(asset.assetlocaID),
+          setGroup(asset.groupID),
+          //fetchGroup(asset.groupID),
           setAssetTypeData(JSON.parse(asset.assetTypeData))
         ]).then(() =>
           setLoaded(true)
@@ -353,6 +355,23 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
             authMode: 'AWS_IAM'
           });
           setStatus({ name: statusResult.data.getAssetStatus.statusName, id: statusResult.data.getAssetStatus.id });
+        } catch (e) {
+          console.log(e);
+        }
+        return;
+      }
+    }
+
+    const fetchGroup = async (groupID: string): Promise<void> => {
+      if (groupID) {
+        try {
+          const groupResult: any = await API.graphql({
+            query: getSimpleAssetGroup,
+            variables: { id: groupID },
+            authMode: 'AWS_IAM'
+          });
+          setGroup(groupResult.data.getSimpleAssetGroup);
+          console.log(groupResult);
         } catch (e) {
           console.log(e);
         }
@@ -501,24 +520,30 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                         }, [])
                       }
                       <h1 className="text-xl font-montserrat">Asset Data: </h1>
-                      <div className="grid grid-cols-1 md:grid-cols-3">
-                      <div className="bg-stone rounded-lg shadow w-full pr-4 mb-2" key={1}>
+                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                        <div className="bg-stone rounded-lg shadow w-full pr-4 mb-2" key={1}>
+                          <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Asset Location: </label></h1>
+                          <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={assetLocation} onChange={(e) => changeInLocation(e)} placeholder="Asset Location" ></input>
+                        </div>
+                        <div className="flex m-0 bg-stone rounded-lg pt-2 pb-2 lg:h-3/4 shadow w-full lg:w-80 p-2 m-2 text-white pl-2 pt-2 font-bold font-montserrat">
+                          <h1 className="pt-2">Asset Group:</h1>
+                          <div className="top-0 right-0">
+                            {group === null &&<IonButton className="ml-20" color="secondary">No Group</IonButton>}
+                            {group != null &&<IonButton className="ml-20"routerLink={`/group/${group}`} color="secondary">In Group</IonButton>}
+                            {/*<Selector label="Asset Group: " queryType={listSimpleAssetGroups} handleChange={setGroup} nameKey="name" />
+                            */}
+                          </div>
+                          </div>
+
                       
-                      <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Asset Location: </label></h1>
-                        <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={assetLocation} onChange={(e) => changeInLocation(e)} placeholder="Asset Location" ></input>
                       </div>
-                      {/* <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 p-2 m-2 text-white pl-2 pt-2 font-bold font-montserrat">
-                        <Selector label="Asset Location: " queryType={listAssetLocations} handleChange={setLocation} nameKey="locationName" defaultValue={location?.id && location.id} />
-                      </div> */}
-                      <div className="my-0 bg-stone rounded-lg pt-2 pb-2 h-3/4 shadow md:w-1/2 lg:w-80 p-2 m-2 text-white pl-2 pt-2 font-bold font-montserrat">
-                        <Selector label="Asset Group: " queryType={listSimpleAssetGroups} handleChange={setGroup} nameKey="name" /></div>
+                      <div className="mt-2">
                       {/* @TODO Add handling of changing this button to change image if image exists*/}
                       <h1 className="text-xl font-montserrat">Select an Image:</h1>
                       <input className="ml-2 font-montserrat" type="file" accept='image/jpeg, image/png'></input>
-                      
-                      <br></br>
-                      <br></br>
                       </div>
+                      <br></br>
+                      <br></br>
                       {saved === false && <IonButton type='submit'>Save Changes</IonButton>}
                       {saved === false && <IonButton color="danger" type='submit'>Discard Changes</IonButton>}
                     </form>

@@ -228,6 +228,7 @@ const EditGroup: React.FC<EditGroupProps> = ({ match }) => {
       <IonContent>
         <div className="m-2 p-2 rounded bg-white">
           <form onSubmit={handleSubmit}>
+          <IonLabel>Parent Asset</IonLabel>
             <AssetSelector assets={assets} parentAsset={parentAsset} setParentAsset={setParentAsset} childAssets={childAssets} currentGroup={match.params.id} />
             <IonLabel>Child Assets</IonLabel>
             <MultiAssetSelector assets={assets} childAssets={childAssets} setChildAssets={setChildAssets} parentAsset={parentAsset} />
