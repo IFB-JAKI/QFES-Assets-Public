@@ -528,7 +528,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                         <div className="flex m-0 bg-stone rounded-lg pt-2 pb-2 lg:h-3/4 shadow w-full lg:w-80 p-2 m-2 text-white pl-2 pt-2 font-bold font-montserrat">
                           <h1 className="pt-2">Asset Group:</h1>
                           <div className="top-0 right-0">
-                            {group === null &&<IonButton className="ml-20" color="secondary">No Group</IonButton>}
+                            {group === null &&<IonButton className="ml-20" routerLink={`/Groups/new`} color="secondary">No Group</IonButton>}
                             {group != null &&<IonButton className="ml-20"routerLink={`/group/${group}`} color="secondary">In Group</IonButton>}
                             {/*<Selector label="Asset Group: " queryType={listSimpleAssetGroups} handleChange={setGroup} nameKey="name" />
                             */}

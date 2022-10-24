@@ -50,6 +50,7 @@ const Search = ({ user }: searchProps) => {
           }
           return data;
         }
+        var myDate = new Date(asset.updatedAt);
 
         return {
           id: asset.id,
@@ -57,10 +58,12 @@ const Search = ({ user }: searchProps) => {
           statusID: asset.statusID,
           status: (asset.statusID) ? validateID(asset.statusID, 'statusName', allStatus) : null,
           assetlocaID: asset.assetlocaID,
-          location: (asset.assetlocaID) ? validateID(asset.assetlocaID, 'locationName', allLocations) : null,
+          //location: (asset.assetlocaID) ? validateID(asset.assetlocaID, 'locationName', allLocations) : null,
+          location: asset.assetlocaID,
           typeID: asset.typeID,
           type: (asset.typeID) ? validateID(asset.typeID, 'typeName', allTypes) : null,
-          updated: asset.updatedAt
+          
+          updated: myDate.toLocaleDateString()
         }
       });
       setAssets(formatted);
