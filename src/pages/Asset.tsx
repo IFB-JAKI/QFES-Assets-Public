@@ -541,7 +541,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                       {/* @TODO Add handling of changing this button to change image if image exists*/}
                       <h1 className="text-xl font-montserrat">Select an Image:</h1>
                       <label htmlFor="imageInput"></label>
-                      <input className="ml-2 font-montserrat bg-slate-500 text-white font-bold p-2 rounded-lg" type="file" accept='image/jpeg, image/png'></input>
+                      <input className="ml-2 font-montserrat bg-zinc-800 text-white font-bold p-2 rounded-lg" type="file" accept='image/jpeg, image/png'></input>
                       </div>
                       <br></br>
                       <br></br>
