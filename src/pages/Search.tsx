@@ -154,9 +154,8 @@ const Search = ({ user }: searchProps) => {
         <div className="bg-white p-2 m-4 rounded-lg shadow">
           <div className='flex'>
             <IonSearchbar value={search} onIonChange={e => setSearch(e.detail.value!)}></IonSearchbar>
-            <Selector label="Status" queryType={listAssetStatuses} handleChange={setSearchStatus} nameKey="statusName" placeHolder='All' />
-            <Selector label="Type" queryType={listAssetTypes} handleChange={setSearchType} nameKey="typeName" placeHolder='All' />
-            <Selector label="Location" queryType={listAssetLocations} handleChange={setSearchLocation} nameKey="locationName" placeHolder='All' />
+            { !(isPlatform('capacitor') || window.matchMedia('(max-width: 640px)').matches) && <Selector label="Status" queryType={listAssetStatuses} handleChange={setSearchStatus} nameKey="statusName" placeHolder='All' /> }
+            { !(isPlatform('capacitor') || window.matchMedia('(max-width: 640px)').matches) && <Selector label="Type" queryType={listAssetTypes} handleChange={setSearchType} nameKey="typeName" placeHolder='All' /> }
             <IonButton routerLink='/NewAsset'className="ml-2" expand="block">New Asset</IonButton>
           </div>
           <div className="ag-theme-alpine m-2" style={{ height: 500 }}>
