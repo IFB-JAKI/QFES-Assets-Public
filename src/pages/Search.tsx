@@ -26,7 +26,16 @@ const Search = ({ user }: searchProps) => {
   const columnDefs = [
     { headerName: "Name", field: "name", sortable: true, filter: true, flex: 1 },
     { headerName: "Type", field: "type", sortable: true, filter: true, flex: 1 },
-    { headerName: "Status", field: "status", sortable: true, filter: true, flex: 1 },
+    { headerName: "Status", field: "status", sortable: true, filter: true, flex: 1,
+      cellStyle: (params: any) => {
+        if (params.value === 'Available') {
+          return { color: 'green' };
+        } else if (params.value === 'On Loan') {
+          return { color: 'red' };
+        } else if (params.value === 'Archived') {
+          return { color: '#bdbdbd' };
+        }
+      },},
     { headerName: "Location", field: "location", sortable: true, filter: true, flex: 1 },
     { headerName: "Updated", field: "updated", sortable: true, filter: true, flex: 1 }
   ];
