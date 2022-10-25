@@ -31,7 +31,3 @@ input::placeholder {
   opacity: 0.5;
   color: rgb(0, 0, 0);
 }
-
-.searchbar-input-container .searchbar-input {
-  color: #0A0A0A;
-}

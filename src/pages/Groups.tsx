@@ -9,7 +9,6 @@ import { listAssets, listAssetStatuses, listAssetTypes, listAssetLocations, list
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import { group } from 'console';
-import { useLocation } from 'react-router-dom';
 
 interface GroupsProps {
   user: any;
@@ -19,7 +18,7 @@ const Groups = ({ user }: GroupsProps) => {
   const [groups, setGroups] = useState([]);
   const [filteredGroups, setFilteredGroups] = useState(Array<any>());
   const [assets, setAssets] = useState(Array<any>());
-  const location = useLocation();
+
   const [search, setSearch] = useState('');
 
   const columnDefs = [
@@ -54,7 +53,7 @@ const Groups = ({ user }: GroupsProps) => {
     }
     fetchGroups();
     fetchAssets();
-  }, [location]);
+  }, []);
 
   useEffect(() => {
     if (groups.length > 0 && assets.length > 0) {

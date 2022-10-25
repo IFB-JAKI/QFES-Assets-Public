@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useIonRouter } from '@ionic/react';
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner';
 import { API } from 'aws-amplify';
-import { getAsset, listAssets } from '../../graphql/queries';
+import { getAsset } from '../../graphql/queries';
 
 /*
   * BarcodeScanner is a plugin for Capacitor used here to scan QR Codes
@@ -19,20 +19,21 @@ const QrScan = () => {
     const result = await BarcodeScanner.scan();
     if (result.text) {
       try {
-        const assets: any = await API.graphql({
-          query: listAssets
-        });
-        assets.data.listAssets.items.find((asset: any) => {
-          if (asset.QRCode === result.text) {
-            router.push(`/mobile/asset/${asset.id}`);
-          } else {
-            throw new Error('No asset found with ' + result.text);
+        const asset: any = await API.graphql({
+          query: getAsset,
+          variables: {
+            input: {
+              QRCode: result.text
+            }
           }
         });
+        if (asset.data.getAsset) {
+          router.push(`/mobile/asset/${asset.data.getAsset.id}`);
+        }
       } catch (e) {
         const presentToast = () => {
           toast({
-            message: 'Asset with QR Code ' + result.text + ' not found',
+            message: 'QR Could not be read',
             duration: 1500,
             position: 'bottom'
           });
