@@ -106,7 +106,6 @@ const App = () => (
               <Route exact path="/asset/:id" component={Asset} />
               <Route exact path="/NewAsset" component={NewAsset} />
               <Route exact path="/NewType" component={NewType} />
-              <Route exact path="/Reports" component={Reports} />
               <Route exact path="/Statistics" component={Statistics} />
               <Route exact path="/Search" render={() => <Search user={user} />} />
               <Route exact path="/Groups" render={() => <Groups user={user} />} />

@@ -28,7 +28,7 @@ const QrScan = () => {
           }
         });
         if (found) {
-          router.push(`/mobile/asset/${found.id}`);
+          router.push(`/asset/${found.id}`);
         } else {
           throw new Error('Asset with id ' + result.text + 'not found');
         }
