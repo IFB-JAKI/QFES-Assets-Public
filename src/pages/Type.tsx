@@ -98,7 +98,7 @@ const Type: React.FC<AssetProps> = ({ match }) => {
 
         const presentToast = () => {
             toast({
-                message: 'Group updated successfully',
+                message: 'Type updated successfully',
                 duration: 1500,
                 position: 'bottom'
             });
