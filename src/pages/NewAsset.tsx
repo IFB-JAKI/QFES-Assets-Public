@@ -34,8 +34,14 @@ const NewAsset = ({ user }: GroupsProps) => {
   const [imageKey, setImageKey] = useState('');
   const [signedURL, setSignedURL] = useState('');
 
+  // Toast
+  const [toast] = useIonToast();
+
+  // Router
+  const router = useIonRouter();
+
   const presentActionToast = (position: 'top' | 'middle' | 'bottom', message: string) => {
-    presentToast({
+    toast({
       message: message,
       duration: 3000,
       position: position,
@@ -83,6 +89,9 @@ const NewAsset = ({ user }: GroupsProps) => {
       return;
     };
     createAssetCall();
+
+    presentActionToast('bottom', 'Asset has been created');
+    router.goBack();
   }
 
   const uploadImage = async (e: any) => {
