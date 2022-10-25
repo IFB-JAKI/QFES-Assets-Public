@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { IonPage, IonContent, IonSearchbar, useIonRouter, IonButton } from '@ionic/react'
+import { IonPage, IonContent, IonSearchbar, useIonRouter, IonButton, isPlatform } from '@ionic/react'
 import { listAssetLocations, listAssets, listAssetStatuses, listAssetTypes } from '../graphql/queries';
 import { API } from 'aws-amplify';
 import { AgGridReact } from 'ag-grid-react'
@@ -8,6 +8,7 @@ import Selector from '../components/Selector';
 
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+import { useHistory, useLocation } from 'react-router-dom';
 
 interface searchProps {
   user: any;
@@ -31,6 +32,7 @@ const Search = ({ user }: searchProps) => {
   ];
 
   const router = useIonRouter();
+  const location = useLocation();
 
   const listAsset = async (allStatus: any[], allLocations: any[], allTypes: any[]): Promise<void> => {
     try {
@@ -67,7 +69,7 @@ const Search = ({ user }: searchProps) => {
         }
       });
       setAssets(formatted);
-    } catch (e) {
+    } catch (e: any) {
       console.log(e);
     }
     return;
@@ -99,7 +101,15 @@ const Search = ({ user }: searchProps) => {
     ]).then(
       () => { listAsset(allStatus, allLocations, allTypes) }
     );
-  }, []);
+
+    if (isPlatform('capacitor') || window.matchMedia('(max-width: 640px)').matches) {
+      columnDefs.forEach((column: any) => {
+        if (column.headerName === 'Type' || column.headerName === 'Updated' || column.headerName === 'Location') {
+          column.hide = true;
+        }
+      });
+    }
+  }, [location]);
 
   useEffect(() => {
     if (assets && assets.length > 0) {
