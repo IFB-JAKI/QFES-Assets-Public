@@ -15,7 +15,8 @@ interface searchProps {
 }
 
 const TypeSearch = ({ user }: searchProps) => {
-    const [assets, setAssets] = useState([]);
+    const [types, setTypes] = useState([]);
+    const [filteredTypes, setFilteredTypes] = useState([]);
 
     const [search, setSearch] = useState('');
 
@@ -50,7 +51,7 @@ const TypeSearch = ({ user }: searchProps) => {
                     typeName: type.typeName
                 }
             });
-            setAssets(formatted);
+            setTypes(formatted);
         } catch (e) {
             console.log(e);
         }
@@ -78,6 +79,19 @@ const TypeSearch = ({ user }: searchProps) => {
         listType(allTypes);
     }, []);
 
+    useEffect(() => {
+        if (types && types.length > 0) {
+            let filtered = types.filter((type: any) => {
+                if (search !== '' && !(type.typeName.toLowerCase().includes(search.toLowerCase()))) {
+                    return false;
+                } else {
+                    return true;
+                }
+            })
+            setFilteredTypes(filtered);
+        }
+    }, [search, types]);
+
     const rowStyle = { cursor: 'pointer' };
 
     return (
@@ -94,7 +108,7 @@ const TypeSearch = ({ user }: searchProps) => {
                             <AgGridReact
                                 domLayout={'autoHeight'}
                                 columnDefs={columnDefs}
-                                rowData={assets}
+                                rowData={filteredTypes}
                                 pagination={true}
                                 paginationPageSize={25}
                                 onRowClicked={(row: any) => { router.push(`/Type/${row.data.id}`) }}
