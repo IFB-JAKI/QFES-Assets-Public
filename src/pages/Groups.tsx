@@ -9,6 +9,7 @@ import { listAssets, listAssetStatuses, listAssetTypes, listAssetLocations, list
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 import { group } from 'console';
+import { useLocation } from 'react-router-dom';
 
 interface GroupsProps {
   user: any;
@@ -18,6 +19,7 @@ const Groups = ({ user }: GroupsProps) => {
   const [groups, setGroups] = useState([]);
   const [filteredGroups, setFilteredGroups] = useState(Array<any>());
   const [assets, setAssets] = useState(Array<any>());
+  const location = useLocation();
 
   const [search, setSearch] = useState('');
 
@@ -53,7 +55,7 @@ const Groups = ({ user }: GroupsProps) => {
     }
     fetchGroups();
     fetchAssets();
-  }, []);
+  }, [location]);
 
   useEffect(() => {
     if (groups.length > 0 && assets.length > 0) {
@@ -81,7 +83,7 @@ const Groups = ({ user }: GroupsProps) => {
         <div className="bg-white p-2 m-4 rounded-lg shadow">
           <div className='flex'>
             <IonSearchbar value={search} onIonChange={e => setSearch(e.detail.value!)}></IonSearchbar>
-            <IonButton routerLink='/groups/new'className="ml-2" expand="block">New Group</IonButton>
+            <IonButton routerLink='/groups/new' className="ml-2" expand="block">New Group</IonButton>
           </div>
           <div className="ag-theme-alpine m-2" style={{ height: 500 }}>
             <AgGridReact

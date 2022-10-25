@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { IonPage, IonContent, IonSearchbar, useIonRouter, IonButton } from '@ionic/react'
+import { IonPage, IonContent, IonSearchbar, useIonRouter, IonButton, isPlatform } from '@ionic/react'
 import { listAssetLocations, listAssets, listAssetStatuses, listAssetTypes } from '../graphql/queries';
 import { API } from 'aws-amplify';
 import { AgGridReact } from 'ag-grid-react'
@@ -8,6 +8,7 @@ import Selector from '../components/Selector';
 
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+import { useHistory, useLocation } from 'react-router-dom';
 
 interface searchProps {
   user: any;
@@ -25,12 +26,24 @@ const Search = ({ user }: searchProps) => {
   const columnDefs = [
     { headerName: "Name", field: "name", sortable: true, filter: true, flex: 1 },
     { headerName: "Type", field: "type", sortable: true, filter: true, flex: 1 },
-    { headerName: "Status", field: "status", sortable: true, filter: true, flex: 1 },
+    {
+      headerName: "Status", field: "status", sortable: true, filter: true, flex: 1,
+      cellStyle: (params: any) => {
+        if (params.value === 'Available') {
+          return { color: 'green' };
+        } else if (params.value === 'On Loan') {
+          return { color: 'red' };
+        } else if (params.value === 'Archived') {
+          return { color: '#bdbdbd' };
+        }
+      },
+    },
     { headerName: "Location", field: "location", sortable: true, filter: true, flex: 1 },
     { headerName: "Updated", field: "updated", sortable: true, filter: true, flex: 1 }
   ];
 
   const router = useIonRouter();
+  const location = useLocation();
 
   const listAsset = async (allStatus: any[], allLocations: any[], allTypes: any[]): Promise<void> => {
     try {
@@ -62,12 +75,12 @@ const Search = ({ user }: searchProps) => {
           location: asset.assetlocaID,
           typeID: asset.typeID,
           type: (asset.typeID) ? validateID(asset.typeID, 'typeName', allTypes) : null,
-          
+
           updated: myDate.toLocaleDateString()
         }
       });
       setAssets(formatted);
-    } catch (e) {
+    } catch (e: any) {
       console.log(e);
     }
     return;
@@ -99,7 +112,15 @@ const Search = ({ user }: searchProps) => {
     ]).then(
       () => { listAsset(allStatus, allLocations, allTypes) }
     );
-  }, []);
+
+    if (isPlatform('capacitor') || window.matchMedia('(max-width: 640px)').matches) {
+      columnDefs.forEach((column: any) => {
+        if (column.headerName === 'Type' || column.headerName === 'Updated' || column.headerName === 'Location') {
+          column.hide = true;
+        }
+      });
+    }
+  }, [location]);
 
   useEffect(() => {
     if (assets && assets.length > 0) {
@@ -135,10 +156,9 @@ const Search = ({ user }: searchProps) => {
         <div className="bg-white p-2 m-4 rounded-lg shadow">
           <div className='flex'>
             <IonSearchbar value={search} onIonChange={e => setSearch(e.detail.value!)}></IonSearchbar>
-            <Selector label="Status" queryType={listAssetStatuses} handleChange={setSearchStatus} nameKey="statusName" placeHolder='All' />
-            <Selector label="Type" queryType={listAssetTypes} handleChange={setSearchType} nameKey="typeName" placeHolder='All' />
-            <Selector label="Location" queryType={listAssetLocations} handleChange={setSearchLocation} nameKey="locationName" placeHolder='All' />
-            <IonButton routerLink='/NewAsset'className="ml-2" expand="block">New Asset</IonButton>
+            {!(isPlatform('capacitor') || window.matchMedia('(max-width: 640px)').matches) && <Selector label="Status" queryType={listAssetStatuses} handleChange={setSearchStatus} nameKey="statusName" placeHolder='All' />}
+            {!(isPlatform('capacitor') || window.matchMedia('(max-width: 640px)').matches) && <Selector label="Type" queryType={listAssetTypes} handleChange={setSearchType} nameKey="typeName" placeHolder='All' />}
+            <IonButton routerLink='/NewAsset' className="ml-2" expand="block">New Asset</IonButton>
           </div>
           <div className="ag-theme-alpine m-2" style={{ height: 500 }}>
             <AgGridReact

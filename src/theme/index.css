@@ -22,12 +22,18 @@ ion-split-pane {
   background-color: #23416b;
 }
 
-::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: red;
-  opacity: 1; /* Firefox */
+  opacity: 1;
+  /* Firefox */
 }
 
 input::placeholder {
   opacity: 0.5;
   color: rgb(0, 0, 0);
+}
+
+.searchbar-input-container .searchbar-input {
+  color: #0A0A0A;
 }

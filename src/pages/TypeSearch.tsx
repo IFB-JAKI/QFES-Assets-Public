@@ -9,6 +9,7 @@ import BackButton from '../components/BackButton';
 
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+import { useLocation } from 'react-router-dom';
 
 interface searchProps {
     user: any;
@@ -19,6 +20,8 @@ const TypeSearch = ({ user }: searchProps) => {
     const [filteredTypes, setFilteredTypes] = useState([]);
 
     const [search, setSearch] = useState('');
+
+    const location = useLocation();
 
     const columnDefs = [
         { headerName: "Type ID", field: "id", sortable: true, filter: true, flex: 1 },
@@ -77,7 +80,7 @@ const TypeSearch = ({ user }: searchProps) => {
         let allTypes: any[] = [];
         getData(listAssetTypes, allTypes);
         listType(allTypes);
-    }, []);
+    }, [location]);
 
     useEffect(() => {
         if (types && types.length > 0) {
