@@ -3,7 +3,7 @@ import { IonPage, IonContent, IonButton, useIonRouter, IonCheckbox, useIonToast 
 import BackButton from '../components/BackButton'
 import { getAssetType, listSimpleAssetGroups, listAssetLocations, listAssetStatuses, listAssetTypes } from '../graphql/queries';
 import { createAsset } from '../graphql/mutations';
-import { API } from 'aws-amplify';
+import { API, Storage } from 'aws-amplify';
 import Selector from '../components/Selector';
 import Header from '../components/Header';
 
@@ -31,6 +31,9 @@ const NewAsset = ({ user }: GroupsProps) => {
   const [location, setLocation] = useState('');
   const [presentToast] = useIonToast();
 
+  const [imageKey, setImageKey] = useState('');
+  const [signedURL, setSignedURL] = useState('');
+
   const presentActionToast = (position: 'top' | 'middle' | 'bottom', message: string) => {
     presentToast({
       message: message,
@@ -43,7 +46,7 @@ const NewAsset = ({ user }: GroupsProps) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(name)
-    if(name === "" || status.id === null || QRCode === ""){
+    if (name === "" || status.id === null || QRCode === "") {
       presentActionToast('bottom', "Please fill in required fields (*)");
       return;
     }
@@ -60,7 +63,8 @@ const NewAsset = ({ user }: GroupsProps) => {
       groupID: group,
       statusID: status.id,
       assetlocaID: location,
-      assetTypeData: JSON.stringify(typeInputs)
+      assetTypeData: JSON.stringify(typeInputs),
+      imageLink: imageKey
     }
 
     const createAssetCall = async (): Promise<void> => {
@@ -75,22 +79,29 @@ const NewAsset = ({ user }: GroupsProps) => {
       } catch (e) {
         console.log(e);
       }
-      
+
       return;
     };
     createAssetCall();
   }
 
-  // const getImage = async (e: any) => {
-  //   const file = e.target.files[0];
-  //   try {
-  //     await Storage.put(file.name, file, {
-  //       contentType: "image/png", // contentType is optional
-  //     });
-  //   } catch (error) {
-  //     console.log("Error uploading file: ", error);
-  //   }
-  // }
+  const uploadImage = async (e: any) => {
+    const file = e.target.files[0];
+    await Storage.remove(file.name);
+    try {
+      const result = await Storage.put(file.name, file, {
+        contentType: "image/png, image/jpeg", // contentType is optional
+      });
+      setImageKey(result.key);
+      downloadImage(result.key);
+    } catch (error) {
+      console.log("Error uploading file: ", error);
+    }
+  }
+
+  const downloadImage = async (key: string) => {
+    setSignedURL(await Storage.get(key));
+  }
 
   useEffect(() => {
     if (type && type.dataTemplate !== '') {
@@ -115,6 +126,15 @@ const NewAsset = ({ user }: GroupsProps) => {
     setTypeFields(data);
   }
 
+  function showImage() {
+    if (signedURL !== '') {
+      console.log(signedURL)
+      return (<img className="photo" width="300px" height="300px" src={signedURL} />);
+    } else {
+      return;
+    }
+  }
+
   return (
     <IonPage>
       <Header title={"New Asset"} user={user} />
@@ -122,45 +142,46 @@ const NewAsset = ({ user }: GroupsProps) => {
         <div className="m-4 mb-0">
           <BackButton text="back" />
         </div>
-        
+
         <div className="bg-white p-4 m-4 rounded-lg shadow">
-        <form onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-          <div className="bg-stone rounded-lg shadow w-full pr-4 mb-2" key={1}>
-            <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Asset Name*: </label></h1>
-            <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={name} onChange={(e) => setName(e.target.value)} placeholder="Asset Name" ></input>
-          </div>
-          <div className="bg-stone rounded-lg shadow w-full pr-4 mb-2" key={2}>
-            <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Asset Description: </label></h1>
-            <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Asset Description"></input>
-          </div>
-          <div className="bg-stone rounded-lg shadow w-full pr-4 mb-2" key={3}>
-            <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>QFES Asset ID*: </label></h1>
-            <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={QRCode} onChange={(e) => setQRCode(e.target.value)} placeholder="QFES Asset ID"></input>
-          </div>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3">
-          <div>
-          <h1 className='text-2xl font-montserrat mt-4 font-bold '>Asset Type:</h1>
-            <Selector label="" queryType={listAssetTypes} handleChange={setType} nameKey="typeName" />
-            <IonButton color="secondary" routerLink='/newType'>New Type</IonButton>
-            </div>
-          {/* Image section, code to be added by Josh */}
-          <div>
-            <h1 className="text-2xl font-montserrat mt-4 font-bold">Select an Image:</h1>
-            <input className="ml-2 font-montserrat" type="file" accept='image/jpeg, image/png'></input>
-            </div>
-          </div>
-          <h1 className='text-2xl font-montserrat mt-4 font-bold '>General Asset Data:</h1>
-            
+          <form onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            <div className="top-0 bg-stone rounded-lg shadow md:w-1/2 lg:h-3/4 lg:w-full p-2 text-white pl-2 pt-2 font-bold font-montserrat">
-            <Selector label="Status*: " queryType={listAssetStatuses} handleChange={setStatus} nameKey="statusName" />
+              <div className="bg-stone rounded-lg shadow w-full pr-4 mb-2" key={1}>
+                <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Asset Name*: </label></h1>
+                <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat' value={name} onChange={(e) => setName(e.target.value)} placeholder="Asset Name" ></input>
+              </div>
+              <div className="bg-stone rounded-lg shadow w-full pr-4 mb-2" key={2}>
+                <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Asset Description: </label></h1>
+                <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat' value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Asset Description"></input>
+              </div>
+              <div className="bg-stone rounded-lg shadow w-full pr-4 mb-2" key={3}>
+                <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>QFES Asset ID*: </label></h1>
+                <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat' value={QRCode} onChange={(e) => setQRCode(e.target.value)} placeholder="QFES Asset ID"></input>
+              </div>
             </div>
-            <div className="bg-stone rounded-lg md:w-1/2 shadow lg:w-full pr-4 mb-2 " key={1}>
-              <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Asset Location: </label></h1>
-              <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Asset Location"></input>
+            {showImage()}
+            <div className="grid grid-cols-1 md:grid-cols-3">
+              <div>
+                <h1 className='text-2xl font-montserrat mt-4 font-bold '>Asset Type:</h1>
+                <Selector label="" queryType={listAssetTypes} handleChange={setType} nameKey="typeName" />
+                <IonButton color="secondary" routerLink='/newType'>New Type</IonButton>
+              </div>
+              {/* Image section, code to be added by Josh */}
+              <div>
+                <h1 className="text-2xl font-montserrat mt-4 font-bold">Select an Image:</h1>
+                <input className="ml-2 font-montserrat" type="file" accept='image/jpeg, image/png' onChange={uploadImage}></input>
+              </div>
             </div>
+            <h1 className='text-2xl font-montserrat mt-4 font-bold '>General Asset Data:</h1>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              <div className="top-0 bg-stone rounded-lg shadow md:w-1/2 lg:h-3/4 lg:w-full p-2 text-white pl-2 pt-2 font-bold font-montserrat">
+                <Selector label="Status*: " queryType={listAssetStatuses} handleChange={setStatus} nameKey="statusName" />
+              </div>
+              <div className="bg-stone rounded-lg md:w-1/2 shadow lg:w-full pr-4 mb-2 " key={1}>
+                <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Asset Location: </label></h1>
+                <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat' value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Asset Location"></input>
+              </div>
             </div>
             {
               (typeFields && typeFields.length > 0) && typeFields.map((field, index) => {
@@ -185,10 +206,10 @@ const NewAsset = ({ user }: GroupsProps) => {
               }, [])
             }
             <IonButton type='submit'>Submit</IonButton>
-            </form>
-          </div>
-          
-        
+          </form>
+        </div>
+
+
       </IonContent>
     </IonPage>
   )
