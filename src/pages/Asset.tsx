@@ -241,6 +241,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
 
     let assetDetails = {
       id: match.params.id,
+      QRCode: QRCode,
       assetName: name,
       description: description,
       typeID: type.id,
