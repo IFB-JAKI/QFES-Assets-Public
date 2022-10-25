@@ -22,22 +22,18 @@ const QrScan = () => {
         const assets: any = await API.graphql({
           query: listAssets
         });
-        assets.data.listAssets.items.find((asset: any) => {
+        let found = assets.data.listAssets.items.find((asset: any) => {
           if (asset.QRCode === result.text) {
-            router.push(`/mobile/asset/${asset.id}`);
-          } else {
-            throw new Error('No asset found with ' + result.text);
+            return asset;
           }
         });
-      } catch (e) {
-        const presentToast = () => {
-          toast({
-            message: 'Asset with QR Code ' + result.text + ' not found',
-            duration: 1500,
-            position: 'bottom'
-          });
+        if (found) {
+          router.push(`/mobile/asset/${found.id}`);
+        } else {
+          throw new Error('Asset with id ' + result.text + 'not found');
         }
-        presentToast();
+      } catch (e :any) {
+        console.log(e.message);
       }
     }
   };
