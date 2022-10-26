@@ -4,7 +4,7 @@ import { RouteComponentProps } from 'react-router'
 import { API } from 'aws-amplify';
 import { getAsset, getSimpleAssetGroup, getAssetStatus, getAssetLocation, getAssetType, getAssetLog, listAssetLogs } from '../graphql/queries';
 import { listSimpleAssetGroups, listAssetLocations, listAssetStatuses, listAssetTypes } from '../graphql/queries';
-import { updateAssetStatus, updateAsset, createAssetLog } from '../graphql/mutations';
+import { updateAssetStatus, updateAsset, createAssetLog, deleteAsset } from '../graphql/mutations';
 import BackButton from '../components/BackButton';
 import Selector from '../components/Selector';
 import { AssetType } from '../models';
@@ -17,7 +17,7 @@ import { Router } from '@aws-amplify/ui-react/dist/types/components/Authenticato
 import LoanModal from '../components/LoanModal';
 import { bool } from 'prop-types';
 import Header from '../components/Header';
-import { qrCode } from 'ionicons/icons';
+import { qrCode, remove } from 'ionicons/icons';
 
 interface AssetProps
   extends RouteComponentProps<{
@@ -212,6 +212,34 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
 
   }
 
+  const removeAsset = async (): Promise<void> => {
+    if (status.name == "On Loan") {
+      presentAlert({
+        header: 'Hold On!',
+        subHeader: 'Asset cannot be deleted while on loan.',
+        message: 'Return asset before deleting',
+        buttons: ['OK'],
+      })
+      return;
+    }
+    let deleteDetails = match.params.id;
+    try{
+      const deleteAssetItem: any = await API.graphql({
+        query: deleteAsset,
+        variables: {input: {
+          id: match.params.id,
+
+        }},
+        authMode: 'AWS_IAM'
+      })
+    }catch(e){
+      console.log(e);
+      setError("Could not delete asset!");
+    }
+    
+    return
+  }
+
   const handleMainSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -333,6 +361,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
       }
       return;
     }
+    
     //collects info of the most recent loan/return event
     const fetchCurrentEventInfo = async (currentEvent: string): Promise<void> => {
       if(currentEvent){
@@ -444,7 +473,6 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
         //   setCurrentLoanEventInfo(onLoanInfo);
         //   console.log(onLoanInfo);
         // }
-        console.log(result);
         setLoanLog(result.data.listAssetLogs.items);
         //setLoanLog(result.data.getAssetLog.items);
       } catch (e) {
@@ -473,6 +501,8 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
     logFields: logFields,
     handleLogChange: handleLogChange
   });
+
+  
 
   function openModal() {
     present({
@@ -643,6 +673,25 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                     {(saved === false) ? (null) : (status.name === 'Available' || status.name === 'On Loan') ?
                       (<IonButton color="secondary" onClick={handleArchiveSubmit}>Archive Asset</IonButton>)
                       : (<IonButton color="secondary" onClick={handleRestoreSubmit}>Restore Asset</IonButton>)}
+                    {/*Display the button for Delete */}
+                    {saved !== false &&<IonButton color="danger" onClick={() => {
+                      presentToast({
+                        message: 'Are you sure you want to delete this Type?',
+                        duration: 10000,
+                        buttons: [
+                          {
+                            text: 'Yes',
+                            role: 'confirm',
+                            handler: () => removeAsset()
+                          },
+                          {
+                            text: 'No',
+                            role: 'cancel'
+                          }
+                        ]
+                      })
+                    }}>Delete Asset</IonButton>}
+                    
 
 
                   </div>
