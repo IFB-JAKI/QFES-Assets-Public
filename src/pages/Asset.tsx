@@ -64,11 +64,13 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   // utility vars
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState('');
-  const [saved, setSaved] = useState(true); // @TODO set false and show user that changes are not saved.
+  const [saved, setSaved] = useState(true);
 
   // modal logic
   const modal = useRef<HTMLIonModalElement>(null);
-  const BorrowerInput = useRef<HTMLIonInputElement>(null);
+  const [borrower, setBorrower] = useState('');
+  const [dataUrl, setDataUrl] = useState('');
+  const [modalSaved, setModalSaved] = useState(true);
 
   const router = useIonRouter();
 
@@ -120,8 +122,6 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
           query: listAssetLogs,
           authMode: 'AWS_IAM'
         });
-        console.log(result);
-        console.log(resultLog);
         setLoanLog(result.data.listAssetLogs.items);
         //setLoanLog(result.data.getAssetLog.items);
       } catch (e) {
@@ -150,38 +150,43 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
     }
   };
 
-  const handleLoanSubmit = () => {
-    // create loan event
-    // get loan event id, assign to asset
+  useEffect (() => {
+    const handleLoanSubmit = () => {
+      // create loan event
+      // get loan event id, assign to asset
 
-    const createLoanEvent = async () => {
-      let assetLogData = Array<any>();
-      let now = new Date().valueOf();
-      let assetLogDataString = JSON.stringify(assetLogData);
-      console.log(assetLogDataString);
-      let BorrowerUserName = (BorrowerInput.current?.value) ? BorrowerInput.current?.value : 'Unknown';
-      try {
-        const result: any = await API.graphql({
-          query: createAssetLog,
-          variables: {
-            input: {
-              assetID: match.params.id,
-              assetLogData: assetLogDataString,
-              borrowerUsername: BorrowerUserName,
-              borrowDate: now,
-            }
-          },
-          authMode: 'AWS_IAM'
-        });
-        await updateAssetCall({ id: match.params.id, currentEvent: result.data.createAssetLog.id });
-      } catch (e) {
-        console.log(e);
+      const createLoanEvent = async () => {
+        let now = new Date().valueOf();
+        let assetLogDataString = JSON.stringify(logFields);
+        try {
+          const result: any = await API.graphql({
+            query: createAssetLog,
+            variables: {
+              input: {
+                assetID: match.params.id,
+                assetLogData: assetLogDataString,
+                borrowerSignature: dataUrl,
+                borrowerUsername: borrower,
+                borrowDate: now,
+              }
+            },
+            authMode: 'AWS_IAM'
+          });
+          console.log(result);
+          await updateAssetCall({ id: match.params.id, currentEvent: result.data.createAssetLog.id });
+        } catch (e) {
+          console.log(e);
+        }
+        return;
       }
-      return;
+      createLoanEvent();
+      //updateStatusCall('On Loan');
     }
-    createLoanEvent();
-    updateStatusCall('On Loan');
-  }
+    if (!modalSaved) {
+      handleLoanSubmit();
+      setModalSaved(true);
+    }
+  }, [modalSaved]);
 
   const handleReturnSubmit = () => {
     updateStatusCall('Available');
@@ -260,10 +265,12 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
     await Storage.remove(file.name);
     try {
       const result = await Storage.put(file.name, file, {
-        contentType: "image/png, image/jpeg", // contentType is optional
+        contentType: "image/png, image/jpeg",
+        level: "protected"
       });
       setImageKey(result.key);
       downloadImage(result.key);
+      setSaved(false);
     } catch (error) {
       console.log("Error uploading file: ", error);
     }
@@ -272,7 +279,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
 
   // Download Image from bucket
   const downloadImage = async (key: string) => {
-    setSignedURL(await Storage.get(key));
+    setSignedURL(await Storage.get(key, { level: "protected" }));
   }
 
   // Fetch all valid statuses
@@ -347,7 +354,6 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
           authMode: 'AWS_IAM'
         });
         let asset = result.data.getAsset;
-        console.log(asset)
         if (!asset) {
           throw new Error('Asset ID not found');
         }
@@ -366,8 +372,10 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
         ]).then(() =>
           setLoaded(true)
         );
-        setImageKey(asset.imageLink);
-        downloadImage(asset.imageLink);
+        if (asset.imageLink) {
+          setImageKey(asset.imageLink);
+          downloadImage(asset.imageLink);
+        }
       } catch (e: any) {
         setLoaded(true);
         setError(e.message);
@@ -461,15 +469,18 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
 
   const [present, dismiss] = useIonModal(LoanModal, {
     onDismiss: (data: string, role: string) => dismiss(data, role),
+    setBorrower: setBorrower,
     logFields: logFields,
-    handleLogChange: handleLogChange
+    handleLogChange: handleLogChange,
+    setDataURL: setDataUrl,
+    assetID: match.params.id,
   });
 
   function openModal() {
     present({
       onWillDismiss: (ev: CustomEvent<OverlayEventDetail>) => {
         if (ev.detail.role === 'confirm') {
-          handleLoanSubmit();
+          setModalSaved(false);
           presentActionToast('bottom', "Item Loaned");
         }
       },
@@ -494,15 +505,6 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
     setSaved(false);
     setLocation(e.target.value);
     console.log(e.target.value)
-  }
-
-  function showImage() {
-    if (signedURL !== '') {
-      console.log(signedURL)
-      return (<img className="photo" width="300px" height="300px" src={signedURL} />);
-    } else {
-      return;
-    }
   }
 
   let changes = false;
@@ -534,8 +536,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
 
                       </div>
                       <h1 className='text-xl font-san-serif bg-white rounded'><input className="bg-white w-full" onChange={(e) => changeInQRCode(e)} placeholder="QFES QR CODE ID" defaultValue={QRCode}></input></h1>
-                      {/* @TODO Add handling for image placement here */}
-                      {showImage()}
+                      {signedURL ? (<img className="photo" width="300px" height="300px" src={signedURL} />) : (<></>)}
                       <h1 className='text-xl font-montserrat bg-white rounded pt-4'><input className="text-black bg-white w-full" defaultValue={description} onChange={(e) => changeInDescription(e)} placeholder="Asset Description"></input></h1>
                       <h1 className='text-xl font-montserrat bg-white rounded pt-4'><Selector label="Asset Type: " queryType={listAssetTypes} handleChange={setType} nameKey="typeName" defaultValue={type?.id && type.id} /></h1>
                       {
@@ -590,7 +591,6 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                   </div>
                   <div className="bg-white p-4 m-4 rounded-lg shadow" key={2}>
                     <h1 className='text-3xl font-montserrat font-bold text-primary-200 text-blue'>Asset Loan History</h1>
-
                     {
                       loanLog.map((log, index) => {
                         if (log.assetID == match.params.id) {
