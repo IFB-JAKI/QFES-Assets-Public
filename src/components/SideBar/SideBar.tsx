@@ -34,10 +34,6 @@ const SideBar = ({ signOut }: SideBarProps) => {
               <IonIcon icon={statsChartOutline} className='mr-3'></IonIcon>
               Groups
               </SideBarOption>
-            <SideBarOption route="/Reports">
-              <IonIcon icon={documentTextOutline} className='mr-3'></IonIcon>
-              Reports
-            </SideBarOption>
             <div className='w-full grow'></div>
             <SideBarOption onClick={signOut}>
               <IonIcon icon={logOutOutline} className='mr-3'></IonIcon>

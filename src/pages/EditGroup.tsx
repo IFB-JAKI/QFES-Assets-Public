@@ -233,7 +233,7 @@ const EditGroup: React.FC<EditGroupProps> = ({ match }) => {
             <IonLabel>Child Assets</IonLabel>
             <MultiAssetSelector assets={assets} childAssets={childAssets} setChildAssets={setChildAssets} parentAsset={parentAsset} />
             <IonButton type='submit' disabled={parentAsset ? false : true}>Update</IonButton>
-            <IonButton onClick={deleteGroup}>Delete</IonButton>
+            <IonButton color="danger" onClick={deleteGroup}>Delete</IonButton>
           </form>
           <BackButton text="back" />
         </div>
