@@ -75,7 +75,7 @@ const Search = ({ user }: searchProps) => {
           location: asset.assetlocaID,
           typeID: asset.typeID,
           type: (asset.typeID) ? validateID(asset.typeID, 'typeName', allTypes) : null,
-
+          QRCode: (asset.QRCode) ? asset.QRCode : "",
           updated: myDate.toLocaleDateString()
         }
       });
@@ -125,7 +125,7 @@ const Search = ({ user }: searchProps) => {
   useEffect(() => {
     if (assets && assets.length > 0) {
       let filtered = assets.filter((asset: any) => {
-        if (search !== '' && !(asset.name.toLowerCase().includes(search.toLowerCase()) || (('QRCode' in asset) ? asset.QRCode.includes(search) : false))) {
+        if (search !== '' && !(asset.name.toLowerCase().includes(search.toLowerCase()) || asset.QRCode.toLowerCase().includes(search.toLowerCase()))) {
           return false;
         } else {
           if (searchType !== undefined && searchType.id !== undefined && asset.typeID !== searchType.id) {
