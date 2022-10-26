@@ -25,20 +25,20 @@ const SideBar = ({ signOut }: SideBarProps) => {
           <SideBarOption route="/Search">
             <IonIcon icon={listOutline} className='mr-3'></IonIcon>
             Assets
-          </SideBarOption>
-          <SideBarOption route="/Types">
-            <IonIcon icon={statsChartOutline} className='mr-3'></IonIcon>
-            Types
-          </SideBarOption>
-          <SideBarOption route="/Groups">
-            <IonIcon icon={gitNetworkOutline} className='mr-3'></IonIcon>
-            Groups
-          </SideBarOption>
-          <div className='w-full grow'></div>
-          <SideBarOption onClick={signOut}>
-            <IonIcon icon={logOutOutline} className='mr-3'></IonIcon>
-            Sign Out
-          </SideBarOption>
+            </SideBarOption>
+            <SideBarOption route="/Types">
+              <IonIcon icon={statsChartOutline} className='mr-3'></IonIcon>
+              Types
+              </SideBarOption>
+              <SideBarOption route="/Groups">
+              <IonIcon icon={statsChartOutline} className='mr-3'></IonIcon>
+              Groups
+              </SideBarOption>
+            <div className='w-full grow'></div>
+            <SideBarOption onClick={signOut}>
+              <IonIcon icon={logOutOutline} className='mr-3'></IonIcon>
+              Sign Out
+            </SideBarOption>
         </div>
       </div>
     </div>
