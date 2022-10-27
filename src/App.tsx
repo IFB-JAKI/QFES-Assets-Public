@@ -56,13 +56,15 @@ setupIonicReact();
 const components = {
   Header() {
     const { tokens } = useTheme();
+    let iconSize;
+    isPlatform('capacitor') ? (iconSize = "50%") : (iconSize = "100%");
     return (
       <View textAlign="center" padding={tokens.space.large}>
         <div className='max-w-[200px] mx-auto'>
           <Image
             alt="QFES Logo"
             src={qfesLarge}
-            maxWidth="100%"
+            maxWidth={iconSize}
             height='auto'
           />
         </div>
@@ -115,6 +117,7 @@ const App = () => (
               <Route exact path="/NewLocation" component={NewLocation} />
               <Route exact path="/Type/:id" component={Type} />
               <Route exact path="/Types" render={() => <TypeSearch user={user}/>} />
+              <Route exact path="/Reports" render={() => <Reports user={user}/>} />
             </IonRouterOutlet>
           </IonSplitPane>
         </IonReactRouter>

@@ -10,9 +10,10 @@ interface AssetSelectorProps {
   parentAsset?: string;
   childAssets: Array<string>;
   currentGroup?: string | undefined;
+  ignoreGroup?: boolean;
 }
 // Selects a parent asset for a group, filters assets already selected as children and assets in other groups.
-const AssetSelector = ({ assets, setParentAsset, parentAsset, childAssets, currentGroup }: AssetSelectorProps) => {
+const AssetSelector = ({ assets, setParentAsset, parentAsset, childAssets, currentGroup, ignoreGroup }: AssetSelectorProps) => {
 
   const [text, setText] = useState<string>();
   const [filteredAssets, setFilteredAssets] = useState(assets);
@@ -24,13 +25,17 @@ const AssetSelector = ({ assets, setParentAsset, parentAsset, childAssets, curre
 
   // filter child assets from assets
   useEffect(() => {
-    if (assets.length > 0) {
-      const tempFiltered = assets.filter(asset => !childAssets.includes(asset.id));
-      if (currentGroup) {
-        setFilteredAssets(tempFiltered.filter(asset => asset.groupID === null || asset.groupID === currentGroup));
-      } else {
-        setFilteredAssets(tempFiltered.filter(asset => asset.groupID === null));
+    if (!ignoreGroup) {
+      if (assets.length > 0) {
+        const tempFiltered = assets.filter(asset => !childAssets.includes(asset.id));
+        if (currentGroup) {
+          setFilteredAssets(tempFiltered.filter(asset => asset.groupID === null || asset.groupID === currentGroup));
+        } else {
+          setFilteredAssets(tempFiltered.filter(asset => asset.groupID === null));
+        }
       }
+    } else {
+      setFilteredAssets(assets);
     }
   }, [childAssets, assets])
 
@@ -49,7 +54,7 @@ const AssetSelector = ({ assets, setParentAsset, parentAsset, childAssets, curre
       }
       {text && text !== '' && <div className='shadow-lg w-64 p-3 z-50 absolute bg-white'>
         {filteredAssets.map((asset: any, index: number) => {
-          if (asset.assetName.toLowerCase().includes(text.toLowerCase()) && index < 10 && asset.id !== parentAsset) {
+          if (asset.assetName.toLowerCase().includes(text.toLowerCase()) && (!ignoreGroup ? asset.id !== parentAsset : true)) {
             return (
               <div className="cursor-pointer hover:bg-primary-400 transition ease-in-out p-1 rounded" key={asset.id} onClick={e => handleParentSelect(asset.id)}>
                 {asset.assetName}
