@@ -55,6 +55,8 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
   const [group, setGroup] = useState('');
   const [assetTypeData, setAssetTypeData] = useState(Array<FieldsInterface>());
   const [currentLoanEvent, setCurrentLoanEvent] = useState('');
+  const [displaySig, setDisplaySig] = useState(false);
+
   //const [currentLoanEventInfo, setCurrentLoanEventInfo] = useState({name: '', id: undefined, username: undefined, dateOfBorrow: Date, dateOfReturn: Date});
 
   // dynamic field states
@@ -80,6 +82,7 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
 
   const [imageKey, setImageKey] = useState('');
   const [signedURL, setSignedURL] = useState('');
+  const [signedSigURL, setSigneSigURL] = useState('');
 
   const [loanLog, setLoanLog] = useState(Array<any>());
   const [currentLoanEventInfo, setCurrentLoanEventInfo] = useState();
@@ -88,6 +91,7 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
   const [loanUser, setLoanUser] = useState('');
   const [assetLogData1, setAssetLogData1] = useState(Array<any>());
   const [assetLogString, setAssetLogString] = useState('');
+  const [digSig, setDigSig] = useState('');
   interface GroupsProps {
     user: any;
   }
@@ -304,6 +308,10 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
     setSignedURL(await Storage.get(key, { level: "protected" }));
   }
 
+  const downloadSigImage = async (key: string) => {
+    setSigneSigURL(await Storage.get(key, { level: "protected" }));
+  }
+
   // Fetch all valid statuses
   useEffect(() => {
     const getAllStatuses = async (): Promise<void> => {
@@ -401,6 +409,7 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
         if (asset.imageLink) {
           setImageKey(asset.imageLink);
           downloadImage(asset.imageLink);
+          
         }
       } catch (e: any) {
         setLoaded(true);
@@ -420,11 +429,15 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
         })
         console.log(onLoanInfo);
         let loanEventInfo = onLoanInfo.data.getAssetLog;
-        
-        Promise.all([
-          setCurrentLoanEventInfo(onLoanInfo)
-        ])
+        setCurrentLoanEventInfo(onLoanInfo.data.getAssetLog)
+        setDigSig(loanEventInfo.borrowerSignature);
         console.log(currentLoanEventInfo);
+
+        if (loanEventInfo.borrowerSignature) {
+          setImageKey(loanEventInfo.borrowerSignature);
+          downloadSigImage(loanEventInfo.borrowerSignature);
+          
+        }
         //console.log(onLoanInfo.data.getAssetLog)
         //setCurrentLoanEventInfo({name: onLoanInfo.data.getAssetLog.assetID, id: onLoanInfo.data.getAssetLog.assetID.id, username: onLoanInfo.data.getAssetLog.borrowerUsername, dateOfBorrow: onLoanInfo.data.getAssetLog.borrowDate, dateOfReturn: onLoanInfo.data.getAssetLog.returnDate });
         setItemLoanedDate(loanEventInfo.borrowDate);
@@ -434,7 +447,7 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
         console.log(loanEventInfo.assetLogData)
         setAssetLogString(loanEventInfo.assetLogData);
         //console.log(loanEventInfo.assetLogData);
-        const myArray = loanEventInfo.assetLogData.split("\"")
+        const myArray = loanEventInfo.assetLogData.split(",")
 
         setAssetLogData1(myArray);
         console.log(myArray); //broken for some reason??
@@ -686,13 +699,52 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
                       {currentLoanEvent != null && itemLoanedDate !== null &&<h1 className="font-bold">ITEM LOANED</h1>}
                       {currentLoanEvent != null && itemLoanedDate === null &&<h1 className="font-bold">ITEM RETURNED</h1>}
                       {currentLoanEvent != null && itemLoanedDate !== null &&<h1>Item on loan by: {loanUser}</h1>}
+                      <div className="bg-stone rounded-lg shadow m-2 pb-2">
+                        <h1 className="text-white font-bold p-2">LOAN INPUTS</h1>
+                      {
+                        assetLogData1.map((data, count) => {
+                          let inputName;
+                          let inputUser;
+                          let digitalSignature;
+                          if(data.includes("name")){
+                            const myArray = data.split("\"")
+                            inputName = myArray[3]
+                            // for(let i = 0; i < assetLogData1.length; i++){
+                            //   if(assetLogData1[i] === "name")
+                            //     return<h1>{assetLogData1[i+2]}: {assetLogData1[i+10]}</h1>
+                            //   }
+                          }
+                          else if(data.includes("type")){
+                            if(data.includes("signature")){
+                              digitalSignature = true;
+
+                            }
+                          }
+                          else if(data.includes("value")){
+                            const myArray = data.split("\"")
+                            inputUser = myArray[3]
+                          }
+                          return (
+                            <div className="bg-stone rounded-lg shadow pl-2 m-2 mb-0 mt-0 font-montserrat" key={count}>
+                            <h1 className="text-white font-bold">{inputName}</h1>
+                            <h1 className="text-white">{inputUser}</h1>
+                            {digitalSignature ? (<img className="bg-white photo" width="300px" height="300px" src={signedSigURL} />) : (<></>)}
+                            </div>
+                          )
+                        }, [])
+                      }
+                      </div>
+  
                       {
                       loanLog.map((log, index) => {
+
+
                         //const myArray = assetLogString.split("\"")
                           if (itemLoanedDate !== null && itemReturnedDate === null) {
                             //Most recent event is a Loan
                             var myDate = new Date(itemLoanedDate);
                             assetLogData1.map((data, count) => {
+
                               return<h1>{data}</h1>
                             })
                             // for(let i = 0; i < assetLogData.length; i++){
@@ -701,8 +753,6 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
                             return (
                               <div>
                                 <h1 className="font-montserrat lg:text-xl md:text-l sm:text-l">{("Loaned: " + myDate.toLocaleDateString())}</h1>
-
-                                <h1>{assetLogData1[3]}: {assetLogData1[11]}</h1>
                             </div>
                             )
                           }
