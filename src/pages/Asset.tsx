@@ -598,6 +598,9 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
     setSaved(false);
     setLocation(e.target.value);
   }
+  function refreshPage() {
+    window.location.reload();
+  }
 
   let changes = false;
   return (
@@ -676,7 +679,7 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
                       <br></br>
                       <br></br>
                       {saved === false && <IonButton type='submit'>Save Changes</IonButton>}
-                      {saved === false && <IonButton color="danger" type='submit'>Discard Changes</IonButton>}
+                      {saved === false && <IonButton color="danger" onClick={refreshPage}>Discard Changes</IonButton>}
                     </form>
                   </div>
                   <div className="bg-white p-4 m-4 rounded-lg shadow" key={2}>
@@ -726,10 +729,6 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
                           if(data.includes("name")){
                             const myArray = data.split("\"")
                             inputName = myArray[3]
-                            // for(let i = 0; i < assetLogData1.length; i++){
-                            //   if(assetLogData1[i] === "name")
-                            //     return<h1>{assetLogData1[i+2]}: {assetLogData1[i+10]}</h1>
-                            //   }
                           }
                           else if(data.includes("type")){
                             if(data.includes("signature")){
