@@ -34,7 +34,7 @@ const LoanModal = ({
     try {
       const response = await Storage.put(fileName, file, {
         contentType: 'image/png',
-        level: "protected",
+        level: "public",
       })
       setDataURL(response.key);
     } catch (error) {

@@ -99,7 +99,7 @@ const NewAsset = ({ user }: GroupsProps) => {
     await Storage.remove(file.name);
     try {
       const result = await Storage.put(file.name, file, {
-        contentType: "image/png, image/jpeg", level: "protected", // contentType is optional
+        contentType: "image/png, image/jpeg", level: "public", // contentType is optional
       });
       setImageKey(result.key);
       downloadImage(result.key);
@@ -109,7 +109,7 @@ const NewAsset = ({ user }: GroupsProps) => {
   }
 
   const downloadImage = async (key: string) => {
-    setSignedURL(await Storage.get(key, { level: "protected" }));
+    setSignedURL(await Storage.get(key, { level: "public" }));
   }
 
   useEffect(() => {

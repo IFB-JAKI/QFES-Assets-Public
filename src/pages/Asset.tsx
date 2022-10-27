@@ -281,7 +281,7 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
     try {
       const result = await Storage.put(file.name, file, {
         contentType: "image/png, image/jpeg",
-        level: "protected"
+        level: "public"
       });
       setImageKey(result.key);
       downloadImage(result.key);
@@ -294,11 +294,11 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
 
   // Download Image from bucket
   const downloadImage = async (key: string) => {
-    setSignedURL(await Storage.get(key, { level: "protected" }));
+    setSignedURL(await Storage.get(key, { level: "public" }));
   }
 
   const downloadSigImage = async (key: string) => {
-    setSigneSigURL(await Storage.get(key, { level: "protected" }));
+    setSigneSigURL(await Storage.get(key, { level: "public" }));
   }
 
   // Fetch all valid statuses
