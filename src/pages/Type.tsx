@@ -70,8 +70,32 @@ const Type: React.FC<AssetProps> = ({ match }) => {
 
         const assetFieldsJSON = JSON.stringify(typeFields);
         const assetLogFieldsJSON = JSON.stringify(logFields);
+        if(name === ""){
+          let typeDetails = {
+            id: match.params.id,
+            typeName: type.typeName,
+            dataTemplate: assetFieldsJSON,
+            logTemplate: assetLogFieldsJSON
+        }
+        const updateType = async (): Promise<void> => {
+          try {
+              const result: any = await API.graphql({
+                  query: updateAssetType,
+                  variables: { input: typeDetails },
+                  authMode: 'AWS_IAM'
+              });
+              // @TODO Success or error toast here
+              console.log(result);
+              router.goBack();
+          } catch (e) {
+              console.log(e);
+          }
+          return;
+        };
 
-        let typeDetails = {
+      updateType();
+        }else{
+          let typeDetails = {
             id: match.params.id,
             typeName: name,
             dataTemplate: assetFieldsJSON,
@@ -95,6 +119,9 @@ const Type: React.FC<AssetProps> = ({ match }) => {
         };
 
         updateType();
+        }
+        
+        
 
         const presentToast = () => {
             toast({
@@ -169,7 +196,7 @@ const Type: React.FC<AssetProps> = ({ match }) => {
     }, [assetTypeData, type]);
     function changeInName(e: any) {
         setSaved(false);
-        setName(e.target.value)
+        setName(e.target.value);
     }
     useEffect(() => {
         // fetch type and construct form with existing data
@@ -205,7 +232,7 @@ const Type: React.FC<AssetProps> = ({ match }) => {
                                 <Header title={" Types"} />
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                     <div className="h-full bg-white p-2 m-4 rounded-lg shadow col-span-2">
-                                        <h1 className="text-3xl font-montserrat font-bold text-primary-200 text-blue">{type.typeName}</h1>
+                                        {/*<h1 className="text-3xl font-montserrat font-bold text-primary-200 text-blue">{type.typeName}</h1>*/}
 
                                         <form onSubmit={(e) => handleMainSubmit(e)} className="m-6">
                                             <IonItem>
@@ -229,7 +256,7 @@ const Type: React.FC<AssetProps> = ({ match }) => {
                                             <IonButton type='submit'>Submit</IonButton>
                                         </form>
                                         <BackButton />
-                                        <IonButton color="light" onClick={() => {
+                                        <IonButton color="danger" onClick={() => {
                                             toast({
                                                 message: 'Are you sure you want to delete this Type?',
                                                 duration: 10000,
