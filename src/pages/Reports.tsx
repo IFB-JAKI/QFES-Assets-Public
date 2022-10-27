@@ -182,7 +182,7 @@ const Reports = ({ user }: ReportProps) => {
 
   const getImageLink = async () => {
     if (imageKey) {
-      setSignedURL(await Storage.get(imageKey, { level: 'protected' }));
+      setSignedURL(await Storage.get(imageKey, { level: 'public' }));
     }
   }
 
