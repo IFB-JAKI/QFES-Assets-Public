@@ -43,7 +43,7 @@ const LoanModal = ({
   }
 
   const trim = () => {
-    const file = padRef.current?.getTrimmedCanvas().toDataURL("image/png");
+    const file = padRef.current?.getCanvas().toDataURL("image/png");
     if (file) {
       uploadImage(file);
     }
