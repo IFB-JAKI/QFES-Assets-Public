@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-        <string>qfes-asset-frontend</string>
+	<string>QFES Assets</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -50,5 +50,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>To scan QR codes to loan</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>To upload images</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>To upload images</string>
 </dict>
 </plist>
