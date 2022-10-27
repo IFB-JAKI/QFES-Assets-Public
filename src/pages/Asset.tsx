@@ -610,7 +610,7 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
                     <form onSubmit={handleMainSubmit}>
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className=" col-span-2">
-                          <input className="text-3xl font-montserrat font-bold text-primary-200 text-blue bg-white" onChange={(e) => changeInName(e)} placeholder={name} defaultValue={name}></input>
+                          <textarea className="text-3xl h-10 font-montserrat font-bold text-primary-200 text-blue bg-white w-full" onChange={(e) => changeInName(e)} placeholder={name} defaultValue={name}></textarea>
                         </div>
                         <div className="col-span-1">
                           {(status.name === "Available") ? (<h1 className="text-3xl font-montserrat font-bold text-green-600 bg-white md:text-right">{status.name}</h1>)
@@ -623,7 +623,7 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
                       </div>
                       <h1 className='text-xl font-san-serif bg-white rounded'><input className="bg-white w-full" onChange={(e) => changeInQRCode(e)} placeholder="QFES QR CODE ID" defaultValue={QRCode}></input></h1>
                       {signedURL ? (<img className="photo" width="300px" height="300px" src={signedURL} />) : (<></>)}
-                      <h1 className='text-xl font-montserrat bg-white rounded pt-4'><input className="text-black bg-white w-full" defaultValue={description} onChange={(e) => changeInDescription(e)} placeholder="Asset Description"></input></h1>
+                      <h1 className='text-xl font-montserrat bg-white rounded pt-4'><textarea className="text-black bg-white w-full" defaultValue={description} onChange={(e) => changeInDescription(e)} placeholder="Asset Description"></textarea></h1>
                       <h1 className='text-xl font-montserrat bg-white rounded pt-4'><Selector label="Asset Type: " queryType={listAssetTypes} handleChange={setType} nameKey="typeName" defaultValue={type?.id && type.id} /></h1>
                       {
                         typeFields.map((field, index) => {
