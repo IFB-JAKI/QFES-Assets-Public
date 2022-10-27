@@ -43,12 +43,17 @@ const LoanModal = ({
   }
 
   const trim = () => {
+    console.log("GotHere1")
     const file = padRef.current?.getCanvas().toDataURL("image/png");
     if (file) {
       uploadImage(file);
     }
-    
   };
+  const handleSubmit = (e: any, message: string) => {
+    console.log("GotHere")
+    trim();
+    onDismiss(e, message)
+  }
   return (
     <IonPage>
       <IonHeader>
@@ -80,7 +85,7 @@ const LoanModal = ({
                       canvasProps={{ width: 550, height: 200, className: 'sigCanvas' }} />
                     <ButtonGroup>
                       <IonButton color='light' onClick={clear}>Clear</IonButton>
-                      <IonButton color='light' onClick={trim}>Finish</IonButton>
+                      <IonButton color='light' onClick={trim}>Save Signature</IonButton>
                     </ButtonGroup>
 
                   </IonItem>
@@ -104,7 +109,7 @@ const LoanModal = ({
             }, [])
           )
         }
-        <IonButton onClick={() => onDismiss(inputRef.current?.value, 'confirm')}>Confirm</IonButton>
+        <IonButton onClick={() => handleSubmit(inputRef.current?.value, 'confirm')}>Confirm</IonButton>
       </IonContent>
     </IonPage>
   );

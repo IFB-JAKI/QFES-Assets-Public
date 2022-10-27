@@ -74,7 +74,6 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
   // modal logic
   const modal = useRef<HTMLIonModalElement>(null);
   const [borrower, setBorrower] = useState('');
-  const [expectedReturn, setExpectedReturn] = useState('');
   const [dataUrl, setDataUrl] = useState('');
   const [modalSaved, setModalSaved] = useState(true);
 
@@ -167,7 +166,6 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
             },
             authMode: 'AWS_IAM'
           });
-          //console.log(result);
           await updateAssetCall({ id: match.params.id, currentEvent: result.data.createAssetLog.id });
           
         } catch (e) {
@@ -427,31 +425,21 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
           variables: {id: currentEvent},
           authMode: 'AWS_IAM' 
         })
-        console.log(onLoanInfo);
+
         let loanEventInfo = onLoanInfo.data.getAssetLog;
         setCurrentLoanEventInfo(onLoanInfo.data.getAssetLog)
         setDigSig(loanEventInfo.borrowerSignature);
-        console.log(currentLoanEventInfo);
-
         if (loanEventInfo.borrowerSignature) {
           setImageKey(loanEventInfo.borrowerSignature);
           downloadSigImage(loanEventInfo.borrowerSignature);
-          
         }
-        //console.log(onLoanInfo.data.getAssetLog)
         //setCurrentLoanEventInfo({name: onLoanInfo.data.getAssetLog.assetID, id: onLoanInfo.data.getAssetLog.assetID.id, username: onLoanInfo.data.getAssetLog.borrowerUsername, dateOfBorrow: onLoanInfo.data.getAssetLog.borrowDate, dateOfReturn: onLoanInfo.data.getAssetLog.returnDate });
         setItemLoanedDate(loanEventInfo.borrowDate);
         setItemReturnedDate(loanEventInfo.returnDate);
-        console.log(itemLoanedDate);
         setLoanUser(loanEventInfo.borrowerUsername);
-        console.log(loanEventInfo.assetLogData)
         setAssetLogString(loanEventInfo.assetLogData);
-        //console.log(loanEventInfo.assetLogData);
         const myArray = loanEventInfo.assetLogData.split(",")
-
         setAssetLogData1(myArray);
-        console.log(myArray); //broken for some reason??
-        console.log(assetLogData1);
         }catch(e){
           console.log(e);
         }
@@ -674,8 +662,6 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
                           <div className="top-0 right-0">
                             {group === null && <IonButton className="ml-20" routerLink={`/Groups/new`} color="secondary">No Group</IonButton>}
                             {group != null && <IonButton className="ml-20" routerLink={`/group/${group}`} color="secondary">In Group</IonButton>}
-                            {/*<Selector label="Asset Group: " queryType={listSimpleAssetGroups} handleChange={setGroup} nameKey="name" />
-                            */}
                           </div>
                         </div>
 
@@ -698,9 +684,40 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
                     <div className="text-black font-montserrat bg-white ml-2 lg:text-xl md:text-l sm:text-l">
                       {currentLoanEvent != null && itemLoanedDate !== null &&<h1 className="font-bold">ITEM LOANED</h1>}
                       {currentLoanEvent != null && itemLoanedDate === null &&<h1 className="font-bold">ITEM RETURNED</h1>}
-                      {currentLoanEvent != null && itemLoanedDate !== null &&<h1>Item on loan by: {loanUser}</h1>}
-                      <div className="bg-stone rounded-lg shadow m-2 pb-2">
-                        <h1 className="text-white font-bold p-2">LOAN INPUTS</h1>
+                      {currentLoanEvent != null && itemLoanedDate !== null &&<h1>Item on loan by: <strong>{loanUser}</strong></h1>}
+                      {
+                      loanLog.map((log, index) => {
+                          if (itemLoanedDate !== null && itemReturnedDate === null) {
+                            //Most recent event is a Loan
+                            var myDate = new Date(itemLoanedDate);
+                            return (
+                              <div>
+                                {/* <h1 className="font-montserrat lg:text-xl md:text-l sm:text-l">"Loaned: " + myDate.toLocaleDateString()}</h1> */}
+                                <h1 className="font-montserrat lg:text-xl md:text-l sm:text-l">Loaned: <strong>{myDate.toLocaleDateString()}</strong></h1>
+                            </div>
+                            )
+                          }
+                          else if(itemLoanedDate !== null && itemReturnedDate !== null){
+                            //Most recent Event is a loan and they gave a return Date
+                            var loanDate = new Date(itemLoanedDate);
+                            var returnDate = new Date(itemReturnedDate);
+                            return (
+                              <div>
+                            <h1 className="font-montserrat lg:text-xl md:text-l sm:text-l ml-4">{("Loaned: " + loanDate.toLocaleDateString())}</h1>
+                            <h1 className="font-montserrat lg:text-xl md:text-l sm:text-l ml-4">{("Proposed Return: " + returnDate.toLocaleDateString())}</h1>
+                            </div>
+                            )
+                          }
+                          else{
+                            //Most recent event is a Return
+                            var myDate = new Date(itemReturnedDate);
+                            return <ul className="font-montserrat lg:text-xl md:text-l sm:text-l ml-4">{("Returned: " + myDate.toLocaleDateString())}</ul>
+                          }
+                        }
+                      )   
+                    }
+                      {itemLoanedDate !== null &&<div className="bg-stone rounded-lg shadow m-2 pb-2">
+                        {itemLoanedDate !== null &&<h1 className="text-white font-bold p-2">LOAN INPUTS</h1>}
                       {
                         assetLogData1.map((data, count) => {
                           let inputName;
@@ -733,55 +750,9 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
                           )
                         }, [])
                       }
-                      </div>
+                      </div>}
   
-                      {
-                      loanLog.map((log, index) => {
-
-
-                        //const myArray = assetLogString.split("\"")
-                          if (itemLoanedDate !== null && itemReturnedDate === null) {
-                            //Most recent event is a Loan
-                            var myDate = new Date(itemLoanedDate);
-                            assetLogData1.map((data, count) => {
-
-                              return<h1>{data}</h1>
-                            })
-                            // for(let i = 0; i < assetLogData.length; i++){
-                            //   return<h1>{assetLogData[i]}</h1>
-                            // }
-                            return (
-                              <div>
-                                <h1 className="font-montserrat lg:text-xl md:text-l sm:text-l">{("Loaned: " + myDate.toLocaleDateString())}</h1>
-                            </div>
-                            )
-                          }
-                          else if(itemLoanedDate !== null && itemReturnedDate !== null){
-                            //Most recent Event is a loan and they gave a return Date
-                            var loanDate = new Date(itemLoanedDate);
-                            var returnDate = new Date(itemReturnedDate);
-                            return (
-                              <div>
-                            <h1 className="font-montserrat lg:text-xl md:text-l sm:text-l ml-4">{("Loaned: " + loanDate.toLocaleDateString())}</h1>
-                            <h1 className="font-montserrat lg:text-xl md:text-l sm:text-l ml-4">{("Proposed Return: " + returnDate.toLocaleDateString())}</h1>
-                            </div>
-                            )
-                          }
-                          else{
-                            //Most recent event is a Return
-                            var myDate = new Date(itemReturnedDate);
-                            return <ul className="font-montserrat lg:text-xl md:text-l sm:text-l ml-4">{("Returned: " + myDate.toLocaleDateString())}</ul>
-                          }
-                        }
-                      )   
-                    }
-                    {/* {
-                      assetLogData.map((logInfo, index) => {
-                          return<h1>{logInfo[0]}</h1>
-                      }
-                      )
-                  } */}
-
+                      
                     </div>
                   </div>
                 </div>
