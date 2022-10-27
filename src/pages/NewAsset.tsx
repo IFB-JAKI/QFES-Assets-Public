@@ -52,7 +52,7 @@ const NewAsset = ({ user }: GroupsProps) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(name)
-    if (name === "" || status.id === null || QRCode === "") {
+    if (name === "" || status.id === null || QRCode === "" || location ==="") {
       presentActionToast('bottom', "Please fill in required fields (*)");
       return;
     }
@@ -80,6 +80,7 @@ const NewAsset = ({ user }: GroupsProps) => {
           variables: { input: assetDetails },
           authMode: 'AWS_IAM'
         });
+        
         console.log(result);
         // @TODO Success or error toast here
       } catch (e) {
@@ -99,7 +100,7 @@ const NewAsset = ({ user }: GroupsProps) => {
     await Storage.remove(file.name);
     try {
       const result = await Storage.put(file.name, file, {
-        contentType: "image/png, image/jpeg", // contentType is optional
+        contentType: "image/png, image/jpeg", level: "protected", // contentType is optional
       });
       setImageKey(result.key);
       downloadImage(result.key);
@@ -109,7 +110,7 @@ const NewAsset = ({ user }: GroupsProps) => {
   }
 
   const downloadImage = async (key: string) => {
-    setSignedURL(await Storage.get(key));
+    setSignedURL(await Storage.get(key, { level: "protected" }));
   }
 
   useEffect(() => {
@@ -178,7 +179,7 @@ const NewAsset = ({ user }: GroupsProps) => {
               {/* Image section, code to be added by Josh */}
               <div>
                 <h1 className="text-2xl font-montserrat mt-4 font-bold">Select an Image:</h1>
-                <input className="ml-2 font-montserrat" type="file" accept='image/jpeg, image/png' onChange={uploadImage}></input>
+                <input className="ml-2 font-montserrat bg-zinc-800 text-white font-bold p-2 rounded-lg" type="file" accept='image/jpeg, image/png' onChange={uploadImage}></input>
               </div>
             </div>
             <h1 className='text-2xl font-montserrat mt-4 font-bold '>General Asset Data:</h1>
@@ -188,7 +189,7 @@ const NewAsset = ({ user }: GroupsProps) => {
                 <Selector label="Status*: " queryType={listAssetStatuses} handleChange={setStatus} nameKey="statusName" />
               </div>
               <div className="bg-stone rounded-lg md:w-1/2 shadow lg:w-full pr-4 mb-2 " key={1}>
-                <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Asset Location: </label></h1>
+                <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Asset Location*: </label></h1>
                 <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat' value={location} onChange={(e) => setLocation(e.target.value)} placeholder="Asset Location"></input>
               </div>
             </div>

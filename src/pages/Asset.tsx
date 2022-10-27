@@ -729,7 +729,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                     {/*Display the button for Delete */}
                     {saved !== false &&<IonButton color="danger" onClick={() => {
                       presentToast({
-                        message: 'Are you sure you want to delete this Type?',
+                        message: 'Are you sure you want to delete this asset?',
                         duration: 10000,
                         buttons: [
                           {
