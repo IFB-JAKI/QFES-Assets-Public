@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { IonContent, IonPage, IonButton, IonCheckbox, IonLoading, useIonAlert, useIonModal, useIonToast } from '@ionic/react'
+import { IonContent, IonPage, IonButton, IonCheckbox, IonLoading, useIonAlert, useIonModal, useIonToast, useIonRouter } from '@ionic/react'
 import { RouteComponentProps } from 'react-router'
 import { API, Storage } from 'aws-amplify';
 import { getAsset, getSimpleAssetGroup, getAssetStatus, getAssetLocation, getAssetType, getAssetLog, listAssetLogs } from '../graphql/queries';
@@ -81,6 +81,9 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
   const [assetLogData1, setAssetLogData1] = useState(Array<any>());
   const [assetLogString, setAssetLogString] = useState('');
   const [digSig, setDigSig] = useState('');
+
+  const router = useIonRouter();
+
   interface GroupsProps {
     user: any;
   }
@@ -142,6 +145,11 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
         let now = new Date().valueOf();
         //setAssetLogData(logFields);
         let assetLogDataString = JSON.stringify(logFields);
+
+        if (!borrower) {
+          setModalSaved(false)
+          return;
+        }
         try {
           const result: any = await API.graphql({
             query: createAssetLog,
@@ -156,6 +164,7 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
             },
             authMode: 'AWS_IAM'
           });
+          setModalSaved(true)
           await updateAssetCall({ id: match.params.id, currentEvent: result.data.createAssetLog.id });
 
         } catch (e) {
@@ -244,6 +253,7 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
         },
         authMode: 'AWS_IAM'
       })
+      router.push(`/Search/`)
     } catch (e) {
       console.log(e);
       setError("Could not delete asset!");
@@ -386,12 +396,8 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
           fetchLocation(asset.assetlocaID),
           setLocation(asset.assetlocaID),
           setGroup(asset.groupID),
-          //setCurrentLoanEvent(asset.currentEvent),
-
-          //fetchGroup(asset.groupID),
           setAssetTypeData(JSON.parse(asset.assetTypeData)),
           fetchCurrentEventInfo(asset.currentEvent),
-          //console.log(asset)
         ]).then(() =>
           setLoaded(true)
         );
@@ -634,8 +640,6 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
                             fieldJsx = <input className="bg-neutral-400 text-white pl-2 w-full rounded" type="number" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
                           } else if (field.type === 'date') {
                             fieldJsx = <input className="bg-neutral-400 text-white pl-2 w-full rounded" type="date" value={field.value} onChange={e => handleTypeChange(index, e)}></input>
-                          } else if (field.type === 'boolean') {
-                            fieldJsx = <IonCheckbox className="bg-neutral-400 text-white w-full rounded" value={field.value} onChange={e => handleTypeChange(index, e)}></IonCheckbox>
                           }
                           return (
                             <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 m-2" key={index}>

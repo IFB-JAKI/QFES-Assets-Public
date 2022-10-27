@@ -1,11 +1,9 @@
 import { useEffect, useState } from 'react'
 import { IonPage, IonContent, IonSearchbar, useIonRouter, IonButton } from '@ionic/react'
-import { listAssetLocations, listAssets, listAssetStatuses, listAssetTypes } from '../graphql/queries';
+import { listAssetTypes } from '../graphql/queries';
 import { API } from 'aws-amplify';
 import { AgGridReact } from 'ag-grid-react'
 import Header from '../components/Header';
-import Selector from '../components/Selector';
-import BackButton from '../components/BackButton';
 
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
