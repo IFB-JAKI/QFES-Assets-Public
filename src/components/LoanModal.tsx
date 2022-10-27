@@ -21,12 +21,12 @@ const LoanModal = ({
 
   function dataURLtoFile(dataurl: any, filename: any) {
     var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-    while(n--){
-        u8arr[n] = bstr.charCodeAt(n);
+      bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
     }
-    return new File([u8arr], filename, {type:mime});
-}
+    return new File([u8arr], filename, { type: mime });
+  }
 
   const uploadImage = async (file: any) => {
     const fileName = `signature-${Date.now()}-${assetID}`;
@@ -43,12 +43,17 @@ const LoanModal = ({
   }
 
   const trim = () => {
-    const file = padRef.current?.getTrimmedCanvas().toDataURL("image/png");
+    console.log("GotHere1")
+    const file = padRef.current?.getCanvas().toDataURL("image/png");
     if (file) {
       uploadImage(file);
     }
-    
   };
+  const handleSubmit = (e: any, message: string) => {
+    console.log("GotHere")
+    trim();
+    onDismiss(e, message)
+  }
   return (
     <IonPage>
       <IonHeader>
@@ -76,7 +81,7 @@ const LoanModal = ({
                       canvasProps={{ width: 550, height: 200, className: 'sigCanvas' }} />
                     <ButtonGroup>
                       <IonButton color='light' onClick={clear}>Clear</IonButton>
-                      <IonButton color='light' onClick={trim}>Finish</IonButton>
+                      <IonButton color='light' onClick={trim}>Save Signature</IonButton>
                     </ButtonGroup>
 
                   </IonItem>
@@ -100,7 +105,7 @@ const LoanModal = ({
             }, [])
           )
         }
-        <IonButton onClick={() => onDismiss(inputRef.current?.value, 'confirm')}>Confirm</IonButton>
+        <IonButton onClick={() => handleSubmit(inputRef.current?.value, 'confirm')}>Confirm</IonButton>
       </IonContent>
     </IonPage>
   );

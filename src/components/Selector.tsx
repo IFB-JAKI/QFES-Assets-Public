@@ -1,5 +1,5 @@
 import { API } from 'aws-amplify';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IonSelect, IonSelectOption, isPlatform } from '@ionic/react';
 
 interface SelectorProps {
@@ -58,7 +58,7 @@ const Selector = ({ nullable = true, handleChange, queryType, label, nameKey, pl
           {
             data.map((option: any) => {
               return (
-                <option className="bg-neutral-400 text-white text-l"value={option.id} key={option.id}>{option[nameKey]}</option>
+                <option className="bg-neutral-400 text-white text-l" value={option.id} key={option.id}>{option[nameKey]}</option>
               )
             })
           }

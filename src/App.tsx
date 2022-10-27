@@ -2,7 +2,7 @@ import { Redirect, Route } from 'react-router-dom';
 import { IonApp, IonMenu, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Authenticator, useTheme, View, Image, Heading } from '@aws-amplify/ui-react';
-import { API, Amplify, graphqlOperation } from 'aws-amplify';
+import { Amplify } from 'aws-amplify';
 import { isPlatform } from '@ionic/react';
 import awsconfig from './aws-exports';
 
@@ -11,7 +11,6 @@ import QrScan from './pages/mobile/QrScan';
 import Asset from './pages/Asset';
 import NewAsset from './pages/NewAsset';
 import Reports from './pages/Reports';
-import Statistics from './pages/Statistics';
 import Search from './pages/Search';
 import Type from './pages/Type';
 import TypeSearch from './pages/TypeSearch'
@@ -94,21 +93,20 @@ const App = () => (
             <IonMenu menuId='primary' contentId='main'>
               <SideBar signOut={signOut} />
             </IonMenu>
-              <IonRouterOutlet id="main">
-                <Route exact path="/Home">
-                  {
-                    isPlatform('capacitor') ? (
-                      <QrScan />
-                    ) : (
-                      <Home user={user} />
-                    )
-                  }
-                </Route>
+            <IonRouterOutlet id="main">
+              <Route exact path="/Home">
+                {
+                  isPlatform('capacitor') ? (
+                    <QrScan />
+                  ) : (
+                    <Home user={user} />
+                  )
+                }
+              </Route>
               <Redirect exact from="/" to="/Home" />
               <Route exact path="/asset/:id" component={Asset} />
               <Route exact path="/NewAsset" component={NewAsset} />
               <Route exact path="/NewType" component={NewType} />
-              <Route exact path="/Statistics" component={Statistics} />
               <Route exact path="/Search" render={() => <Search user={user} />} />
               <Route exact path="/Groups" render={() => <Groups user={user} />} />
               <Route exact path="/groups/new" render={() => <NewGroup user={user} />} />
@@ -116,8 +114,8 @@ const App = () => (
               <Route exact path="/NewStatus" component={NewStatus} />
               <Route exact path="/NewLocation" component={NewLocation} />
               <Route exact path="/Type/:id" component={Type} />
-              <Route exact path="/Types" render={() => <TypeSearch user={user}/>} />
-              <Route exact path="/Reports" render={() => <Reports user={user}/>} />
+              <Route exact path="/Types" render={() => <TypeSearch user={user} />} />
+              <Route exact path="/Reports" render={() => <Reports user={user} />} />
             </IonRouterOutlet>
           </IonSplitPane>
         </IonReactRouter>

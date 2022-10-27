@@ -11,7 +11,7 @@ interface NewTypeProps {
   user: any;
 }
 const NewType = ({ user }: NewTypeProps) => {
-  
+
 
   const [name, setName] = React.useState('');
   const [assetFields, setAssetFields] = React.useState(Array<FieldInputs>());
@@ -29,7 +29,7 @@ const NewType = ({ user }: NewTypeProps) => {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if(name === ""){
+    if (name === "") {
       presentActionToast('bottom', "Please fill in required fields (*)");
       return;
     }
@@ -65,22 +65,22 @@ const NewType = ({ user }: NewTypeProps) => {
     <IonPage>
       <Header title={"New Type"} user={user} />
       <IonContent>
-      <div className="m-4 mb-0">
+        <div className="m-4 mb-0">
           <BackButton text="back" />
         </div>
         <form onSubmit={(e) => handleSubmit(e)} className="">
           <div className="bg-white p-4 m-4 rounded-lg shadow">
             <div className="bg-stone rounded-lg shadow lg:w-1/4 pr-4 mb-2" key={1}>
               <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Type Name*: </label></h1>
-              <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat'value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" ></input>
+              <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat' value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" ></input>
             </div>
             <h1 className='text-2xl font-montserrat mt-4 font-bold '>Information Fields for Asset Type:</h1>
             <div className="w-1/2">
-            <TypeFieldCreator fields={assetFields} setFields={setAssetFields}/>
+              <TypeFieldCreator fields={assetFields} setFields={setAssetFields} />
             </div>
             <h1 className='text-2xl font-montserrat mt-4 font-bold '>Type Specific Information Required On Asset Loan:</h1>
-            <TypeFieldCreator fields={assetLogFields} setFields={setAssetLogFields}/>
-            <IonButton className="mt-4"type='submit'>Submit</IonButton>
+            <TypeFieldCreator fields={assetLogFields} setFields={setAssetLogFields} />
+            <IonButton className="mt-4" type='submit'>Submit</IonButton>
           </div>
         </form>
       </IonContent>
@@ -89,7 +89,3 @@ const NewType = ({ user }: NewTypeProps) => {
 }
 
 export default NewType
-
-function presentToast(arg0: { message: string; duration: number; position: "top" | "middle" | "bottom"; }) {
-  throw new Error('Function not implemented.');
-}

@@ -1,4 +1,4 @@
-import { IonButton, IonInput, IonLabel, IonItem } from '@ionic/react';
+import { IonButton, IonInput, IonItem } from '@ionic/react';
 import React from 'react'
 import { FieldInputs } from '../types/FieldInputs';
 
@@ -38,22 +38,21 @@ const TypeFieldCreator = ({ fields, setFields }: TypeFieldCreatorProps) => {
           <div key={index} className="mt-3">
             <IonItem>
               <div className="mb-2">
-              <IonItem class="inputOutline">
-                <IonInput required
-                  name="name"
-                  placeholder="Field Name"
-                  value={field.name}
-                  onIonChange={e => { handleNameChange(index, e) }}
-                  className="mr-3"
-                />
+                <IonItem class="inputOutline">
+                  <IonInput required
+                    name="name"
+                    placeholder="Field Name"
+                    value={field.name}
+                    onIonChange={e => { handleNameChange(index, e) }}
+                    className="mr-3"
+                  />
 
-              </IonItem>
+                </IonItem>
               </div>
-              <select className="bg-white"name="type" value={field.type} onChange={(e) => { handleTypeChange(index, e) }}>
+              <select className="bg-white" name="type" value={field.type} onChange={(e) => { handleTypeChange(index, e) }}>
                 <option disabled value="default">Select a Type</option>
                 <option value="text">Text</option>
                 <option value="number">Number</option>
-                <option value="boolean">Boolean</option>
                 <option value="date">Date</option>
                 <option value="signature">Digital Signature</option>
               </select>

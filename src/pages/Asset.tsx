@@ -1,30 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonCheckbox, useIonLoading, IonLoading, IonButtons, IonInput, IonItem, IonLabel, IonModal, useIonAlert, useIonModal, useIonToast } from '@ionic/react'
+import { IonContent, IonPage, IonButton, IonCheckbox, IonLoading, useIonAlert, useIonModal, useIonToast } from '@ionic/react'
 import { RouteComponentProps } from 'react-router'
 import { API, Storage } from 'aws-amplify';
 import { getAsset, getSimpleAssetGroup, getAssetStatus, getAssetLocation, getAssetType, getAssetLog, listAssetLogs } from '../graphql/queries';
-import { listSimpleAssetGroups, listAssetLocations, listAssetStatuses, listAssetTypes } from '../graphql/queries';
-import { updateAssetStatus, updateAsset, createAssetLog, deleteAsset } from '../graphql/mutations';
+import { listAssetStatuses, listAssetTypes } from '../graphql/queries';
+import { updateAsset, createAssetLog, deleteAsset } from '../graphql/mutations';
 import BackButton from '../components/BackButton';
 import Selector from '../components/Selector';
-import { AssetType } from '../models';
-import { resultingClientExists } from 'workbox-core/_private';
 import { OverlayEventDetail } from '@ionic/core/components';
-import { parse } from 'path';
-import SignatureCanvas from 'react-signature-canvas'
-import { ButtonGroup } from '@aws-amplify/ui-react';
-import { Router } from '@aws-amplify/ui-react/dist/types/components/Authenticator/Router';
 import LoanModal from '../components/LoanModal';
-import { bool } from 'prop-types';
 import Header from '../components/Header';
-import { qrCode, remove } from 'ionicons/icons';
 
 interface AssetProps
   extends RouteComponentProps<{
     id: string;
   }> {
-    user: any;
-   }
+  user: any;
+}
 
 interface Status {
   id: string;
@@ -55,6 +47,8 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
   const [group, setGroup] = useState('');
   const [assetTypeData, setAssetTypeData] = useState(Array<FieldsInterface>());
   const [currentLoanEvent, setCurrentLoanEvent] = useState('');
+  const [displaySig, setDisplaySig] = useState(false);
+
   //const [currentLoanEventInfo, setCurrentLoanEventInfo] = useState({name: '', id: undefined, username: undefined, dateOfBorrow: Date, dateOfReturn: Date});
 
   // dynamic field states
@@ -75,18 +69,18 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
   const [dataUrl, setDataUrl] = useState('');
   const [modalSaved, setModalSaved] = useState(true);
 
-  const router = useIonRouter();
-
   const [imageKey, setImageKey] = useState('');
   const [signedURL, setSignedURL] = useState('');
+  const [signedSigURL, setSigneSigURL] = useState('');
 
   const [loanLog, setLoanLog] = useState(Array<any>());
   const [currentLoanEventInfo, setCurrentLoanEventInfo] = useState();
   const [itemLoanedDate, setItemLoanedDate] = useState(Date);
   const [itemReturnedDate, setItemReturnedDate] = useState(Date);
   const [loanUser, setLoanUser] = useState('');
-  const [assetLogData, setAssetLogData] = useState(Array<any>());
+  const [assetLogData1, setAssetLogData1] = useState(Array<any>());
   const [assetLogString, setAssetLogString] = useState('');
+  const [digSig, setDigSig] = useState('');
   interface GroupsProps {
     user: any;
   }
@@ -114,11 +108,12 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
     } catch (e) {
       console.log(e);
     }
+
     return;
   };
 
 
-  
+
   // updates the asset status and page state with the new status if it is a valid status
   const updateStatusCall = async (statusName: string): Promise<void> => {
     let status = allStatuses.find((status) => status.statusName === statusName);
@@ -138,14 +133,14 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
     }
   };
 
-  useEffect (() => {
+  useEffect(() => {
     const handleLoanSubmit = () => {
       // create loan event
       // get loan event id, assign to asset
 
       const createLoanEvent = async () => {
         let now = new Date().valueOf();
-        setAssetLogData(logFields);
+        //setAssetLogData(logFields);
         let assetLogDataString = JSON.stringify(logFields);
         try {
           const result: any = await API.graphql({
@@ -161,8 +156,8 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
             },
             authMode: 'AWS_IAM'
           });
-          //console.log(result);
           await updateAssetCall({ id: match.params.id, currentEvent: result.data.createAssetLog.id });
+
         } catch (e) {
           console.log(e);
         }
@@ -178,7 +173,6 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
   }, [modalSaved]);
 
   const handleReturnSubmit = () => {
-    
     updateStatusCall('Available');
     let now = new Date().valueOf();
     // create return event
@@ -239,20 +233,22 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
       return;
     }
     let deleteDetails = match.params.id;
-    try{
+    try {
       const deleteAssetItem: any = await API.graphql({
         query: deleteAsset,
-        variables: {input: {
-          id: match.params.id,
+        variables: {
+          input: {
+            id: match.params.id,
 
-        }},
+          }
+        },
         authMode: 'AWS_IAM'
       })
-    }catch(e){
+    } catch (e) {
       console.log(e);
       setError("Could not delete asset!");
     }
-    
+
     return
   }
 
@@ -299,6 +295,10 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
   // Download Image from bucket
   const downloadImage = async (key: string) => {
     setSignedURL(await Storage.get(key, { level: "protected" }));
+  }
+
+  const downloadSigImage = async (key: string) => {
+    setSigneSigURL(await Storage.get(key, { level: "protected" }));
   }
 
   // Fetch all valid statuses
@@ -387,10 +387,10 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
           setLocation(asset.assetlocaID),
           setGroup(asset.groupID),
           //setCurrentLoanEvent(asset.currentEvent),
-          fetchCurrentEventInfo(asset.currentEvent),
 
           //fetchGroup(asset.groupID),
           setAssetTypeData(JSON.parse(asset.assetTypeData)),
+          fetchCurrentEventInfo(asset.currentEvent),
           //console.log(asset)
         ]).then(() =>
           setLoaded(true)
@@ -398,6 +398,7 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
         if (asset.imageLink) {
           setImageKey(asset.imageLink);
           downloadImage(asset.imageLink);
+
         }
       } catch (e: any) {
         setLoaded(true);
@@ -405,27 +406,32 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
       }
       return;
     }
-    
+
     //collects info of the most recent loan/return event
     const fetchCurrentEventInfo = async (currentEvent: string): Promise<void> => {
-      if(currentEvent){
-        try{
-        const onLoanInfo: any = await API.graphql({
-          query: getAssetLog,
-          variables: {id: currentEvent},
-          authMode: 'AWS_IAM' 
-        })
-        
-        let loanEventInfo = onLoanInfo.data.getAssetLog;
-        setCurrentLoanEventInfo(onLoanInfo.data.getAssetLog);
-        //console.log(onLoanInfo.data.getAssetLog)
-        //setCurrentLoanEventInfo({name: onLoanInfo.data.getAssetLog.assetID, id: onLoanInfo.data.getAssetLog.assetID.id, username: onLoanInfo.data.getAssetLog.borrowerUsername, dateOfBorrow: onLoanInfo.data.getAssetLog.borrowDate, dateOfReturn: onLoanInfo.data.getAssetLog.returnDate });
-        setItemLoanedDate(loanEventInfo.borrowDate);
-        setItemReturnedDate(loanEventInfo.returnDate);
-        setLoanUser(loanEventInfo.borrowerUsername);
-        setAssetLogData(loanEventInfo.assetLogData);
-        setAssetLogString(loanEventInfo.assetLogData);
-        }catch(e){
+      if (currentEvent) {
+        try {
+          const onLoanInfo: any = await API.graphql({
+            query: getAssetLog,
+            variables: { id: currentEvent },
+            authMode: 'AWS_IAM'
+          })
+
+          let loanEventInfo = onLoanInfo.data.getAssetLog;
+          setCurrentLoanEventInfo(onLoanInfo.data.getAssetLog)
+          setDigSig(loanEventInfo.borrowerSignature);
+          if (loanEventInfo.borrowerSignature) {
+            setImageKey(loanEventInfo.borrowerSignature);
+            downloadSigImage(loanEventInfo.borrowerSignature);
+          }
+          //setCurrentLoanEventInfo({name: onLoanInfo.data.getAssetLog.assetID, id: onLoanInfo.data.getAssetLog.assetID.id, username: onLoanInfo.data.getAssetLog.borrowerUsername, dateOfBorrow: onLoanInfo.data.getAssetLog.borrowDate, dateOfReturn: onLoanInfo.data.getAssetLog.returnDate });
+          setItemLoanedDate(loanEventInfo.borrowDate);
+          setItemReturnedDate(loanEventInfo.returnDate);
+          setLoanUser(loanEventInfo.borrowerUsername);
+          setAssetLogString(loanEventInfo.assetLogData);
+          const myArray = loanEventInfo.assetLogData.split(",")
+          setAssetLogData1(myArray);
+        } catch (e) {
           console.log(e);
         }
         return;
@@ -509,7 +515,7 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
           variables: { limit: 1 },
           authMode: 'AWS_IAM'
         });
-        
+
         // if(currentLoanEvent.length > 1){
         //   const onLoanInfo: any = await API.graphql({
         //     query: getAssetLog,
@@ -520,7 +526,7 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
         //   console.log(onLoanInfo);
         // }
         setLoanLog(result.data.listAssetLogs.items);
-        
+
         //setLoanLog(result.data.getAssetLog.items);
       } catch (e) {
         console.log(e);
@@ -552,7 +558,7 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
     assetID: match.params.id,
   });
 
-  
+
 
   function openModal() {
     present({
@@ -582,6 +588,9 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
   function changeInLocation(e: any) {
     setSaved(false);
     setLocation(e.target.value);
+  }
+  function refreshPage() {
+    window.location.reload();
   }
 
   let changes = false;
@@ -647,8 +656,6 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
                           <div className="top-0 right-0">
                             {group === null && <IonButton className="ml-20" routerLink={`/Groups/new`} color="secondary">No Group</IonButton>}
                             {group != null && <IonButton className="ml-20" routerLink={`/group/${group}`} color="secondary">In Group</IonButton>}
-                            {/*<Selector label="Asset Group: " queryType={listSimpleAssetGroups} handleChange={setGroup} nameKey="name" />
-                            */}
                           </div>
                         </div>
 
@@ -663,54 +670,78 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
                       <br></br>
                       <br></br>
                       {saved === false && <IonButton type='submit'>Save Changes</IonButton>}
-                      {saved === false && <IonButton color="danger" type='submit'>Discard Changes</IonButton>}
+                      {saved === false && <IonButton color="danger" onClick={refreshPage}>Discard Changes</IonButton>}
                     </form>
                   </div>
                   <div className="bg-white p-4 m-4 rounded-lg shadow" key={2}>
                     <h1 className='text-3xl bg-white text-blue font-montserrat font-bold text-primary-200 text-blue'>Most Recent Loan Event</h1>
                     <div className="text-black font-montserrat bg-white ml-2 lg:text-xl md:text-l sm:text-l">
-                      {currentLoanEvent != null && itemLoanedDate !== null &&<h1 className="font-bold">ITEM LOANED</h1>}
-                      {currentLoanEvent != null && itemLoanedDate === null &&<h1 className="font-bold">ITEM RETURNED</h1>}
-                      {currentLoanEvent != null && itemLoanedDate !== null &&<h1>Item on loan by: {loanUser}</h1>}
+                      {currentLoanEvent != null && itemLoanedDate !== null && <h1 className="font-bold">ITEM LOANED</h1>}
+                      {currentLoanEvent != null && itemLoanedDate === null && <h1 className="font-bold">ITEM RETURNED</h1>}
+                      {currentLoanEvent != null && itemLoanedDate !== null && <h1>Item on loan by: <strong>{loanUser}</strong></h1>}
                       {
-                      loanLog.map((log, index) => {
-                        const myArray = assetLogString.split("\"")
+                        loanLog.map((log, index) => {
                           if (itemLoanedDate !== null && itemReturnedDate === null) {
                             //Most recent event is a Loan
                             var myDate = new Date(itemLoanedDate);
-                            
                             return (
                               <div>
-                                <h1 className="font-montserrat lg:text-xl md:text-l sm:text-l">{("Loaned: " + myDate.toLocaleDateString())}</h1>
-                                <h1>Proposed Return Date: {myArray[11]}</h1>
-                            </div>
+                                {/* <h1 className="font-montserrat lg:text-xl md:text-l sm:text-l">"Loaned: " + myDate.toLocaleDateString()}</h1> */}
+                                <h1 className="font-montserrat lg:text-xl md:text-l sm:text-l">Loaned: <strong>{myDate.toLocaleDateString()}</strong></h1>
+                              </div>
                             )
                           }
-                          else if(itemLoanedDate !== null && itemReturnedDate !== null){
+                          else if (itemLoanedDate !== null && itemReturnedDate !== null) {
                             //Most recent Event is a loan and they gave a return Date
                             var loanDate = new Date(itemLoanedDate);
                             var returnDate = new Date(itemReturnedDate);
                             return (
                               <div>
-                            <h1 className="font-montserrat lg:text-xl md:text-l sm:text-l ml-4">{("Loaned: " + loanDate.toLocaleDateString())}</h1>
-                            <h1 className="font-montserrat lg:text-xl md:text-l sm:text-l ml-4">{("Proposed Return: " + returnDate.toLocaleDateString())}</h1>
-                            </div>
+                                <h1 className="font-montserrat lg:text-xl md:text-l sm:text-l ml-4">{("Loaned: " + loanDate.toLocaleDateString())}</h1>
+                                <h1 className="font-montserrat lg:text-xl md:text-l sm:text-l ml-4">{("Proposed Return: " + returnDate.toLocaleDateString())}</h1>
+                              </div>
                             )
                           }
-                          else{
+                          else {
                             //Most recent event is a Return
                             var myDate = new Date(itemReturnedDate);
                             return <ul className="font-montserrat lg:text-xl md:text-l sm:text-l ml-4">{("Returned: " + myDate.toLocaleDateString())}</ul>
                           }
                         }
-                      )   
-                    }
-                    {/* {
-                      assetLogData.map((logInfo, index) => {
-                          return<h1>{logInfo[0]}</h1>
+                        )
                       }
-                      )
-                  } */}
+                      {itemLoanedDate !== null && <div className="bg-stone rounded-lg shadow m-2 pb-2">
+                        {itemLoanedDate !== null && <h1 className="text-white font-bold p-2">LOAN INPUTS</h1>}
+                        {
+                          assetLogData1.map((data, count) => {
+                            let inputName;
+                            let inputUser;
+                            let digitalSignature;
+                            if (data.includes("name")) {
+                              const myArray = data.split("\"")
+                              inputName = myArray[3]
+                            }
+                            else if (data.includes("type")) {
+                              if (data.includes("signature")) {
+                                digitalSignature = true;
+
+                              }
+                            }
+                            else if (data.includes("value")) {
+                              const myArray = data.split("\"")
+                              inputUser = myArray[3]
+                            }
+                            return (
+                              <div className="bg-stone rounded-lg shadow pl-2 m-2 mb-0 mt-0 font-montserrat" key={count}>
+                                <h1 className="text-white font-bold">{inputName}</h1>
+                                <h1 className="text-white">{inputUser}</h1>
+                                {digitalSignature ? (<img className="bg-white photo" width="300px" height="300px" src={signedSigURL} />) : (<></>)}
+                              </div>
+                            )
+                          }, [])
+                        }
+                      </div>}
+
 
                     </div>
                   </div>
@@ -718,7 +749,7 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
 
                 <div className="columns-1 w-2/3">
                   <div className="bg-white p-2 mt-8 m-4 rounded-lg shadow">
-                    
+
                     {/*Display the button for Loan/Return */}
                     {saved === false && <h1 className="text-xl font-montserrat font-bold">Changes must be saved before item can be loaned</h1>}
                     {saved != false && status.name === "Available" && <IonButton onClick={() => openModal()}>Loan</IonButton>}
@@ -729,7 +760,7 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
                       (<IonButton color="secondary" onClick={handleArchiveSubmit}>Archive Asset</IonButton>)
                       : (<IonButton color="secondary" onClick={handleRestoreSubmit}>Restore Asset</IonButton>)}
                     {/*Display the button for Delete */}
-                    {saved !== false &&<IonButton color="danger" onClick={() => {
+                    {saved !== false && <IonButton color="danger" onClick={() => {
                       presentToast({
                         message: 'Are you sure you want to delete this asset?',
                         duration: 10000,
@@ -746,7 +777,7 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
                         ]
                       })
                     }}>Delete Asset</IonButton>}
-                    
+
 
 
                   </div>

@@ -1,10 +1,10 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonCard, IonItem, IonThumbnail, IonCardHeader, IonCardSubtitle, IonCardTitle, IonSplitPane, IonBackButton, IonCardContent, IonIcon, IonLabel, useIonRouter } from '@ionic/react';
+import { IonContent, IonGrid, IonRow, IonCol, IonPage, IonButton, IonCard, IonItem, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonIcon, useIonRouter } from '@ionic/react';
 import Header from '../components/Header';
-import SideBar from '../components/SideBar/SideBar';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import BackButton from '../components/BackButton'
 import { listAssetLocations, listAssets, listAssetStatuses, listAssetTypes } from '../graphql/queries';
 import { API } from 'aws-amplify';
+import { documentTextOutline, gitNetworkOutline, listOutline, statsChartOutline } from 'ionicons/icons'
 
 interface HomeProps {
   user: any;
@@ -13,15 +13,6 @@ interface HomeProps {
 const Home = ({ user }: HomeProps) => {
 
   const [assets, setAssets] = useState([]);
-  const [filteredAssets, setFilteredAssets] = useState([]);
-
-  const [search, setSearch] = useState('');
-  const [searchType, setSearchType] = useState({ id: undefined });
-  const [searchStatus, setSearchStatus] = useState({ id: undefined });
-  const [searchLocation, setSearchLocation] = useState({ id: undefined });
-
-
-  const router = useIonRouter();
 
   const listAsset = async (allStatus: any[], allLocations: any[], allTypes: any[]): Promise<void> => {
     try {
@@ -51,7 +42,8 @@ const Home = ({ user }: HomeProps) => {
           location: (asset.assetlocaID) ? validateID(asset.assetlocaID, 'locationName', allLocations) : null,
           typeID: asset.typeID,
           type: (asset.typeID) ? validateID(asset.typeID, 'typeName', allTypes) : null,
-          updated: asset.updatedAt
+          updated: asset.updatedAt,
+          QRCode: asset.QRCode
         }
       });
       setAssets(formatted);
@@ -76,13 +68,6 @@ const Home = ({ user }: HomeProps) => {
     return;
   };
 
-  // const showAsset = async (): Promise<void> => {
-
-  //   // return {
-  //   //   filteredAssets.map()
-  //   // }
-  // }
-
   useEffect(() => {
     let allStatus: any[] = [];
     let allTypes: any[] = [];
@@ -96,45 +81,40 @@ const Home = ({ user }: HomeProps) => {
     );
   }, []);
 
-  useEffect(() => {
-    if (assets && assets.length > 0) {
-      let filtered = assets.filter((asset: any) => {
-        if (search !== '' && !(asset.name.toLowerCase().includes(search.toLowerCase()) || (('QRCode' in asset) ? asset.QRCode.includes(search) : false))) {
-          return false;
-        } else {
-          if (searchType !== undefined && searchType.id !== undefined && asset.typeID !== searchType.id) {
-            return false;
-          } else {
-            if (searchStatus !== undefined && searchStatus.id !== undefined && asset.statusID !== searchStatus.id) {
-              return false;
-            } else {
-              if (searchLocation !== undefined && searchLocation.id !== undefined && asset.assetlocaID !== searchLocation.id) {
-                return false;
-              } else {
-                return true;
-              }
-            }
-          }
-        }
-      });
-      setFilteredAssets(filtered);
-    }
-  }, [search, searchStatus, searchType, searchLocation, assets]);
-
-
   return (
     <IonPage>
       <Header title={"HOME"} user={user} />
-
-
       <div className="grid grid-cols-1">
-        <div className="h-full bg-white p-4 m-4 rounded-lg shadow col-span-2" key={1}>
-          <IonButton routerLink='/Search' size="large">Search Assets</IonButton>
-          <IonButton routerLink='/Groups' size="large">Search Types</IonButton>
-          <IonButton routerLink='/Types' size="large">Search Groups</IonButton>
-          <IonButton routerLink='/Reports' size="large">Reports</IonButton>
+        <div className="h-50 bg-white p-4 m-4 rounded-lg shadow" key={1}>
+          <div className="grid grid-cols-4">
+            <div>
+              <IonButton routerLink='/Search' expand="block" size="large">
+                <IonIcon slot="start" icon={listOutline}></IonIcon>
+                Search Assets
+              </IonButton>
+            </div>
+            <div>
+              <IonButton routerLink='/Types' expand="block" size="large">
+                <IonIcon slot="start" icon={statsChartOutline}></IonIcon>
+                Search Types
+              </IonButton>
+            </div>
+            <div>
+              <IonButton routerLink='/Groups' expand="block" size="large">
+                <IonIcon slot="start" icon={gitNetworkOutline}></IonIcon>
+                Search Groups
+              </IonButton>
+            </div>
+            <div>
+              <IonButton routerLink='/Reports' expand="block" size="large">
+                <IonIcon slot="start" icon={documentTextOutline}></IonIcon>
+                Reports
+              </IonButton>
+            </div>
+          </div>
         </div>
       </div>
+      <h1 className="text-3xl font-montserrat font-bold text-black bg-white md:text-left pt-3 pl-5">Assets</h1>
       <IonContent>
         {
           assets.map((asset: any) => {
@@ -142,16 +122,28 @@ const Home = ({ user }: HomeProps) => {
               <div key={asset.id}>
                 <IonCard>
                   <IonItem detail routerLink={"/asset/" + asset.id}>
+                    <IonGrid>
+                      <IonRow>
+                        <IonCol>
+                          <IonCardHeader>
+                            <IonCardTitle><h1 className="text-2xl font-montserrat font-bold text-black bg-white md:text-left">{asset.name}</h1></IonCardTitle>
 
-                    <IonThumbnail slot="start">
-                      <img src="https://www.australiancomputertraders.com.au/assets/full/HP850G5i52-r.jpg?20220226055643" />
-                    </IonThumbnail>
-                    <IonCardHeader>
-                      <IonCardSubtitle color="danger">On Loan</IonCardSubtitle>
-                      <IonCardTitle>{asset.name}</IonCardTitle>
-                      {/* <IonIcon name="arrow-dropright" size="large" color="white" slot="end"></IonIcon> */}
-                    </IonCardHeader>
-
+                            <IonCardSubtitle>
+                              {asset.QRCode ? (<h1 className="text-2xl font-montserrat text-black bg-white md:text-left">{asset.QRCode}</h1>) : <h1 className="text-2xl font-montserrat text-red bg-white md:text-left">No QR Given</h1>}
+                            </IonCardSubtitle>
+                          </IonCardHeader>
+                        </IonCol>
+                        <IonCol>
+                          <IonCardContent>
+                            {(asset.status === "Available") ? (<h1 className="text-2xl font-montserrat font-bold text-green-600 bg-white md:text-left">{asset.status}</h1>)
+                              : (asset.status === 'On Loan') ?
+                                (<h1 className="text-2xl font-montserrat font-bold text-red bg-white md:text-left">{asset.status}</h1>)
+                                : (asset.status === "Archived") ? <h1 className="text-2xl font-montserrat font-bold text-orange bg-white md:text-left">{asset.status}</h1>
+                                  : <h1 className="text-2xl font-montserrat font-bold text-primary-200 text-blue bg-white md:text-left">{asset.status}</h1>}
+                          </IonCardContent>
+                        </IonCol>
+                      </IonRow>
+                    </IonGrid>
                   </IonItem>
                 </IonCard>
               </div>

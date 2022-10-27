@@ -1,8 +1,6 @@
-import { IonIcon, IonInput } from '@ionic/react'
-import { API } from 'aws-amplify';
-import { closeCircle, closeOutline } from 'ionicons/icons';
-import { useEffect, useState } from 'react'
-import { listAssets } from '../graphql/queries';
+import { IonIcon, IonInput } from '@ionic/react';
+import { closeOutline } from 'ionicons/icons';
+import { useEffect, useState } from 'react';
 
 interface AssetSelectorProps {
   assets: Array<any>;

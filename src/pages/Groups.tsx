@@ -1,14 +1,12 @@
 import { IonButton, IonContent, IonPage, IonSearchbar, useIonRouter } from '@ionic/react'
 import { AgGridReact } from 'ag-grid-react';
 import { API } from 'aws-amplify';
-import React, { useEffect, useState } from 'react'
-import Header from '../components/Header'
-import Selector from '../components/Selector';
-import { listAssets, listAssetStatuses, listAssetTypes, listAssetLocations, listSimpleAssetGroups } from '../graphql/queries';
+import { useEffect, useState } from 'react';
+import Header from '../components/Header';
+import { listAssets, listSimpleAssetGroups } from '../graphql/queries';
 
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
-import { group } from 'console';
 import { useLocation } from 'react-router-dom';
 
 interface GroupsProps {

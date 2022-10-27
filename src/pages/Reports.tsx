@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { IonPage, IonContent, IonButton, useIonRouter, IonCheckbox, useIonToast, IonLabel, IonInput } from '@ionic/react'
+import { useState, useEffect } from 'react'
+import { IonPage, IonContent, IonButton, IonInput } from '@ionic/react'
 import BackButton from '../components/BackButton'
 import Header from '../components/Header';
 import AssetSelector from '../components/AssetSelector';
@@ -155,7 +155,7 @@ const Reports = ({ user }: ReportProps) => {
         data += ',' + field.name;
       });
     }
-    data+= '\r\n';
+    data += '\r\n';
     filteredAssets.forEach((asset: any) => {
       data += asset.id + ',' +
         asset.assetName + ',' +
@@ -201,7 +201,7 @@ const Reports = ({ user }: ReportProps) => {
           <IonButton className='mt-4 mb-6' disabled={!asset} onClick={exportAssetData}>Export Asset Data</IonButton>
           <hr></hr>
           <p className='ml-1 mt-6 mb-2'>Export Asset Data based on type</p>
-          <Selector queryType={listAssetTypes} handleChange={setType} label="" nameKey="typeName"/>
+          <Selector queryType={listAssetTypes} handleChange={setType} label="" nameKey="typeName" />
           <IonButton className='mt-4 mb-6' disabled={!type} onClick={exportTypeData}>Export Type Data</IonButton>
           <hr></hr>
           <p className='ml-1 mt-6 mb-2'>Signature / Image Lookup</p>
@@ -215,4 +215,4 @@ const Reports = ({ user }: ReportProps) => {
   )
 }
 
-export default Reports
+export default Reports  

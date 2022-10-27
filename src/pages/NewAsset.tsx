@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { IonPage, IonContent, IonButton, useIonRouter, IonCheckbox, useIonToast } from '@ionic/react'
 import BackButton from '../components/BackButton'
-import { getAssetType, listSimpleAssetGroups, listAssetLocations, listAssetStatuses, listAssetTypes } from '../graphql/queries';
+import { listAssetStatuses, listAssetTypes } from '../graphql/queries';
 import { createAsset } from '../graphql/mutations';
 import { API, Storage } from 'aws-amplify';
 import Selector from '../components/Selector';
@@ -29,7 +29,6 @@ const NewAsset = ({ user }: GroupsProps) => {
   const [status, setStatus] = useState({ name: null, id: null });
   //const [location, setLocation] = useState({ name: null, id: null });
   const [location, setLocation] = useState('');
-  const [presentToast] = useIonToast();
 
   const [imageKey, setImageKey] = useState('');
   const [signedURL, setSignedURL] = useState('');
@@ -52,7 +51,7 @@ const NewAsset = ({ user }: GroupsProps) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(name)
-    if (name === "" || status.id === null || QRCode === "" || location ==="") {
+    if (name === "" || status.id === null || QRCode === "" || location === "") {
       presentActionToast('bottom', "Please fill in required fields (*)");
       return;
     }
@@ -80,7 +79,7 @@ const NewAsset = ({ user }: GroupsProps) => {
           variables: { input: assetDetails },
           authMode: 'AWS_IAM'
         });
-        
+
         console.log(result);
         // @TODO Success or error toast here
       } catch (e) {
