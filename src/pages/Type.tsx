@@ -1,21 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonCheckbox, useIonLoading, IonLoading, IonButtons, IonInput, IonItem, IonLabel, IonModal, useIonAlert, useIonModal, IonToast, IonItemDivider, useIonToast } from '@ionic/react'
+import { IonContent, IonPage, IonButton, useIonRouter, IonLoading, IonItem, IonLabel, useIonAlert, useIonToast } from '@ionic/react'
 import { RouteComponentProps } from 'react-router'
 import { API } from 'aws-amplify';
-import { getAsset, getSimpleAssetGroup, getAssetStatus, getAssetLocation, getAssetType } from '../graphql/queries';
-import { listSimpleAssetGroups, listAssetLocations, listAssetStatuses, listAssetTypes } from '../graphql/queries';
-import { updateAssetStatus, updateAsset, createAssetLog, updateAssetType, createAssetType } from '../graphql/mutations';
+import { getAssetType } from '../graphql/queries';
+import { updateAssetType } from '../graphql/mutations';
 import { deleteAssetType } from '../graphql/mutations';
 import BackButton from '../components/BackButton';
 import TypeFieldCreator from '../components/TypeFieldCreator';
 import Header from '../components/Header';
-import Selector from '../components/Selector';
-import { AssetType } from '../models';
-import { resultingClientExists } from 'workbox-core/_private';
-import { OverlayEventDetail } from '@ionic/core/components';
-import { parse } from 'path';
-import { Router } from '@aws-amplify/ui-react/dist/types/components/Authenticator/Router';
-import LoanModal from '../components/LoanModal';
 import { FieldInputs } from '../types/FieldInputs';
 
 
@@ -23,11 +15,6 @@ interface AssetProps
     extends RouteComponentProps<{
         id: string;
     }> { }
-
-interface Status {
-    id: string;
-    statusName: string;
-}
 
 interface Type {
     id: string;
@@ -41,7 +28,6 @@ interface FieldsInterface {
 }
 
 const Type: React.FC<AssetProps> = ({ match }) => {
-    const [presentAlert] = useIonAlert();
     // user input
     const [type, setType] = useState({ typeName: '', id: undefined, dataTemplate: '', logTemplate: '' });
     const [assetTypeData, setAssetTypeData] = useState(Array<FieldsInterface>());
@@ -70,58 +56,58 @@ const Type: React.FC<AssetProps> = ({ match }) => {
 
         const assetFieldsJSON = JSON.stringify(typeFields);
         const assetLogFieldsJSON = JSON.stringify(logFields);
-        if(name === ""){
-          let typeDetails = {
-            id: match.params.id,
-            typeName: type.typeName,
-            dataTemplate: assetFieldsJSON,
-            logTemplate: assetLogFieldsJSON
-        }
-        const updateType = async (): Promise<void> => {
-          try {
-              const result: any = await API.graphql({
-                  query: updateAssetType,
-                  variables: { input: typeDetails },
-                  authMode: 'AWS_IAM'
-              });
-              // @TODO Success or error toast here
-              console.log(result);
-              router.goBack();
-          } catch (e) {
-              console.log(e);
-          }
-          return;
-        };
-
-      updateType();
-        }else{
-          let typeDetails = {
-            id: match.params.id,
-            typeName: name,
-            dataTemplate: assetFieldsJSON,
-            logTemplate: assetLogFieldsJSON
-        }
-
-        const updateType = async (): Promise<void> => {
-            try {
-                const result: any = await API.graphql({
-                    query: updateAssetType,
-                    variables: { input: typeDetails },
-                    authMode: 'AWS_IAM'
-                });
-                // @TODO Success or error toast here
-                console.log(result);
-                router.goBack();
-            } catch (e) {
-                console.log(e);
+        if (name === "") {
+            let typeDetails = {
+                id: match.params.id,
+                typeName: type.typeName,
+                dataTemplate: assetFieldsJSON,
+                logTemplate: assetLogFieldsJSON
             }
-            return;
-        };
+            const updateType = async (): Promise<void> => {
+                try {
+                    const result: any = await API.graphql({
+                        query: updateAssetType,
+                        variables: { input: typeDetails },
+                        authMode: 'AWS_IAM'
+                    });
+                    // @TODO Success or error toast here
+                    console.log(result);
+                    router.goBack();
+                } catch (e) {
+                    console.log(e);
+                }
+                return;
+            };
 
-        updateType();
+            updateType();
+        } else {
+            let typeDetails = {
+                id: match.params.id,
+                typeName: name,
+                dataTemplate: assetFieldsJSON,
+                logTemplate: assetLogFieldsJSON
+            }
+
+            const updateType = async (): Promise<void> => {
+                try {
+                    const result: any = await API.graphql({
+                        query: updateAssetType,
+                        variables: { input: typeDetails },
+                        authMode: 'AWS_IAM'
+                    });
+                    // @TODO Success or error toast here
+                    console.log(result);
+                    router.goBack();
+                } catch (e) {
+                    console.log(e);
+                }
+                return;
+            };
+
+            updateType();
         }
-        
-        
+
+
 
         const presentToast = () => {
             toast({
@@ -231,8 +217,6 @@ const Type: React.FC<AssetProps> = ({ match }) => {
                                 <Header title={" Types"} />
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                     <div className="h-full bg-white p-2 m-4 rounded-lg shadow col-span-2">
-                                        {/*<h1 className="text-3xl font-montserrat font-bold text-primary-200 text-blue">{type.typeName}</h1>*/}
-
                                         <form onSubmit={(e) => handleMainSubmit(e)} className="m-6">
                                             <IonItem>
                                                 <IonLabel>Type ID: {type?.id && type.id}</IonLabel>

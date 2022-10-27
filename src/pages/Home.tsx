@@ -1,11 +1,10 @@
-import { IonContent, IonGrid, IonRow, IonCol, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, IonCard, IonItem, IonThumbnail, IonCardHeader, IonCardSubtitle, IonCardTitle, IonSplitPane, IonBackButton, IonCardContent, IonIcon, IonLabel, useIonRouter } from '@ionic/react';
+import { IonContent, IonGrid, IonRow, IonCol, IonPage, IonButton, IonCard, IonItem, IonCardHeader, IonCardSubtitle, IonCardTitle, IonCardContent, IonIcon, useIonRouter } from '@ionic/react';
 import Header from '../components/Header';
-import SideBar from '../components/SideBar/SideBar';
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import BackButton from '../components/BackButton'
 import { listAssetLocations, listAssets, listAssetStatuses, listAssetTypes } from '../graphql/queries';
 import { API } from 'aws-amplify';
-import { documentTextOutline, gitNetworkOutline, homeOutline, listOutline, logOutOutline, statsChartOutline } from 'ionicons/icons'
+import { documentTextOutline, gitNetworkOutline, listOutline, statsChartOutline } from 'ionicons/icons'
 
 interface HomeProps {
   user: any;
@@ -14,15 +13,6 @@ interface HomeProps {
 const Home = ({ user }: HomeProps) => {
 
   const [assets, setAssets] = useState([]);
-  const [filteredAssets, setFilteredAssets] = useState([]);
-
-  const [search, setSearch] = useState('');
-  const [searchType, setSearchType] = useState({ id: undefined });
-  const [searchStatus, setSearchStatus] = useState({ id: undefined });
-  const [searchLocation, setSearchLocation] = useState({ id: undefined });
-
-
-  const router = useIonRouter();
 
   const listAsset = async (allStatus: any[], allLocations: any[], allTypes: any[]): Promise<void> => {
     try {
@@ -78,13 +68,6 @@ const Home = ({ user }: HomeProps) => {
     return;
   };
 
-  // const showAsset = async (): Promise<void> => {
-
-  //   // return {
-  //   //   filteredAssets.map()
-  //   // }
-  // }
-
   useEffect(() => {
     let allStatus: any[] = [];
     let allTypes: any[] = [];
@@ -98,39 +81,11 @@ const Home = ({ user }: HomeProps) => {
     );
   }, []);
 
-  useEffect(() => {
-    if (assets && assets.length > 0) {
-      let filtered = assets.filter((asset: any) => {
-        if (search !== '' && !(asset.name.toLowerCase().includes(search.toLowerCase()) || (('QRCode' in asset) ? asset.QRCode.includes(search) : false))) {
-          return false;
-        } else {
-          if (searchType !== undefined && searchType.id !== undefined && asset.typeID !== searchType.id) {
-            return false;
-          } else {
-            if (searchStatus !== undefined && searchStatus.id !== undefined && asset.statusID !== searchStatus.id) {
-              return false;
-            } else {
-              if (searchLocation !== undefined && searchLocation.id !== undefined && asset.assetlocaID !== searchLocation.id) {
-                return false;
-              } else {
-                return true;
-              }
-            }
-          }
-        }
-      });
-      setFilteredAssets(filtered);
-    }
-  }, [search, searchStatus, searchType, searchLocation, assets]);
-
-
   return (
     <IonPage>
       <Header title={"HOME"} user={user} />
-
-
       <div className="grid grid-cols-1">
-        <div className="h-full bg-white p-4 m-4 rounded-lg shadow col-span-2" key={1}>
+        <div className="h-50 bg-white p-4 m-4 rounded-lg shadow" key={1}>
           <div className="grid grid-cols-4">
             <div>
               <IonButton routerLink='/Search' expand="block" size="large">
@@ -139,13 +94,13 @@ const Home = ({ user }: HomeProps) => {
               </IonButton>
             </div>
             <div>
-              <IonButton routerLink='/Groups' expand="block" size="large">
+              <IonButton routerLink='/Types' expand="block" size="large">
                 <IonIcon slot="start" icon={statsChartOutline}></IonIcon>
                 Search Types
               </IonButton>
             </div>
             <div>
-              <IonButton routerLink='/Types' expand="block" size="large">
+              <IonButton routerLink='/Groups' expand="block" size="large">
                 <IonIcon slot="start" icon={gitNetworkOutline}></IonIcon>
                 Search Groups
               </IonButton>
@@ -159,16 +114,7 @@ const Home = ({ user }: HomeProps) => {
           </div>
         </div>
       </div>
-      {/* <ion-card>
-  <ion-card-header>
-    <ion-card-title>Card Title</ion-card-title>
-    <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-  </ion-card-header>
-
-  <ion-card-content>
-    Here's a small text description for the card content. Nothing more, nothing less.
-  </ion-card-content>
-</ion-card> */}
+      <h1 className="text-3xl font-montserrat font-bold text-black bg-white md:text-left pt-3 pl-5">Assets</h1>
       <IonContent>
         {
           assets.map((asset: any) => {
@@ -176,8 +122,6 @@ const Home = ({ user }: HomeProps) => {
               <div key={asset.id}>
                 <IonCard>
                   <IonItem detail routerLink={"/asset/" + asset.id}>
-                    {/* <div className="grid grid-cols-3 grid-rows-1 gap-4">
-                      <div className="col-span-2"> */}
                     <IonGrid>
                       <IonRow>
                         <IonCol>
@@ -200,13 +144,6 @@ const Home = ({ user }: HomeProps) => {
                         </IonCol>
                       </IonRow>
                     </IonGrid>
-                    {/* </div> */}
-                    {/* <IonThumbnail slot="start">
-                      <img src="https://www.australiancomputertraders.com.au/assets/full/HP850G5i52-r.jpg?20220226055643" />
-                    </IonThumbnail> */}
-                    {/* <div className="col-auto"> */}
-                    {/* </div> */}
-                    {/* </div> */}
                   </IonItem>
                 </IonCard>
               </div>
@@ -220,5 +157,3 @@ const Home = ({ user }: HomeProps) => {
 };
 
 export default Home;
-
-<div className="grid grid-cols-1 md:grid-cols-3 gap-4"></div>

@@ -2,10 +2,10 @@ import { IonPage, IonContent, IonButton } from '@ionic/react'
 import { API } from 'aws-amplify';
 import React from 'react'
 import BackButton from '../components/BackButton'
-import { createAsset, createAssetStatus } from '../graphql/mutations';
+import { createAssetStatus } from '../graphql/mutations';
 
 const NewStatus = () => {
-  
+
   const [name, setName] = React.useState('');
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
