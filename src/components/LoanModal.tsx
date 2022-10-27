@@ -1,5 +1,5 @@
 import { IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonContent, IonItem, IonLabel, IonInput, IonCheckbox } from "@ionic/react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import SignatureCanvas from 'react-signature-canvas'
 import { ButtonGroup } from '@aws-amplify/ui-react';
 import React from "react";
@@ -43,12 +43,17 @@ const LoanModal = ({
   }
 
   const trim = () => {
-    const file = padRef.current?.getTrimmedCanvas().toDataURL("image/png");
+    console.log("GotHere1")
+    const file = padRef.current?.getCanvas().toDataURL("image/png");
     if (file) {
       uploadImage(file);
     }
-    
   };
+  const handleSubmit = (e: any, message: string) => {
+    console.log("GotHere")
+    trim();
+    onDismiss(e, message)
+  }
   return (
     <IonPage>
       <IonHeader>
@@ -64,6 +69,10 @@ const LoanModal = ({
           <IonLabel position="stacked">Borrower</IonLabel>
           <IonInput onIonChange={(e: any) => setBorrower(e.target.value)} type="text" placeholder="Borrower Name" />
         </IonItem>
+        {/* <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 m-2" key={1}>
+                  <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Expected Return: </label></h1>
+                  <h2 className='font-montserrat text-white rounded p-1 pl-2 pb-2 pr-2 content-end'><input className="bg-neutral-400 text-white pl-2 w-full rounded" type="date" value={expectedReturn} onChange={(e: any) => setExpectedReturn(e.target.value)}></input></h2>
+                </div> */}
         {
           (logFields && logFields.length > 0) && (
             logFields.map((field, index) => {
@@ -76,7 +85,7 @@ const LoanModal = ({
                       canvasProps={{ width: 550, height: 200, className: 'sigCanvas' }} />
                     <ButtonGroup>
                       <IonButton color='light' onClick={clear}>Clear</IonButton>
-                      <IonButton color='light' onClick={trim}>Finish</IonButton>
+                      <IonButton color='light' onClick={trim}>Save Signature</IonButton>
                     </ButtonGroup>
 
                   </IonItem>
@@ -100,7 +109,7 @@ const LoanModal = ({
             }, [])
           )
         }
-        <IonButton onClick={() => onDismiss(inputRef.current?.value, 'confirm')}>Confirm</IonButton>
+        <IonButton onClick={() => handleSubmit(inputRef.current?.value, 'confirm')}>Confirm</IonButton>
       </IonContent>
     </IonPage>
   );

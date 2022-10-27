@@ -215,4 +215,4 @@ const Reports = ({ user }: ReportProps) => {
   )
 }
 
-export default Reports
+export default Reports  

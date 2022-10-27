@@ -209,7 +209,6 @@ const Type: React.FC<AssetProps> = ({ match }) => {
                         authMode: 'AWS_IAM'
                     });
                     setType(typeResult.data.getAssetType);
-                    console.log(typeResult);
                     setLoaded(true);
                 } catch (e) {
                     console.log(e);
