@@ -53,7 +53,6 @@ const TypeFieldCreator = ({ fields, setFields }: TypeFieldCreatorProps) => {
                 <option disabled value="default">Select a Type</option>
                 <option value="text">Text</option>
                 <option value="number">Number</option>
-                <option value="boolean">Boolean</option>
                 <option value="date">Date</option>
                 <option value="signature">Digital Signature</option>
               </select>
