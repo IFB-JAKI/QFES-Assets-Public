@@ -37,7 +37,7 @@ const Selector = ({ nullable = true, handleChange, queryType, label, nameKey, pl
   if (isPlatform('capacitor')) {
     return (
       <div>
-        <IonSelect>
+        <IonSelect onIonChange={(e) => handleChange(data.find(item => item.id === e.detail.value))}>
           {nullable && <IonSelectOption value={undefined}>{placeHolder}</IonSelectOption>}
           {
             data.map((option: any) => {
