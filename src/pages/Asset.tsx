@@ -22,7 +22,9 @@ import { qrCode, remove } from 'ionicons/icons';
 interface AssetProps
   extends RouteComponentProps<{
     id: string;
-  }> { }
+  }> {
+    user: any;
+   }
 
 interface Status {
   id: string;
@@ -39,7 +41,7 @@ interface GroupsProps {
   user: any;
 }
 
-const Asset: React.FC<AssetProps> = ({ match }) => {
+const Asset: React.FC<AssetProps> = ({ match, user }) => {
   const [presentAlert] = useIonAlert();
   const [presentToast] = useIonToast();
   // user input
@@ -599,7 +601,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   let changes = false;
   return (
     <IonPage>
-      {/*<Header title={"Groups"} user={user} />*/}
+      <Header title={"Edit Asset"} user={user} />
       <IonContent>
         {
           (loaded) ? (
