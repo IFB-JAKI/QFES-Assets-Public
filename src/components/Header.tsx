@@ -1,6 +1,5 @@
-import { IonHeader, IonToolbar, IonTitle, IonSearchbar, IonButton, IonButtons, IonIcon, IonMenuButton } from '@ionic/react';
-import { personCircle, helpCircle, star } from 'ionicons/icons';
-import React from 'react'
+import { IonHeader, IonToolbar, IonTitle, IonButton, IonButtons, IonIcon, IonMenuButton } from '@ionic/react';
+import { personCircle } from 'ionicons/icons';
 
 interface headerProps {
   title: string;

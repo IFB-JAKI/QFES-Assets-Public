@@ -1,21 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton, useIonRouter, IonCheckbox, useIonLoading, IonLoading, IonButtons, IonInput, IonItem, IonLabel, IonModal, useIonAlert, useIonModal, IonToast, IonItemDivider, useIonToast } from '@ionic/react'
+import { IonContent, IonPage, IonButton, useIonRouter, IonLoading, IonItem, IonLabel, useIonAlert, useIonToast } from '@ionic/react'
 import { RouteComponentProps } from 'react-router'
 import { API } from 'aws-amplify';
-import { getAsset, getSimpleAssetGroup, getAssetStatus, getAssetLocation, getAssetType } from '../graphql/queries';
-import { listSimpleAssetGroups, listAssetLocations, listAssetStatuses, listAssetTypes } from '../graphql/queries';
-import { updateAssetStatus, updateAsset, createAssetLog, updateAssetType, createAssetType } from '../graphql/mutations';
+import { getAssetType } from '../graphql/queries';
+import { updateAssetType } from '../graphql/mutations';
 import { deleteAssetType } from '../graphql/mutations';
 import BackButton from '../components/BackButton';
 import TypeFieldCreator from '../components/TypeFieldCreator';
 import Header from '../components/Header';
-import Selector from '../components/Selector';
-import { AssetType } from '../models';
-import { resultingClientExists } from 'workbox-core/_private';
-import { OverlayEventDetail } from '@ionic/core/components';
-import { parse } from 'path';
-import { Router } from '@aws-amplify/ui-react/dist/types/components/Authenticator/Router';
-import LoanModal from '../components/LoanModal';
 import { FieldInputs } from '../types/FieldInputs';
 
 
@@ -24,10 +16,6 @@ interface AssetProps
     id: string;
   }> { }
 
-interface Status {
-  id: string;
-  statusName: string;
-}
 
 interface Type {
   id: string;
@@ -41,11 +29,10 @@ interface FieldsInterface {
 }
 
 const Type: React.FC<AssetProps> = ({ match }) => {
-  const [presentAlert] = useIonAlert();
-  // user input
-  const [type, setType] = useState({ typeName: '', id: undefined, dataTemplate: '', logTemplate: '' });
-  const [assetTypeData, setAssetTypeData] = useState(Array<FieldsInterface>());
-  const [name, setName] = useState('');
+    // user input
+    const [type, setType] = useState({ typeName: '', id: undefined, dataTemplate: '', logTemplate: '' });
+    const [assetTypeData, setAssetTypeData] = useState(Array<FieldsInterface>());
+    const [name, setName] = useState('');
 
   // dynamic field states
   const [typeFields, setTypeFields] = React.useState(Array<FieldInputs>());
@@ -64,9 +51,9 @@ const Type: React.FC<AssetProps> = ({ match }) => {
 
   const router = useIonRouter();
 
-  // updates the asset type and page state with the new type if it is a valid status
-  const handleMainSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+    // updates the asset type and page state with the new type if it is a valid status
+    const handleMainSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
 
     const assetFieldsJSON = JSON.stringify(typeFields);
     const assetLogFieldsJSON = JSON.stringify(logFields);

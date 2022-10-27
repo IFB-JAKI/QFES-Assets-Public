@@ -1,10 +1,10 @@
-import { IonButton, IonCheckbox, IonContent, IonInput, IonLabel, IonList, IonPage, IonSearchbar } from '@ionic/react'
+import { IonButton, IonContent, IonLabel, IonPage } from '@ionic/react'
 import { API } from 'aws-amplify'
 import React, { useEffect, useState } from 'react'
 import BackButton from '../components/BackButton'
 import Header from '../components/Header'
 import AssetSelector from '../components/AssetSelector'
-import { listAssetTypes, listSimpleAssetGroups, listAssetStatuses, listAssetLocations, listAssets } from '../graphql/queries'
+import { listAssetStatuses, listAssets } from '../graphql/queries'
 import MultiAssetSelector from '../components/MultiAssetSelector'
 import { createSimpleAssetGroup, updateAsset } from '../graphql/mutations'
 
@@ -40,7 +40,7 @@ const NewGroup = ({ user }: any) => {
         });
         console.log("Group created:", groupResult);
         childAssets.forEach(async (childAsset: string) => {
-        await API.graphql({
+          await API.graphql({
             query: updateAsset,
             variables: {
               input: {
@@ -49,7 +49,7 @@ const NewGroup = ({ user }: any) => {
               }
             }
           });
-        await API.graphql({
+          await API.graphql({
             query: updateAsset,
             variables: {
               input: {

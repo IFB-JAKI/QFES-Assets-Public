@@ -1,8 +1,6 @@
 import { IonIcon, IonInput } from '@ionic/react'
-import { API } from 'aws-amplify';
-import { closeCircle, closeOutline } from 'ionicons/icons';
+import { closeOutline } from 'ionicons/icons';
 import { useEffect, useState } from 'react'
-import { listAssets } from '../graphql/queries';
 
 interface MultiAssetSelectorProps {
   assets: Array<any>;
@@ -11,7 +9,7 @@ interface MultiAssetSelectorProps {
   parentAsset: string | undefined;
 }
 
-const MultiAssetSelector = ({ assets, childAssets, setChildAssets, parentAsset}: MultiAssetSelectorProps) => {
+const MultiAssetSelector = ({ assets, childAssets, setChildAssets, parentAsset }: MultiAssetSelectorProps) => {
 
   const [text, setText] = useState<string>();
   const [filteredAssets, setFilteredAssets] = useState(assets);

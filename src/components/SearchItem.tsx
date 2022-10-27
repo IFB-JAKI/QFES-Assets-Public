@@ -1,12 +1,11 @@
 import { IonCard, IonItem, IonThumbnail, IonCardHeader, IonCardSubtitle, IonCardTitle, IonButton, useIonRouter } from '@ionic/react'
-import React from 'react'
 
 interface itemProps {
   asset: any
 }
 
 const SearchItem = ({ asset }: itemProps) => {
-  
+
   const router = useIonRouter();
 
   return (
