@@ -1,19 +1,19 @@
-import { IonButton, IonCheckbox, IonContent, IonInput, IonLabel, IonList, IonPage, IonSearchbar, useIonAlert, useIonRouter, useIonToast } from '@ionic/react'
+import { IonButton, IonContent, IonLabel, IonPage, useIonAlert, useIonRouter, useIonToast } from '@ionic/react'
 import { API } from 'aws-amplify'
 import React, { useEffect, useState } from 'react'
 import BackButton from '../components/BackButton'
 import Header from '../components/Header'
 import AssetSelector from '../components/AssetSelector'
-import { listAssetTypes, listSimpleAssetGroups, listAssetStatuses, listAssetLocations, listAssets, getSimpleAssetGroup, getAsset } from '../graphql/queries'
+import { listAssetStatuses, listAssets, getSimpleAssetGroup } from '../graphql/queries'
 import MultiAssetSelector from '../components/MultiAssetSelector'
-import { createSimpleAssetGroup, deleteSimpleAssetGroup, updateAsset, updateSimpleAssetGroup } from '../graphql/mutations'
+import { deleteSimpleAssetGroup, updateAsset, updateSimpleAssetGroup } from '../graphql/mutations'
 import { RouteComponentProps } from 'react-router'
 
 interface EditGroupProps
-    extends RouteComponentProps<{
-        id: string;
-    }> { }
-    
+  extends RouteComponentProps<{
+    id: string;
+  }> { }
+
 const EditGroup: React.FC<EditGroupProps> = ({ match }) => {
 
   const [parentAsset, setParentAsset] = useState<string>();
@@ -38,7 +38,7 @@ const EditGroup: React.FC<EditGroupProps> = ({ match }) => {
     if (invalidAssets.length > 0) {
       alert("The following assets are not available and cannot be added to a group: " + invalidAssets.map((asset: any) => asset.assetName).join(", "))
       return
-    } 
+    }
 
     const updateSimpleAssetGroupCall = async () => {
       try {
@@ -52,7 +52,7 @@ const EditGroup: React.FC<EditGroupProps> = ({ match }) => {
           }
         });
         childAssets.forEach(async (childAsset: string) => {
-        await API.graphql({
+          await API.graphql({
             query: updateAsset,
             variables: {
               input: {
@@ -61,23 +61,23 @@ const EditGroup: React.FC<EditGroupProps> = ({ match }) => {
               }
             }
           });
-        // remove groupID from assets that are no longer in the group
-        childAssetsCopy.forEach(async (childAsset: string) => {
-          if (!childAssets.includes(childAsset)) {
-            await API.graphql({
-              query: updateAsset,
-              variables: {
-                input: {
-                  id: childAsset,
-                  groupID: null
+          // remove groupID from assets that are no longer in the group
+          childAssetsCopy.forEach(async (childAsset: string) => {
+            if (!childAssets.includes(childAsset)) {
+              await API.graphql({
+                query: updateAsset,
+                variables: {
+                  input: {
+                    id: childAsset,
+                    groupID: null
+                  }
                 }
-              }
-            });
-          }
-        })
-        // remove old group
-        if (parentAssetCopy !== parentAsset) {
-          await API.graphql({
+              });
+            }
+          })
+          // remove old group
+          if (parentAssetCopy !== parentAsset) {
+            await API.graphql({
               query: updateAsset,
               variables: {
                 input: {
@@ -228,7 +228,7 @@ const EditGroup: React.FC<EditGroupProps> = ({ match }) => {
       <IonContent>
         <div className="m-2 p-2 rounded bg-white">
           <form onSubmit={handleSubmit}>
-          <IonLabel>Parent Asset</IonLabel>
+            <IonLabel>Parent Asset</IonLabel>
             <AssetSelector assets={assets} parentAsset={parentAsset} setParentAsset={setParentAsset} childAssets={childAssets} currentGroup={match.params.id} />
             <IonLabel>Child Assets</IonLabel>
             <MultiAssetSelector assets={assets} childAssets={childAssets} setChildAssets={setChildAssets} parentAsset={parentAsset} />

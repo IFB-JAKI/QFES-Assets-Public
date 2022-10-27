@@ -129,7 +129,7 @@ const Home = ({ user }: HomeProps) => {
                             <IonCardTitle><h1 className="text-2xl font-montserrat font-bold text-black bg-white md:text-left">{asset.name}</h1></IonCardTitle>
 
                             <IonCardSubtitle>
-                              {asset.QRCode ? (<h1 className="text-2xl font-montserrat text-black bg-white md:text-left">{asset.QRCode}</h1>) : <h1 className="text-2xl font-montserrat text-red bg-white md:text-left">No QR Given</h1>}
+                              {asset.QRCode ? (<h1 className="text-1xl font-montserrat text-black bg-white md:text-left">{asset.QRCode}</h1>) : <h1 className="text-2xl font-montserrat text-red bg-white md:text-left">No QR Given</h1>}
                             </IonCardSubtitle>
                           </IonCardHeader>
                         </IonCol>
