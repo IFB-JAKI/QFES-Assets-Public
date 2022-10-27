@@ -84,6 +84,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   const [itemReturnedDate, setItemReturnedDate] = useState(Date);
   const [loanUser, setLoanUser] = useState('');
   const [assetLogData, setAssetLogData] = useState(Array<any>());
+  const [assetLogString, setAssetLogString] = useState('');
   interface GroupsProps {
     user: any;
   }
@@ -107,6 +108,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
       if (callback) {
         callback(result.data.updateAsset);
       }
+      console.log(result);
     } catch (e) {
       console.log(e);
     }
@@ -114,28 +116,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   };
 
 
-  useEffect(() => {
-    // collect loan log information
-    const createLoanLogEvent = async () => {
-      try {
-        const resultLog: any = await API.graphql({
-          query: getAssetLog,
-          variables: { id: "4dd4af8d-6258-4c4d-a656-6dc56dda9753" },
-          authMode: 'AWS_IAM'
-        });
-        const result: any = await API.graphql({
-          query: listAssetLogs,
-          authMode: 'AWS_IAM'
-        });
-        setLoanLog(result.data.listAssetLogs.items);
-        //setLoanLog(result.data.getAssetLog.items);
-      } catch (e) {
-        console.log(e);
-      }
-      return;
-    }
-    createLoanLogEvent();
-  }, []);
+  
   // updates the asset status and page state with the new status if it is a valid status
   const updateStatusCall = async (statusName: string): Promise<void> => {
     let status = allStatuses.find((status) => status.statusName === statusName);
@@ -162,6 +143,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
 
       const createLoanEvent = async () => {
         let now = new Date().valueOf();
+        setAssetLogData(logFields);
         let assetLogDataString = JSON.stringify(logFields);
         try {
           const result: any = await API.graphql({
@@ -177,7 +159,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
             },
             authMode: 'AWS_IAM'
           });
-          console.log(result);
+          //console.log(result);
           await updateAssetCall({ id: match.params.id, currentEvent: result.data.createAssetLog.id });
         } catch (e) {
           console.log(e);
@@ -185,7 +167,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
         return;
       }
       createLoanEvent();
-      //updateStatusCall('On Loan');
+      updateStatusCall('On Loan');
     }
     if (!modalSaved) {
       handleLoanSubmit();
@@ -194,6 +176,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   }, [modalSaved]);
 
   const handleReturnSubmit = () => {
+    
     updateStatusCall('Available');
     let now = new Date().valueOf();
     // create return event
@@ -209,7 +192,8 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
           },
           authMode: 'AWS_IAM'
         });
-        console.log(result);
+        //console.log(result);
+        await updateAssetCall({ id: match.params.id, currentEvent: result.data.createAssetLog.id });
       } catch (e) {
         console.log(e);
       }
@@ -404,7 +388,8 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
           fetchCurrentEventInfo(asset.currentEvent),
 
           //fetchGroup(asset.groupID),
-          setAssetTypeData(JSON.parse(asset.assetTypeData))
+          setAssetTypeData(JSON.parse(asset.assetTypeData)),
+          //console.log(asset)
         ]).then(() =>
           setLoaded(true)
         );
@@ -428,14 +413,16 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
           variables: {id: currentEvent},
           authMode: 'AWS_IAM' 
         })
+        
         let loanEventInfo = onLoanInfo.data.getAssetLog;
         setCurrentLoanEventInfo(onLoanInfo.data.getAssetLog);
-        console.log(onLoanInfo.data.getAssetLog)
+        //console.log(onLoanInfo.data.getAssetLog)
         //setCurrentLoanEventInfo({name: onLoanInfo.data.getAssetLog.assetID, id: onLoanInfo.data.getAssetLog.assetID.id, username: onLoanInfo.data.getAssetLog.borrowerUsername, dateOfBorrow: onLoanInfo.data.getAssetLog.borrowDate, dateOfReturn: onLoanInfo.data.getAssetLog.returnDate });
         setItemLoanedDate(loanEventInfo.borrowDate);
         setItemReturnedDate(loanEventInfo.returnDate);
         setLoanUser(loanEventInfo.borrowerUsername);
         setAssetLogData(loanEventInfo.assetLogData);
+        setAssetLogString(loanEventInfo.assetLogData);
         }catch(e){
           console.log(e);
         }
@@ -467,7 +454,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
             authMode: 'AWS_IAM'
           });
           setGroup(groupResult.data.getSimpleAssetGroup);
-          console.log(groupResult);
+          //console.log(groupResult);
         } catch (e) {
           console.log(e);
         }
@@ -531,6 +518,7 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
         //   console.log(onLoanInfo);
         // }
         setLoanLog(result.data.listAssetLogs.items);
+        
         //setLoanLog(result.data.getAssetLog.items);
       } catch (e) {
         console.log(e);
@@ -592,7 +580,6 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
   function changeInLocation(e: any) {
     setSaved(false);
     setLocation(e.target.value);
-    console.log(e.target.value)
   }
 
   let changes = false;
@@ -685,14 +672,15 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                       {currentLoanEvent != null && itemLoanedDate !== null &&<h1>Item on loan by: {loanUser}</h1>}
                       {
                       loanLog.map((log, index) => {
-                        
+                        const myArray = assetLogString.split("\"")
                           if (itemLoanedDate !== null && itemReturnedDate === null) {
                             //Most recent event is a Loan
                             var myDate = new Date(itemLoanedDate);
+                            
                             return (
                               <div>
                                 <h1 className="font-montserrat lg:text-xl md:text-l sm:text-l">{("Loaned: " + myDate.toLocaleDateString())}</h1>
-                                <h1>Return Date: None given</h1>
+                                <h1>Proposed Return Date: {myArray[11]}</h1>
                             </div>
                             )
                           }
@@ -712,11 +700,16 @@ const Asset: React.FC<AssetProps> = ({ match }) => {
                             var myDate = new Date(itemReturnedDate);
                             return <ul className="font-montserrat lg:text-xl md:text-l sm:text-l ml-4">{("Returned: " + myDate.toLocaleDateString())}</ul>
                           }
-                          
                         }
-
                       )   
                     }
+                    {/* {
+                      assetLogData.map((logInfo, index) => {
+                          return<h1>{logInfo[0]}</h1>
+                      }
+                      )
+                  } */}
+
                     </div>
                   </div>
                 </div>
