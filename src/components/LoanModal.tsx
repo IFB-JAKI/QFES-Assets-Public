@@ -1,5 +1,5 @@
 import { IonPage, IonHeader, IonToolbar, IonButtons, IonButton, IonTitle, IonContent, IonItem, IonLabel, IonInput, IonCheckbox } from "@ionic/react";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import SignatureCanvas from 'react-signature-canvas'
 import { ButtonGroup } from '@aws-amplify/ui-react';
 import React from "react";
@@ -21,12 +21,12 @@ const LoanModal = ({
 
   function dataURLtoFile(dataurl: any, filename: any) {
     var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-        bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-    while(n--){
-        u8arr[n] = bstr.charCodeAt(n);
+      bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
     }
-    return new File([u8arr], filename, {type:mime});
-}
+    return new File([u8arr], filename, { type: mime });
+  }
 
   const uploadImage = async (file: any) => {
     const fileName = `signature-${Date.now()}-${assetID}`;
@@ -69,10 +69,6 @@ const LoanModal = ({
           <IonLabel position="stacked">Borrower</IonLabel>
           <IonInput onIonChange={(e: any) => setBorrower(e.target.value)} type="text" placeholder="Borrower Name" />
         </IonItem>
-        {/* <div className="bg-stone rounded-lg shadow md:w-1/2 lg:w-80 m-2" key={1}>
-                  <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Expected Return: </label></h1>
-                  <h2 className='font-montserrat text-white rounded p-1 pl-2 pb-2 pr-2 content-end'><input className="bg-neutral-400 text-white pl-2 w-full rounded" type="date" value={expectedReturn} onChange={(e: any) => setExpectedReturn(e.target.value)}></input></h2>
-                </div> */}
         {
           (logFields && logFields.length > 0) && (
             logFields.map((field, index) => {

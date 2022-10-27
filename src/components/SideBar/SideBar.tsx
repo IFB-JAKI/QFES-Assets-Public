@@ -1,6 +1,5 @@
-import { IonIcon, IonItem, IonList, IonNavLink, IonRouterLink } from '@ionic/react'
+import { IonIcon } from '@ionic/react'
 import { documentTextOutline, gitNetworkOutline, homeOutline, listOutline, logOutOutline, statsChartOutline } from 'ionicons/icons'
-import React from 'react'
 import qfesIcon from '../../assets/img/qfesIcon.png'
 import SideBarOption from './SideBarOption'
 
@@ -25,24 +24,24 @@ const SideBar = ({ signOut }: SideBarProps) => {
           <SideBarOption route="/Search">
             <IonIcon icon={listOutline} className='mr-3'></IonIcon>
             Assets
-            </SideBarOption>
-            <SideBarOption route="/Types">
-              <IonIcon icon={statsChartOutline} className='mr-3'></IonIcon>
-              Types
-              </SideBarOption>
-              <SideBarOption route="/Groups">
-              <IonIcon icon={gitNetworkOutline} className='mr-3'></IonIcon>
-              Groups
-              </SideBarOption>
-              <SideBarOption route="/Reports">
-              <IonIcon icon={documentTextOutline} className='mr-3'></IonIcon>
-              Reports
-            </SideBarOption>
-            <div className='w-full grow'></div>
-            <SideBarOption onClick={signOut}>
-              <IonIcon icon={logOutOutline} className='mr-3'></IonIcon>
-              Sign Out
-            </SideBarOption>
+          </SideBarOption>
+          <SideBarOption route="/Types">
+            <IonIcon icon={statsChartOutline} className='mr-3'></IonIcon>
+            Types
+          </SideBarOption>
+          <SideBarOption route="/Groups">
+            <IonIcon icon={gitNetworkOutline} className='mr-3'></IonIcon>
+            Groups
+          </SideBarOption>
+          <SideBarOption route="/Reports">
+            <IonIcon icon={documentTextOutline} className='mr-3'></IonIcon>
+            Reports
+          </SideBarOption>
+          <div className='w-full grow'></div>
+          <SideBarOption onClick={signOut}>
+            <IonIcon icon={logOutOutline} className='mr-3'></IonIcon>
+            Sign Out
+          </SideBarOption>
 
         </div>
       </div>
