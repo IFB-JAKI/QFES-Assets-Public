@@ -47,9 +47,6 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
   const [group, setGroup] = useState('');
   const [assetTypeData, setAssetTypeData] = useState(Array<FieldsInterface>());
   const [currentLoanEvent, setCurrentLoanEvent] = useState('');
-  const [displaySig, setDisplaySig] = useState(false);
-
-  //const [currentLoanEventInfo, setCurrentLoanEventInfo] = useState({name: '', id: undefined, username: undefined, dateOfBorrow: Date, dateOfReturn: Date});
 
   // dynamic field states
   const [typeFields, setTypeFields] = useState(Array<any>());
@@ -74,7 +71,6 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
   const [signedSigURL, setSigneSigURL] = useState('');
 
   const [loanLog, setLoanLog] = useState(Array<any>());
-  const [currentLoanEventInfo, setCurrentLoanEventInfo] = useState();
   const [itemLoanedDate, setItemLoanedDate] = useState(Date);
   const [itemReturnedDate, setItemReturnedDate] = useState(Date);
   const [loanUser, setLoanUser] = useState('');
@@ -243,12 +239,11 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
     }
     let deleteDetails = match.params.id;
     try {
-      const deleteAssetItem: any = await API.graphql({
+      await API.graphql({
         query: deleteAsset,
         variables: {
           input: {
-            id: match.params.id,
-
+            id: match.params.id
           }
         },
         authMode: 'AWS_IAM'
@@ -424,13 +419,11 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
           })
 
           let loanEventInfo = onLoanInfo.data.getAssetLog;
-          setCurrentLoanEventInfo(onLoanInfo.data.getAssetLog)
           setDigSig(loanEventInfo.borrowerSignature);
           if (loanEventInfo.borrowerSignature) {
             setImageKey(loanEventInfo.borrowerSignature);
             downloadSigImage(loanEventInfo.borrowerSignature);
           }
-          //setCurrentLoanEventInfo({name: onLoanInfo.data.getAssetLog.assetID, id: onLoanInfo.data.getAssetLog.assetID.id, username: onLoanInfo.data.getAssetLog.borrowerUsername, dateOfBorrow: onLoanInfo.data.getAssetLog.borrowDate, dateOfReturn: onLoanInfo.data.getAssetLog.returnDate });
           setItemLoanedDate(loanEventInfo.borrowDate);
           setItemReturnedDate(loanEventInfo.returnDate);
           setLoanUser(loanEventInfo.borrowerUsername);
@@ -452,23 +445,6 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
             authMode: 'AWS_IAM'
           });
           setStatus({ name: statusResult.data.getAssetStatus.statusName, id: statusResult.data.getAssetStatus.id });
-        } catch (e) {
-          console.log(e);
-        }
-        return;
-      }
-    }
-
-    const fetchGroup = async (groupID: string): Promise<void> => {
-      if (groupID) {
-        try {
-          const groupResult: any = await API.graphql({
-            query: getSimpleAssetGroup,
-            variables: { id: groupID },
-            authMode: 'AWS_IAM'
-          });
-          setGroup(groupResult.data.getSimpleAssetGroup);
-          //console.log(groupResult);
         } catch (e) {
           console.log(e);
         }
@@ -522,18 +498,8 @@ const Asset: React.FC<AssetProps> = ({ match, user }) => {
           authMode: 'AWS_IAM'
         });
 
-        // if(currentLoanEvent.length > 1){
-        //   const onLoanInfo: any = await API.graphql({
-        //     query: getAssetLog,
-        //     variables: {id: currentLoanEvent},
-        //     authMode: 'AWS_IAM'
-        //   })
-        //   setCurrentLoanEventInfo(onLoanInfo);
-        //   console.log(onLoanInfo);
-        // }
         setLoanLog(result.data.listAssetLogs.items);
 
-        //setLoanLog(result.data.getAssetLog.items);
       } catch (e) {
         console.log(e);
       }

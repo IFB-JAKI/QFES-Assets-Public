@@ -29,10 +29,10 @@ interface FieldsInterface {
 }
 
 const Type: React.FC<AssetProps> = ({ match }) => {
-    // user input
-    const [type, setType] = useState({ typeName: '', id: undefined, dataTemplate: '', logTemplate: '' });
-    const [assetTypeData, setAssetTypeData] = useState(Array<FieldsInterface>());
-    const [name, setName] = useState('');
+  // user input
+  const [type, setType] = useState({ typeName: '', id: undefined, dataTemplate: '', logTemplate: '' });
+  const [assetTypeData, setAssetTypeData] = useState(Array<FieldsInterface>());
+  const [name, setName] = useState('');
 
   // dynamic field states
   const [typeFields, setTypeFields] = React.useState(Array<FieldInputs>());
@@ -51,9 +51,9 @@ const Type: React.FC<AssetProps> = ({ match }) => {
 
   const router = useIonRouter();
 
-    // updates the asset type and page state with the new type if it is a valid status
-    const handleMainSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+  // updates the asset type and page state with the new type if it is a valid status
+  const handleMainSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
     const assetFieldsJSON = JSON.stringify(typeFields);
     const assetLogFieldsJSON = JSON.stringify(logFields);
@@ -126,7 +126,11 @@ const Type: React.FC<AssetProps> = ({ match }) => {
     try {
       const result: any = await API.graphql({
         query: deleteAssetType,
-        variables: { input: match.params.id },
+        variables: {
+          input: {
+            id: match.params.id
+          }
+        },
         authMode: 'AWS_IAM'
       })
       console.log(result);
@@ -215,33 +219,31 @@ const Type: React.FC<AssetProps> = ({ match }) => {
           (loaded) ? (
             (error === '') ? (
               <>
-                <Header title={" Types"} />
+                <Header pl-8 title={" Types"} />
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="h-full bg-white p-2 m-4 rounded-lg shadow col-span-2">
                     {/*<h1 className="text-3xl font-montserrat font-bold text-primary-200 text-blue">{type.typeName}</h1>*/}
 
                     <form onSubmit={(e) => handleMainSubmit(e)} className="m-6">
-                      <IonItem>
-                        <IonLabel>Type ID: {type?.id && type.id}</IonLabel>
-                      </IonItem>
-                      <IonItem>
-                        <h1 className="mr-3">Type Name:</h1>
-                        <input className="bg-white left" onChange={(e) => changeInName(e)} placeholder={type.typeName} defaultValue={type.typeName}></input>
-
-                      </IonItem>
-                      <IonItem>
-                        <IonLabel className="mr-3"><h2>Asset Information:</h2></IonLabel>
-                      </IonItem>
-                      <TypeFieldCreator fields={typeFields} setFields={setTypeFields} />
-                      <IonItem>
-                        <IonLabel className="mr-3">Information Required on Loan:</IonLabel>
-                      </IonItem>
-                      <br></br>
-                      <TypeFieldCreator fields={logFields} setFields={setLogFields} />
-                      <br></br>
-                      <IonButton type='submit'>Submit</IonButton>
+                      <div className="bg-white p-4 m-4 rounded-lg shadow">
+                        <div className="bg-stone rounded-lg shadow lg:w-3/4 pr-4 mb-2 pb-1  " key={1}>
+                          <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Type ID: </label></h1>
+                          <h1 className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat' >{type?.id && type.id}</h1>
+                        </div>
+                        <div className="bg-stone rounded-lg shadow lg:w-1/4 pr-4 mb-2" key={1}>
+                          <h1 className='text-white pl-2 pt-1 text-l font-bold font-montserrat'><label>Type Name: </label></h1>
+                          <input className='bg-neutral-400 text-white m-2 w-full pl-2 rounded font-montserrat' onChange={(e) => changeInName(e)} placeholder={type.typeName} defaultValue={type.typeName} ></input>
+                        </div>
+                        <h1 className='text-2xl font-montserrat mt-4 font-bold '>Information Fields for Asset Type:</h1>
+                        <div className="w-2/2">
+                          <TypeFieldCreator fields={typeFields} setFields={setTypeFields} />
+                        </div>
+                        <h1 className='text-2xl font-montserrat mt-4 font-bold '>Type Specific Information Required On Asset Loan:</h1>
+                        <TypeFieldCreator fields={logFields} setFields={setLogFields} />
+                        <IonButton className="mt-4" type='submit'>Save</IonButton>
+                      </div>
                     </form>
-                    <BackButton />
+                    <BackButton text="back" />
                     <IonButton color="danger" onClick={() => {
                       toast({
                         message: 'Are you sure you want to delete this Type?',
@@ -259,6 +261,47 @@ const Type: React.FC<AssetProps> = ({ match }) => {
                         ]
                       })
                     }}>Delete</IonButton>
+
+
+
+                    {/* <IonItem>
+                        <IonLabel>Type ID: {type?.id && type.id}</IonLabel>
+                      </IonItem> */}
+                    {/* <IonItem>
+                        <h1 className="mr-3">Type Name:</h1>
+                        <input className="bg-white left" onChange={(e) => changeInName(e)} placeholder={type.typeName} defaultValue={type.typeName}></input>
+
+                      </IonItem> */}
+                    {/* <IonItem>
+                        <IonLabel className="mr-3"><h2>Asset Information:</h2></IonLabel>
+                      </IonItem> */}
+                    {/* <TypeFieldCreator fields={typeFields} setFields={setTypeFields} />
+                      <IonItem>
+                        <IonLabel className="mr-3">Information Required on Loan:</IonLabel>
+                      </IonItem>
+                      <br></br>
+                      <TypeFieldCreator fields={logFields} setFields={setLogFields} />
+                      <br></br>
+                      <IonButton type='submit'>Submit</IonButton> */}
+                    {/* </form> */}
+                    {/* <BackButton />
+                    <IonButton color="danger" onClick={() => {
+                      toast({
+                        message: 'Are you sure you want to delete this Type?',
+                        duration: 10000,
+                        buttons: [
+                          {
+                            text: 'Yes',
+                            role: 'confirm',
+                            handler: () => deleteType()
+                          },
+                          {
+                            text: 'No',
+                            role: 'cancel'
+                          }
+                        ]
+                      })
+                    }}>Delete</IonButton> */}
                   </div>
                 </div>
               </>
