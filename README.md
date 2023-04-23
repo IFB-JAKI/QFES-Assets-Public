@@ -1,5 +1,7 @@
 # QFES Asset register
 
+This is a stripped version of the QFES asset registration app made for a QUT capstone project. All aws resources would need to be recreated to run this app.
+
 ## Development
 
 ### Project Structure
@@ -28,5 +30,3 @@ The backend of this app will be a graphql api hosted by amplify, that will commu
 #### Backend (Auth)
 
 Auth is setup using AWS cognito.
-
-## Deployment
