@@ -29,4 +29,4 @@ The backend of this app will be a graphql api hosted by amplify, that will commu
 
 #### Backend (Auth)
 
-Auth is setup using AWS cognito.
+Auth is setup using AWS cognito. 
